@@ -70,6 +70,8 @@ class BidBoard extends HTMLElement {
       const double = tile.tile.getAttribute("double") !== null;
       const redouble = tile.tile.getAttribute("redouble") !== null;
 
+      tile.tile.setAttribute("systemic", `${this.#isBidSystemic(number, suit, double, redouble)}`);
+
       if (this.#isBidAvailable(number, suit, double, redouble)) {
         tile.tile.setAttribute("available", "true");
         tile.tile.onclick = tile.onclick;
@@ -84,6 +86,15 @@ class BidBoard extends HTMLElement {
     const values = Object.values(CurrentChooser);
     const idx = values.findIndex(e => e === this.currentChooser);
     return values[(idx + 1) % values.length];
+  }
+
+  #isBidSystemic(number, suit, isDouble, isRedouble) {
+    return this.systemManager.availableBids.some(bid => {
+      return (bid.number === number && Suit[bid.suit] === suit)
+        || (isDouble && bid.double)
+        || (isRedouble && bid.redouble)
+        || (number === null && suit === null && !isDouble && !isRedouble && bid.pass);
+    });
   }
 
   #isBidAvailable(number, suit, isDouble, isRedouble) {
@@ -133,14 +144,13 @@ class BidBoard extends HTMLElement {
     lastRow.appendChild(this.tiles[37].tile);
     table.appendChild(lastRow);
 
-    this.#updateTiles();
-
-    const width = parseInt(this.getAttribute("width"));
+    const tileSize = parseInt(this.getAttribute("tile-size"));
+    const gapSize = 2;
     const style = document.createElement("style");
     style.textContent = `
       .bid-board {
-        width: ${width}px;
-        height: ${(width - 4) / 5 * 8 + 7}px;
+        width: ${tileSize * 5 + 4 * gapSize}px;
+        height: ${tileSize * 8 + 7 * gapSize}px;
         display: flex;
         flex-direction: column;
         gap: 1px;
@@ -150,20 +160,24 @@ class BidBoard extends HTMLElement {
       	width: 100%;
         display: flex;
         flex-direction: row;
-        gap: 1px;
+        gap: ${gapSize}px;
       }
 
       bid-tile {
-        width: ${(width - 4) / 5}px;
+        width: ${tileSize}px;
+        height: ${tileSize}px;
       }
 
       bid-tile[pass] {
-        width: ${(width - 4) / 5 * 3 + 2}px;
+        width: ${tileSize * 3 + gapSize * 2}px;
+        height: ${tileSize}px;
       }
     `;
 
     dom.appendChild(style);
     dom.appendChild(table);
+
+    this.#updateTiles();
   }
 }
 

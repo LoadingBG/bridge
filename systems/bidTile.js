@@ -25,10 +25,16 @@ const createPass     = () => createSVG("0 0 512 128", "M72.51 15.42H34.65c-.15 0
 
 
 class BidTile extends HTMLElement {
-  static observedAttributes = ["available"];
+  static observedAttributes = ["available", "systemic"];
+
+  #available;
+  #systemic;
 
   constructor() {
     super();
+
+    this.#available = true;
+    this.#systemic = false;
   }
 
   #createDoubleTile() {
@@ -38,42 +44,28 @@ class BidTile extends HTMLElement {
 
     const style = document.createElement("style");
     style.textContent = `
-      .container {
-        aspect-ratio: 1 / 1;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-        align-items: center;
-        align-content: center;
-        gap: 0px;
-      }
-
       .double {
         width: 100%;
         height: 100%;
+
+        background: #0f253f;
       }
 
       .available .double {
         background: #f0243c;
       }
-
-      .unavailable .double {
-        background: #0f253f;
-      }
       
       svg {
         height: 100%;
         width: 100%;
+
+        stroke: #4c5c71;
+        fill: #4c5c71;
       }
 
       .available svg {
         stroke: #fff;
         fill: #fff;
-      }
-
-      .unavailable svg {
-        stroke: #4c5c71;
-        fill: #4c5c71;
       }
     `;
 
@@ -87,42 +79,28 @@ class BidTile extends HTMLElement {
 
     const style = document.createElement("style");
     style.textContent = `
-      .container {
-        aspect-ratio: 1 / 1;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-        align-items: center;
-        align-content: center;
-        gap: 0px;
-      }
-
       .redouble {
         width: 100%;
         height: 100%;
+
+        background: #0f253f;
       }
 
       .available .redouble {
         background: #4058ed;
       }
 
-      .unavailable .redouble {
-        background: #0f253f;
-      }
-      
-      .redouble svg {
+      svg {
         height: 100%;
         width: 100%;
+
+        stroke: #4c5c71;
+        fill: #4c5c71;
       }
 
       .available svg {
         stroke: #fff;
         fill: #fff;
-      }
-
-      .unavailable svg {
-        stroke: #4c5c71;
-        fill: #4c5c71;
       }
     `;
 
@@ -136,42 +114,28 @@ class BidTile extends HTMLElement {
 
     const style = document.createElement("style");
     style.textContent = `
-      .container {
-        aspect-ratio: 3 / 1;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-        align-items: center;
-        align-content: center;
-        gap: 0px;
-      }
-
       .pass {
         width: 100%;
         height: 100%;
+
+        background: #0f253f;
       }
 
       .available .pass {
         background: #0bcc9f;
       }
 
-      .unavailable .pass {
-        background: #0f253f;
-      }
-      
       svg {
         height: 100%;
         width: 100%;
+
+        stroke: #4c5c71;
+        fill: #4c5c71;
       }
 
       .available svg {
         stroke: #fff;
         fill: #fff;
-      }
-
-      .unavailable svg {
-        stroke: #4c5c71;
-        fill: #4c5c71;
       }
     `;
 
@@ -189,19 +153,6 @@ class BidTile extends HTMLElement {
 
     const style = document.createElement("style");
     style.textContent = `
-      .container {
-      	margin: 0px;
-        padding: 0px;
-        border: 0px;
-        aspect-ratio: 1 / 1;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-        align-items: center;
-        align-content: center;
-        gap: 0px;
-      }
-
       .number-part {
         margin: 0px;
         height: 100%;
@@ -211,20 +162,20 @@ class BidTile extends HTMLElement {
         align-items: center;
         justify-content: center;
 
+        background: #0f253f;
       }
 
       .available .number-part {
         background-color: ${suit.numberColor};
       }
 
-      .unavailable .number-part {
-        background: #0f253f;
-      }
-    
       .number-part svg {
         padding: 5px;
         height: 100%;
         width: 100%;
+
+        stroke: #4c5c71;
+        fill: #4c5c71;
       }
 
       .available .number-part svg {
@@ -242,29 +193,25 @@ class BidTile extends HTMLElement {
         margin: 0pt;
         height: 100%;
         width: 60%;
+
+        background: #0f253f;
       }
 
       .available .suit-part {
         background-color: ${suit.suitColor};
       }
 
-      .unavailable .suit-part {
-        background: #0f253f;
-      }
-    
       .suit-part svg {
         height: 100%;
         width: 100%;
+
+        stroke: #4c5c71;
+        fill: #4c5c71;
       }
 
       .available .suit-part svg {
         stroke: #fff;
         fill: #fff;
-      }
-
-      .unavailable svg {
-        stroke: #4c5c71;
-        fill: #4c5c71;
       }
     `;
 
@@ -279,21 +226,22 @@ class BidTile extends HTMLElement {
     const container = document.createElement("span");
     container.setAttribute("class", isAvailable === "true" ? "container available" : "container unavailable");
 
+    const border = document.createElement("span");
+    border.setAttribute("class", "border");
+    container.appendChild(border);
+
     if (this.getAttribute("double") !== null) {
       const [tile, style] = this.#createDoubleTile();
       container.appendChild(tile);
       dom.appendChild(style);
-      dom.appendChild(container);
     } else if (this.getAttribute("redouble") !== null) {
       const [tile, style] = this.#createRedoubleTile();
       container.appendChild(tile);
       dom.appendChild(style);
-      dom.appendChild(container);
     } else if (this.getAttribute("pass") != null) {
       const [tile, style] = this.#createPassTile();
       container.appendChild(tile);
       dom.appendChild(style);
-      dom.appendChild(container);
     } else {
       const suit = Suit[this.getAttribute("suit")];
       const number = parseInt(this.getAttribute("number"));
@@ -302,8 +250,47 @@ class BidTile extends HTMLElement {
       container.appendChild(numberPart);
       container.appendChild(suitPart);
       dom.appendChild(style);
-      dom.appendChild(container);            
     }
+
+    const style = document.createElement("style");
+    style.textContent = `
+      .container {
+        width: 100%;
+        height: 100%;
+        
+        position: relative;
+      	margin: 0px;
+        padding: 0px;
+        border: 0px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: center;
+        align-content: center;
+        gap: 0px;
+      }
+
+      .border {
+        box-sizing: border-box;
+        position: absolute;
+        margin: 0;
+        padding: 0;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: none;
+        background: rgba(0, 0, 0, 0);
+        border: 10px solid #e0b000;
+      }
+
+      .systemic .border {
+        display: block;
+      }     
+    `;
+    dom.appendChild(style);
+
+    dom.appendChild(container);
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -311,10 +298,19 @@ class BidTile extends HTMLElement {
       return;
     }
 
+    switch (name) {
+      case "available":
+        this.#available = newValue === "true";
+        break;
+      case "systemic":
+        this.#systemic = newValue === "true";
+        break;
+    }
+
     for (let node of this.shadowRoot.childNodes) {
       if (node.nodeName !== "SPAN") { continue; }
 
-      const classes = newValue === "true" ? "container available" : "container unavailable";
+      const classes = `container ${this.#available ? "available" : ""} ${this.#systemic ? "systemic" : ""}`;
       node.setAttribute("class", classes);
       break;
     }
