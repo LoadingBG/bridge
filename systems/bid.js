@@ -22,18 +22,6 @@ const CurrentChooser = Object.freeze({
 
 
 
-class MadeBid {
-  constructor(number, suit, isDouble, isRedouble, isPass) {
-    this.number = number;
-    this.suit = suit;
-    this.isDouble = isDouble;
-    this.isRedouble = isRedouble;
-    this.isPass = isPass;
-  }
-}
-
-
-
 class Bid {
   constructor(number, suit, bidder, doubler, redoubler) {
     this.number = number;

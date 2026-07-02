@@ -7,10 +7,33 @@
     <script src="./bidTile.js"></script>
     <script src="./bidPopup.js"></script>
     <script src="./bidBoard.js" type="module"></script>
+    <script src="./bidApp.js"></script>
+    <style>
+      body {
+        margin: 0;
+      }
+    
+      .container {
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      bid-board {
+        margin: 0px;
+        border: 0px;
+        padding: 0px;
+      }
+    </style>
   </head>
 
   <body>
-    <bid-board tile-size="100"></bid-board>
+    <div class="container">
+      <bid-app></bid-app>
+      <!-- <bid-board tile-size="100"></bid-board> -->
+    </div>
   </body>
 </html>
 

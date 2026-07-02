@@ -5,80 +5,90 @@ class BidBoard extends HTMLElement {
     super();
     this.currentBid = new Bid(null, null, null, null, null);
     this.currentChooser = CurrentChooser.NORTH;
-    this.bidHistory = [];
-    this.systemManager = new System(fmi.name, fmi.bids);
+    this.systemManager = new System(fmi.name, fmi.nonsystemicBid, fmi.bids);
+
+    this.table = undefined;
 
     this.tiles = [];
     for (let i = 1; i <= 7; i++) {
       for (let suit of Object.keys(Suit)) {
-        const tile = document.createElement("bid-tile");
+        const tile = document.createElement("number-suit-tile");
         tile.setAttribute("number", i.toString());
         tile.setAttribute("suit", suit);
-        this.tiles.push({
-          tile: tile,
-          onclick: () => {
-            this.currentBid = new Bid(i, Suit[suit], this.currentChooser, null, null);
-            this.currentChooser = this.#nextChooser();
-            this.#updateTiles();
-          },
-        });
+        tile.onClick(this.#createPopupOnclick(tile, () => {
+          this.systemManager.update(i, suit, undefined, undefined, undefined);
+          this.currentBid = new Bid(i, Suit[suit], this.currentChooser, null, null);
+          this.currentChooser = this.#nextChooser();
+          this.#updateTiles();
+        }));
+        this.tiles.push(tile);
       }
     }
 
-    const double = document.createElement("bid-tile");
-    double.setAttribute("double", "");
-    this.tiles.push({
-      tile: double,
-      onclick: () => {
-        this.currentBid.doubler = this.currentChooser;
-        this.currentChooser = this.#nextChooser();
-        this.#updateTiles();
-      },
-    });
+    const double = document.createElement("double-tile");
+    double.onClick(this.#createPopupOnclick(double, () => {
+      this.systemManager.update(undefined, undefined, true, undefined, undefined);
+      this.currentBid.doubler = this.currentChooser;
+      this.currentChooser = this.#nextChooser();
+      this.#updateTiles();
+    }));
+    this.tiles.push(double);
 
-    const redouble = document.createElement("bid-tile");
-    redouble.setAttribute("redouble", "");
-    this.tiles.push({
-      tile: redouble,
-      onclick: () => {
-        this.currentBid.doubler = null;
-        this.currentBid.redoubler = this.currentChooser;
-        this.currentChooser = this.#nextChooser();
-        this.#updateTiles();
-      },
-    });
+    const redouble = document.createElement("redouble-tile");
+    redouble.onClick(this.#createPopupOnclick(redouble, () => {
+      this.systemManager.update(undefined, undefined, undefined, true, undefined);
+      this.currentBid.doubler = null;
+      this.currentBid.redoubler = this.currentChooser;
+      this.currentChooser = this.#nextChooser();
+      this.#updateTiles();
+    }));
+    this.tiles.push(redouble);
 
-    const pass = document.createElement("bid-tile");
-    pass.setAttribute("pass", "");
-    this.tiles.push({
-      tile: pass,
-      onclick: () => {
-        this.currentChooser = this.#nextChooser();
-        this.#updateTiles();
-      },
-    });
+    const pass = document.createElement("pass-tile");
+    pass.onClick(this.#createPopupOnclick(pass, () => {
+      this.systemManager.update(undefined, undefined, undefined, undefined, true);
+      this.currentChooser = this.#nextChooser();
+      this.#updateTiles();
+    }));
+    this.tiles.push(pass);
+  }
+
+  #createPopupOnclick(tile, onConfirm) {
+    return () => {
+      const popup = document.createElement("bid-popup");
+      popup.tile = tile.copy();
+
+      const bidInfo = this.systemManager.bidInfo(tile);
+      popup.hcp = bidInfo.info.hcp;
+      popup.description = bidInfo.info.description;
+      
+      popup.onCancel = () => {
+        this.table.removeChild(popup);
+      };
+      popup.onConfirm = () => {
+        this.table.removeChild(popup);
+        onConfirm();
+      };
+      this.table.appendChild(popup);
+    }
   }
 
   #updateTiles() {
     for (let tile of this.tiles) {
-      const numberAttr = tile.tile.getAttribute("number");
+      const numberAttr = tile.getAttribute("number");
       const number = numberAttr === null ? null : parseInt(numberAttr);
 
-      const suitAttr = tile.tile.getAttribute("suit");
+      const suitAttr = tile.getAttribute("suit");
       const suit = suitAttr === null ? null : Suit[suitAttr];
 
-      const double = tile.tile.getAttribute("double") !== null;
-      const redouble = tile.tile.getAttribute("redouble") !== null;
+      const double = tile instanceof DoubleTile;
+      const redouble = tile instanceof RedoubleTile;
 
-      tile.tile.setAttribute("systemic", `${this.#isBidSystemic(number, suit, double, redouble)}`);
+      tile.makeSystemic(this.#isBidSystemic(tile));
 
-      if (this.#isBidAvailable(number, suit, double, redouble)) {
-        tile.tile.setAttribute("available", "true");
-        tile.tile.onclick = tile.onclick;
-      } else {
-        tile.tile.setAttribute("available", "false");
-        tile.tile.onclick = null;
-      }
+      const isBidAvailable = this.#isBidAvailable(tile);
+      tile.makeAvailable(isBidAvailable);
+      tile.enableClick(isBidAvailable);
     }
   }
 
@@ -88,21 +98,21 @@ class BidBoard extends HTMLElement {
     return values[(idx + 1) % values.length];
   }
 
-  #isBidSystemic(number, suit, isDouble, isRedouble) {
-    return this.systemManager.availableBids.some(bid => {
-      return (bid.number === number && Suit[bid.suit] === suit)
-        || (isDouble && bid.double)
-        || (isRedouble && bid.redouble)
-        || (number === null && suit === null && !isDouble && !isRedouble && bid.pass);
-    });
+  #isBidSystemic(tile) {
+    return this.systemManager.bidInfo(tile).systemic;
   }
 
-  #isBidAvailable(number, suit, isDouble, isRedouble) {
+  #isBidAvailable(tile) {
+    const number = tile.hasAttribute("number") ? parseInt(tile.getAttribute("number")) : undefined;
+    const suit = Suit[tile.getAttribute("suit")];
+    const isDouble = tile instanceof DoubleTile;
+    const isRedouble = tile instanceof RedoubleTile;
+
     if (this.currentBid.bidder === null) {
       return !isDouble && !isRedouble;
     }
 
-    if (number !== null && suit !== null) {
+    if (number !== undefined && suit !== undefined) {
       return number > this.currentBid.number || (number === this.currentBid.number && compareSuits(suit, this.currentBid.suit) > 0);
     }
 
@@ -122,8 +132,8 @@ class BidBoard extends HTMLElement {
   connectedCallback() {
     const dom = this.attachShadow({ mode: "open" });
 
-    const table = document.createElement("div");
-    table.setAttribute("class", "bid-board");
+    this.table = document.createElement("div");
+    this.table.setAttribute("class", "bid-board");
 
     for (let i = 1; i <= 7; i++) {
       const row = document.createElement("div");
@@ -131,51 +141,61 @@ class BidBoard extends HTMLElement {
 
       for (let suit = 0; suit < Object.keys(Suit).length; suit++) {
         const tile = this.tiles[(i - 1) * Object.keys(Suit).length + suit];
-        row.appendChild(tile.tile);
+        row.appendChild(tile);
       }
 
-      table.appendChild(row);
+      this.table.appendChild(row);
     }
 
     const lastRow = document.createElement("div");
     lastRow.setAttribute("class", "bid-row");
-    lastRow.appendChild(this.tiles[35].tile);
-    lastRow.appendChild(this.tiles[36].tile);
-    lastRow.appendChild(this.tiles[37].tile);
-    table.appendChild(lastRow);
+    lastRow.appendChild(this.tiles[35]);
+    lastRow.appendChild(this.tiles[36]);
+    lastRow.appendChild(this.tiles[37]);
+    this.table.appendChild(lastRow);
 
     const tileSize = parseInt(this.getAttribute("tile-size"));
     const gapSize = 2;
     const style = document.createElement("style");
     style.textContent = `
       .bid-board {
+        position: relative;
         width: ${tileSize * 5 + 4 * gapSize}px;
         height: ${tileSize * 8 + 7 * gapSize}px;
         display: flex;
         flex-direction: column;
-        gap: 1px;
+        gap: ${gapSize}px;
       }
 
       .bid-row {
       	width: 100%;
+      	height: ${tileSize}px;
         display: flex;
         flex-direction: row;
         gap: ${gapSize}px;
       }
 
-      bid-tile {
+      number-suit-tile, double-tile, redouble-tile {
         width: ${tileSize}px;
         height: ${tileSize}px;
       }
 
-      bid-tile[pass] {
+      pass-tile {
         width: ${tileSize * 3 + gapSize * 2}px;
         height: ${tileSize}px;
+      }
+
+      bid-popup {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
       }
     `;
 
     dom.appendChild(style);
-    dom.appendChild(table);
+    dom.appendChild(this.table);
 
     this.#updateTiles();
   }

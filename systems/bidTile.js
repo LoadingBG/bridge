@@ -25,25 +25,122 @@ const createPass     = () => createSVG("0 0 512 128", "M72.51 15.42H34.65c-.15 0
 
 
 class BidTile extends HTMLElement {
-  static observedAttributes = ["available", "systemic"];
-
-  #available;
-  #systemic;
+  #container = document.createElement("span");
+  #border = document.createElement("span");
+  #onClick;
 
   constructor() {
     super();
 
-    this.#available = true;
-    this.#systemic = false;
+    if (this.constructor === BidTile) {
+      throw new Error("BidTile is abstract");
+    }
   }
 
-  #createDoubleTile() {
-    const tile = document.createElement("span");
-    tile.setAttribute("class", "double");
-    tile.appendChild(createDouble());
+  component() {
+    throw new Error(`${this.constructor.name} does not implement component()`);
+  }
+
+  style() {
+    throw new Error(`${this.constructor.name} does not implement style()`);
+  }
+
+  copy() {
+    const clone = document.createElement(this.tagName);
+    for (let attribute of this.attributes) {
+      clone.setAttribute(attribute.name, attribute.value);
+    }
+    return clone;
+  }
+
+  onClick(callback) {
+    this.#onClick = callback;
+  }
+
+  enableClick(enable) {
+    this.onclick = enable ? this.#onClick : undefined;
+  }
+
+  makeAvailable(available) {
+    this.#container.setAttribute("class", `container ${available ? "available" : "unavailable"}`);
+  }
+
+  makeSystemic(systemic) {
+    this.#border.setAttribute("class", systemic ? "systemic border" : "border");
+  }
+
+  connectedCallback() {
+    const dom = this.attachShadow({ mode: "open" });
+
+    const isAvailable = this.getAttribute("available");
+
+    this.#container.appendChild(this.#border);
+
+    this.#container.appendChild(this.component());
+
+    const customStyle = document.createElement("style");
+    customStyle.textContent = this.style();
+    dom.appendChild(customStyle);
 
     const style = document.createElement("style");
     style.textContent = `
+      .container {
+        width: 100%;
+        height: 100%;
+        
+        position: relative;
+      	margin: 0px;
+        padding: 0px;
+        border: 0px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: center;
+        align-content: center;
+        gap: 0px;
+      }
+
+      .border {
+        box-sizing: border-box;
+        position: absolute;
+        margin: 0;
+        padding: 0;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0);
+        border: 10px solid #e0b000;
+
+        display: none;
+      }
+
+      .systemic {
+        display: block;
+      }     
+    `;
+    dom.appendChild(style);
+
+    dom.appendChild(this.#container);
+  }
+}
+
+
+
+class DoubleTile extends BidTile {
+  constructor() {
+    super();
+  }
+
+  component() {
+    const tile = document.createElement("span");
+    tile.setAttribute("class", "double");
+    tile.appendChild(createDouble());
+    return tile;
+  }
+
+  style() {
+    return `
       .double {
         width: 100%;
         height: 100%;
@@ -68,17 +165,26 @@ class BidTile extends HTMLElement {
         fill: #fff;
       }
     `;
+  }
+}
+customElements.define("double-tile", DoubleTile);
 
-    return [tile, style];
+
+
+class RedoubleTile extends BidTile {
+  constructor() {
+    super();
   }
 
-  #createRedoubleTile() {
+  component() {
     const tile = document.createElement("span");
     tile.setAttribute("class", "redouble");
     tile.appendChild(createRedouble());
+    return tile;
+  }
 
-    const style = document.createElement("style");
-    style.textContent = `
+  style() {
+    return `
       .redouble {
         width: 100%;
         height: 100%;
@@ -89,7 +195,7 @@ class BidTile extends HTMLElement {
       .available .redouble {
         background: #4058ed;
       }
-
+      
       svg {
         height: 100%;
         width: 100%;
@@ -103,17 +209,26 @@ class BidTile extends HTMLElement {
         fill: #fff;
       }
     `;
+  }
+}
+customElements.define("redouble-tile", RedoubleTile);
 
-    return [tile, style];
+
+
+class PassTile extends BidTile {
+  constructor() {
+    super();
   }
 
-  #createPassTile() {
+  component() {
     const tile = document.createElement("span");
     tile.setAttribute("class", "pass");
     tile.appendChild(createPass());
-
-    const style = document.createElement("style");
-    style.textContent = `
+    return tile;
+  }
+  
+  style() {
+    return `
       .pass {
         width: 100%;
         height: 100%;
@@ -138,21 +253,49 @@ class BidTile extends HTMLElement {
         fill: #fff;
       }
     `;
+  }
+}
+customElements.define("pass-tile", PassTile);
 
-    return [tile, style];
+
+
+class NumberSuitTile extends BidTile {
+  constructor() {
+    super();
   }
 
-  #createBidTile(suit, number) {
+  #number() {
+    return parseInt(this.getAttribute("number"));
+  }
+
+  #suit() {
+    return Suit[this.getAttribute("suit")];
+  }
+
+  component() {
     const numberPart = document.createElement("span");
     numberPart.setAttribute("class", "number-part");
-    numberPart.appendChild(NUMBERS[number - 1]());
+    numberPart.appendChild(NUMBERS[this.#number() - 1]());
 
     const suitPart = document.createElement("span");
     suitPart.setAttribute("class", "suit-part");
-    suitPart.appendChild(suit.svg());
+    suitPart.appendChild(this.#suit().svg());
 
-    const style = document.createElement("style");
-    style.textContent = `
+    const holder = document.createElement("span");
+    holder.setAttribute("class", "holder");
+    holder.appendChild(numberPart);
+    holder.appendChild(suitPart);
+    return holder;
+  }
+  
+  style() {
+    return `
+      .holder {
+        width: 100%;
+        height: 100%;
+        display: flex;
+      }
+
       .number-part {
         margin: 0px;
         height: 100%;
@@ -166,7 +309,7 @@ class BidTile extends HTMLElement {
       }
 
       .available .number-part {
-        background-color: ${suit.numberColor};
+        background-color: ${this.#suit().numberColor};
       }
 
       .number-part svg {
@@ -198,7 +341,7 @@ class BidTile extends HTMLElement {
       }
 
       .available .suit-part {
-        background-color: ${suit.suitColor};
+        background-color: ${this.#suit().suitColor};
       }
 
       .suit-part svg {
@@ -214,107 +357,6 @@ class BidTile extends HTMLElement {
         fill: #fff;
       }
     `;
-
-    return [numberPart, suitPart, style];
-  }
-
-  connectedCallback() {
-    const dom = this.attachShadow({ mode: "open" });
-
-    const isAvailable = this.getAttribute("available");
-
-    const container = document.createElement("span");
-    container.setAttribute("class", isAvailable === "true" ? "container available" : "container unavailable");
-
-    const border = document.createElement("span");
-    border.setAttribute("class", "border");
-    container.appendChild(border);
-
-    if (this.getAttribute("double") !== null) {
-      const [tile, style] = this.#createDoubleTile();
-      container.appendChild(tile);
-      dom.appendChild(style);
-    } else if (this.getAttribute("redouble") !== null) {
-      const [tile, style] = this.#createRedoubleTile();
-      container.appendChild(tile);
-      dom.appendChild(style);
-    } else if (this.getAttribute("pass") != null) {
-      const [tile, style] = this.#createPassTile();
-      container.appendChild(tile);
-      dom.appendChild(style);
-    } else {
-      const suit = Suit[this.getAttribute("suit")];
-      const number = parseInt(this.getAttribute("number"));
-
-      const [numberPart, suitPart, style] = this.#createBidTile(suit, number);
-      container.appendChild(numberPart);
-      container.appendChild(suitPart);
-      dom.appendChild(style);
-    }
-
-    const style = document.createElement("style");
-    style.textContent = `
-      .container {
-        width: 100%;
-        height: 100%;
-        
-        position: relative;
-      	margin: 0px;
-        padding: 0px;
-        border: 0px;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-        align-items: center;
-        align-content: center;
-        gap: 0px;
-      }
-
-      .border {
-        box-sizing: border-box;
-        position: absolute;
-        margin: 0;
-        padding: 0;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        display: none;
-        background: rgba(0, 0, 0, 0);
-        border: 10px solid #e0b000;
-      }
-
-      .systemic .border {
-        display: block;
-      }     
-    `;
-    dom.appendChild(style);
-
-    dom.appendChild(container);
-  }
-
-  attributeChangedCallback(name, oldValue, newValue) {
-    if (this.shadowRoot === null) {
-      return;
-    }
-
-    switch (name) {
-      case "available":
-        this.#available = newValue === "true";
-        break;
-      case "systemic":
-        this.#systemic = newValue === "true";
-        break;
-    }
-
-    for (let node of this.shadowRoot.childNodes) {
-      if (node.nodeName !== "SPAN") { continue; }
-
-      const classes = `container ${this.#available ? "available" : ""} ${this.#systemic ? "systemic" : ""}`;
-      node.setAttribute("class", classes);
-      break;
-    }
   }
 }
-
-customElements.define("bid-tile", BidTile);
+customElements.define("number-suit-tile", NumberSuitTile);

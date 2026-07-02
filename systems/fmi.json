@@ -1,20 +1,39 @@
 {
   "name": "ФМИ",
+  "nonsystemicBid": {
+    "hcp": "-",
+    "description": "Извънсистемно обявление"
+  },
   "bids": [
     {
       "number": 1,
       "suit": "CLUB",
       "isAlert": false,
       "description": "Откриваща ръка, в която спатиите са по-добри от карите.",
-      "hcp": "12+",
-      "continuations": []
+      "hcp": "> 12",
+      "continuations": [
+        {
+          "double": true,
+          "isAlert": true,
+          "description": "Условна контра, показваща откриваща ръка и слаба спатия.",
+          "hcp": "> 12",
+          "continuations": []
+        }
+      ]
     },
     {
       "number": 1,
       "suit": "DIAMOND",
       "isAlert": false,
       "description": "Откриваща ръка, в която карите са по-добри от спатиите.",
-      "hcp": "12+",
+      "hcp": "> 12",
+      "continuations": []
+    },
+    {
+      "pass": true,
+      "isAlert": false,
+      "description": "Слаба ръка",
+      "hcp": "< 12",
       "continuations": []
     }
   ]
