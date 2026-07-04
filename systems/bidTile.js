@@ -51,7 +51,7 @@ class BidTile extends HTMLElement {
     );
     if (madeBid.number !== undefined && madeBid.suit !== undefined) {
       tile.setAttribute("number", madeBid.number);
-      tile.setAttribute("suit", Object.keys(Suit)[Object.values(Suit).findIndex(e => e === madeBid.suit)]);
+      tile.setAttribute("suit", Suit.nameOf(madeBid.suit));
     }
     return tile;
   }

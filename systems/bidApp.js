@@ -14,7 +14,6 @@ class BidApp extends HTMLElement {
     const popup = document.createElement("bid-popup");
     popup.tile = BidTile.fromMadeBid(madeBid);
     popup.tile.isAlert = madeBid.isAlert;
-    console.log(madeBid.isAlert);
     popup.hcp = madeBid.hcp;
     popup.description = madeBid.description;
     popup.onCancel = () => {
@@ -66,7 +65,6 @@ class BidApp extends HTMLElement {
       bid-popup {
         position: fixed;
         top: 0;
-        // left: 0;
         width: ${bidBoard.offsetWidth}px;
         height: 100vh;
       }

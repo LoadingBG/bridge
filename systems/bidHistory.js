@@ -20,7 +20,7 @@ class BidHistoryTable extends HTMLElement {
   }
 
   appendTile(madeBid, side) {
-    const sideIdx = Object.values(CurrentChooser).findIndex(e => e === side);
+    const sideIdx = Side.indexOf(side);
 
     const tile = BidTile.fromMadeBid(madeBid);
     tile.makeAvailable(true);
@@ -37,10 +37,10 @@ class BidHistoryTable extends HTMLElement {
     container.setAttribute("class", "container");
 
     this.#columns = [
-      this.#createColumn(CurrentChooser.NORTH),
-      this.#createColumn(CurrentChooser.EAST),
-      this.#createColumn(CurrentChooser.SOUTH),
-      this.#createColumn(CurrentChooser.WEST),
+      this.#createColumn(Side.NORTH),
+      this.#createColumn(Side.EAST),
+      this.#createColumn(Side.SOUTH),
+      this.#createColumn(Side.WEST),
     ];
     this.#columns.forEach(column => container.appendChild(column));
 

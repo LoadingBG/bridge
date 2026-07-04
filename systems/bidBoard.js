@@ -1,8 +1,19 @@
-class BidBoard extends HTMLElement {
+class CurrentBid {
+  constructor(number, suit, bidder, doubler, redoubler) {
+    this.number = number;
+    this.suit = suit;
+    this.bidder = bidder;
+    this.doubler = doubler;
+    this.redoubler = redoubler;
+  }
+}
 
+
+
+class BidBoard extends HTMLElement {
   constructor() {
     super();
-    this.currentBid = new Bid(null, null, null, null, null);
+    this.currentBid = new CurrentBid(null, null, null, null, null);
     this.systemManager = undefined;
     this.onChosen = undefined;
     this.visualizePopup = undefined;
@@ -11,14 +22,14 @@ class BidBoard extends HTMLElement {
 
     this.tiles = [];
     for (let i = 1; i <= 7; i++) {
-      for (let suit of Object.keys(Suit)) {
+      for (let suit of Suit.values) {
         const tile = document.createElement("number-suit-tile");
         tile.setAttribute("number", i.toString());
-        tile.setAttribute("suit", suit);
+        tile.setAttribute("suit", Suit.nameOf(suit));
         tile.onClick(this.#createPopupOnclick(tile, () => {
           this.currentBid.doubler = null;
           this.currentBid.redoubler = null;
-          this.currentBid = new Bid(i, Suit[suit], this.systemManager.currentChooser, null, null);
+          this.currentBid = new CurrentBid(i, suit, this.systemManager.currentChooser, null, null);
         }));
         this.tiles.push(tile);
       }
@@ -76,14 +87,13 @@ class BidBoard extends HTMLElement {
     }
 
     if (tile.number !== undefined && tile.suit !== undefined) {
-      return tile.number > this.currentBid.number || (tile.number === this.currentBid.number && compareSuits(tile.suit, this.currentBid.suit) > 0);
+      return tile.number > this.currentBid.number || (tile.number === this.currentBid.number && Suit.compare(tile.suit, this.currentBid.suit) > 0);
     }
 
-    const chooserValues = Object.values(CurrentChooser);
-    const bidTeam = chooserValues.findIndex(e => e === this.currentBid.bidder) % 2;
-    const doubleTeam = chooserValues.findIndex(e => e === this.currentBid.doubler) % 2;
-    const redoubleTeam = chooserValues.findIndex(e => e === this.currentBid.redoubler) % 2;
-    const chooserTeam = chooserValues.findIndex(e => e === this.systemManager.currentChooser) % 2;
+    const bidTeam = Side.indexOf(this.currentBid.bidder) % 2;
+    const doubleTeam = Side.indexOf(this.currentBid.doubler) % 2;
+    const redoubleTeam = Side.indexOf(this.currentBid.redoubler) % 2;
+    const chooserTeam = Side.indexOf(this.systemManager.currentChooser) % 2;
 
     if (chooserTeam === bidTeam) {
       return !tile.isDouble && (!tile.isRedouble || (doubleTeam !== -1 && doubleTeam !== chooserTeam));
@@ -102,8 +112,8 @@ class BidBoard extends HTMLElement {
       const row = document.createElement("div");
       row.setAttribute("class", "bid-row");
 
-      for (let suit = 0; suit < Object.keys(Suit).length; suit++) {
-        const tile = this.tiles[(i - 1) * Object.keys(Suit).length + suit];
+      for (let suit = 0; suit < Suit.values.length; suit++) {
+        const tile = this.tiles[(i - 1) * Suit.values.length + suit];
         row.appendChild(tile);
       }
 

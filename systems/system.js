@@ -14,7 +14,7 @@ class MadeBid {
 
 
 class System {
-  #currentChooser = CurrentChooser.NORTH;
+  #currentChooser = Side.NORTH;
 
   constructor(name, nonsystemicBid, bids) {
     this.name = name;
@@ -45,8 +45,8 @@ class System {
   }
 
   selectNextChooser() {
-    const values = Object.values(CurrentChooser);
-    const idx = values.findIndex(e => e === this.#currentChooser);
+    const values = Side.values;
+    const idx = Side.indexOf(this.#currentChooser);
     this.#currentChooser = values[(idx + 1) % values.length];
   }
 

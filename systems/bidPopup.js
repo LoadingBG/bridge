@@ -72,7 +72,7 @@ class BidPopup extends HTMLElement {
         align-items: center;
         
         width: 80%;
-        height: 80%;
+        height: 60%;
         background-color: white;
 
         box-sizing: border-box;
