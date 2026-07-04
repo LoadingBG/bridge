@@ -32,6 +32,8 @@ class BidTile extends HTMLElement {
   constructor() {
     super();
 
+    this.isAlert = false;
+
     if (this.constructor === BidTile) {
       throw new Error("BidTile is abstract");
     }
@@ -121,6 +123,13 @@ class BidTile extends HTMLElement {
 
     this.#container.appendChild(this.component());
 
+    if (this.isAlert) {
+      const alertBox = document.createElement("span");
+      alertBox.setAttribute("class", "alert-box");
+      alertBox.appendChild(createSVG("0 0 48 48", "M23.8,33h.4a2.2,2.2,0,0,0,2.1-2L28,7.3a4,4,0,1,0-8,0L21.7,31A2.2,2.2,0,0,0,23.8,33Z M 24 40 m 3 0 a 3 3 0 1 0 -6 0 a 3 3 0 1 0 6 0"));
+      this.#container.appendChild(alertBox);
+    }
+
     const customStyle = document.createElement("style");
     customStyle.textContent = this.style();
     dom.appendChild(customStyle);
@@ -161,6 +170,17 @@ class BidTile extends HTMLElement {
       .systemic {
         display: block;
       }     
+
+      .alert-box {
+        margin: 0;
+        padding: 0;
+        background: #0393b5;
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 30%;
+        height: 30%;
+      }
     `;
     dom.appendChild(style);
 

@@ -13,6 +13,8 @@ class BidApp extends HTMLElement {
   #visualizePopup(madeBid, onConfirm) {
     const popup = document.createElement("bid-popup");
     popup.tile = BidTile.fromMadeBid(madeBid);
+    popup.tile.isAlert = madeBid.isAlert;
+    console.log(madeBid.isAlert);
     popup.hcp = madeBid.hcp;
     popup.description = madeBid.description;
     popup.onCancel = () => {
