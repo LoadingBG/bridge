@@ -16,9 +16,10 @@ class MadeBid {
 class System {
   #currentChooser = Side.NORTH;
 
-  constructor(name, nonsystemicBid, bids) {
+  constructor(name, conventions, nonsystemicBid, bids) {
     this.name = name;
-    this.nonsystemicBid = nonsystemicBid,
+    this.conventions = conventions;
+    this.nonsystemicBid = nonsystemicBid;
     this.availableBids = bids;
   }
 

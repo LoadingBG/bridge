@@ -1,6 +1,7 @@
 class BidPopup extends HTMLElement {
   #cancelButton = document.createElement("button");
   #confirmButton = document.createElement("button");
+  #conventions;
   
   constructor() {
     super();
@@ -15,6 +16,43 @@ class BidPopup extends HTMLElement {
 
   set onConfirm(callback) {
     this.#confirmButton.onclick = callback;
+  }
+
+  set conventions(conventions) {
+    this.#conventions = conventions;
+  }
+
+  #toHTML(part) {
+    if (typeof(part) === "string") {
+      return document.createTextNode(part);
+    }
+
+    const convention = this.#conventions[part.link];
+
+    const span = document.createElement("span");
+    span.setAttribute("class", "descriptioned-text");
+    span.textContent = part.text;
+
+    const helperBox = document.createElement("span");
+    helperBox.setAttribute("class", "helper-box");
+
+    const helperTitle = document.createElement("span");
+    helperTitle.setAttribute("class", "helper-title");
+    helperTitle.textContent = convention.title;
+    helperBox.appendChild(helperTitle);
+
+    helperBox.style.display = "none";
+    convention.description.map(part => this.#toHTML(part)).forEach(elem => helperBox.appendChild(elem));
+    span.appendChild(helperBox);
+
+    let isDescriptionOpen = false;
+    span.onclick = () => {
+      isDescriptionOpen = !isDescriptionOpen;
+      console.log(`in: ${isDescriptionOpen}`);
+      helperBox.style.display = isDescriptionOpen ? "flex" : "none";
+    };
+
+    return span;
   }
 
   connectedCallback() {
@@ -37,7 +75,7 @@ class BidPopup extends HTMLElement {
 
     const descriptionBox = document.createElement("div");
     descriptionBox.setAttribute("class", "description");
-    descriptionBox.textContent = this.description;
+    this.description.map(part => this.#toHTML(part)).forEach(elem => descriptionBox.appendChild(elem));
     infobox.appendChild(descriptionBox);
 
     const buttonRow = document.createElement("div");
@@ -89,6 +127,7 @@ class BidPopup extends HTMLElement {
         flex: 1;
         display: flex;
         align-items: center;
+        white-space: pre;
       }
 
       .button-row {
@@ -101,6 +140,36 @@ class BidPopup extends HTMLElement {
 
       .button {
         flex: 1;
+      }
+
+      .descriptioned-text {
+        color: blue;
+        text-decoration: underline;
+        position: relative;
+      }
+
+      .helper-box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        width: 300px;
+        text-wrap: balance;
+        text-align: center;
+        color: black;
+
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+        background-color: white;
+      }
+
+      .helper-title {
+        color: black;
+        font-size: 20px;
+        font-weight: bold;
       }
     `;
 

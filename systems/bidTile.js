@@ -181,6 +181,10 @@ class BidTile extends HTMLElement {
         width: 30%;
         height: 30%;
       }
+
+      .alert-box svg {
+        fill: #ffffff;
+      }
     `;
     dom.appendChild(style);
 

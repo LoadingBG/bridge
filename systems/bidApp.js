@@ -7,11 +7,12 @@ class BidApp extends HTMLElement {
   constructor() {
     super();
 
-    this.systemManager = new System(fmi.name, fmi.nonsystemicBid, fmi.bids);
+    this.systemManager = new System(fmi.name, fmi.conventions, fmi.nonsystemicBid, fmi.bids);
   }
 
   #visualizePopup(madeBid, onConfirm) {
     const popup = document.createElement("bid-popup");
+    popup.conventions = this.systemManager.conventions;
     popup.tile = BidTile.fromMadeBid(madeBid);
     popup.tile.isAlert = madeBid.isAlert;
     popup.hcp = madeBid.hcp;
