@@ -53,6 +53,10 @@ class BidApp extends HTMLElement {
     dom.appendChild(this.#container);
     const style = document.createElement("style");
     style.textContent = `
+      .container {
+        position: relative;
+      }
+
       .spacer {
         display: block;
         height: 100px;
@@ -64,10 +68,10 @@ class BidApp extends HTMLElement {
       }
 
       bid-popup {
-        position: fixed;
+        position: absolute;
         top: 0;
         width: ${bidBoard.offsetWidth}px;
-        height: 100vh;
+        height: 100%;
       }
     `;
     dom.appendChild(style);
