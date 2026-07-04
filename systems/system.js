@@ -1,35 +1,37 @@
-class SystemBid {
-  constructor(bid, isAlert, isDoubled, isRedoubled, description, continuations) {
-    this.bid = bid;
-    this.isAlert = isAlert;
+class MadeBid {
+  constructor(number, suit, isDoubled, isRedoubled, isPass, isAlert, hcp, description) {
+    this.number = number;
+    this.suit = suit;
     this.isDoubled = isDoubled;
     this.isRedoubled = isRedoubled;
+    this.isPass = isPass;
+    this.isAlert = isAlert;
+    this.hcp = hcp;
     this.description = description;
-    this.continuations = continuations;
   }
 }
 
 
 
 class System {
+  #currentChooser = CurrentChooser.NORTH;
+
   constructor(name, nonsystemicBid, bids) {
     this.name = name;
     this.nonsystemicBid = nonsystemicBid,
     this.availableBids = bids;
-    this.history = [];
+  }
+
+  get currentChooser() {
+    return this.#currentChooser;
   }
 
   bidInfo(tile) {
-    const number = tile instanceof NumberSuitTile ? parseInt(tile.getAttribute("number")) : undefined;
-    const suit = Suit[tile.getAttribute("suit")];
-    const isDouble = tile instanceof DoubleTile;
-    const isRedouble = tile instanceof RedoubleTile;
-    
     for (const bid of this.availableBids) {
-      if ((isDouble && bid.double)
-        || (isRedouble && bid.redouble)
-        || (number !== undefined && number === bid.number && suit !== undefined && suit === Suit[bid.suit])
-        || (number === undefined && suit === undefined && !isDouble && !isRedouble && bid.pass)) {
+      if ((tile.isDouble && bid.double)
+        || (tile.isRedouble && bid.redouble)
+        || (tile.number !== undefined && tile.number === bid.number && tile.suit !== undefined && tile.suit === Suit[bid.suit])
+        || (tile.isPass && bid.pass)) {
         return {
           systemic: true,
           info: bid,
@@ -42,21 +44,27 @@ class System {
     };
   }
 
-  update(number, suit, double, redouble, pass) {
+  selectNextChooser() {
+    const values = Object.values(CurrentChooser);
+    const idx = values.findIndex(e => e === this.#currentChooser);
+    this.#currentChooser = values[(idx + 1) % values.length];
+  }
+
+  update(chosenTile) {
     for (const bid of this.availableBids) {
-      if (bid.number === number && bid.suit === suit && bid.double === double && bid.redouble === redouble && bid.pass === pass) {
+      if (bid.number === chosenTile.number
+          && bid.suit === chosenTile.suitName
+          && (bid.double === chosenTile.isDouble || (bid.double === undefined && !chosenTile.isDouble))
+          && (bid.redouble === chosenTile.isRedouble || (bid.redouble === undefined && !chosenTile.isRedouble))
+          && (bid.pass === chosenTile.isPass || (bid.pass === undefined && !chosenTile.isPass))) {
         this.availableBids = bid.continuations;
-        const copy = { ...bid };
-        delete copy.continuations;
-        this.history.push(copy);
-        return;
+        return new MadeBid(
+          chosenTile.number, chosenTile.suit, chosenTile.isDouble, chosenTile.isRedouble, chosenTile.isPass, bid.hcp, bid.description,
+        );
       }
     }
+
     this.availableBids = [];
-    this.history.push({
-      number, suit, double, redouble, pass,
-      hcp: "-",
-      description: "Извънсистемно обявление",
-    });
+    return new MadeBid(chosenTile.number, chosenTile.suit, chosenTile.isDouble, chosenTile.isRedouble, chosenTile.isPass, this.nonsystemicBid.isAlert, this.nonsystemicBid.hcp, this.nonsystemicBid.description);
   }
 }

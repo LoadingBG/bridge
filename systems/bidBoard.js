@@ -1,11 +1,10 @@
-import fmi from "./fmi.json" with { type: "json" };
 
 class BidBoard extends HTMLElement {
   constructor() {
     super();
     this.currentBid = new Bid(null, null, null, null, null);
-    this.currentChooser = CurrentChooser.NORTH;
-    this.systemManager = new System(fmi.name, fmi.nonsystemicBid, fmi.bids);
+    this.systemManager = undefined;
+    this.onChosen = undefined;
 
     this.table = undefined;
 
@@ -16,10 +15,9 @@ class BidBoard extends HTMLElement {
         tile.setAttribute("number", i.toString());
         tile.setAttribute("suit", suit);
         tile.onClick(this.#createPopupOnclick(tile, () => {
-          this.systemManager.update(i, suit, undefined, undefined, undefined);
-          this.currentBid = new Bid(i, Suit[suit], this.currentChooser, null, null);
-          this.currentChooser = this.#nextChooser();
-          this.#updateTiles();
+          this.currentBid.doubler = null;
+          this.currentBid.redoubler = null;
+          this.currentBid = new Bid(i, Suit[suit], this.systemManager.currentChooser, null, null);
         }));
         this.tiles.push(tile);
       }
@@ -27,29 +25,20 @@ class BidBoard extends HTMLElement {
 
     const double = document.createElement("double-tile");
     double.onClick(this.#createPopupOnclick(double, () => {
-      this.systemManager.update(undefined, undefined, true, undefined, undefined);
-      this.currentBid.doubler = this.currentChooser;
-      this.currentChooser = this.#nextChooser();
-      this.#updateTiles();
+      this.currentBid.doubler = this.systemManager.currentChooser;
+      this.currentBid.redoubler = null;
     }));
     this.tiles.push(double);
 
     const redouble = document.createElement("redouble-tile");
     redouble.onClick(this.#createPopupOnclick(redouble, () => {
-      this.systemManager.update(undefined, undefined, undefined, true, undefined);
       this.currentBid.doubler = null;
-      this.currentBid.redoubler = this.currentChooser;
-      this.currentChooser = this.#nextChooser();
-      this.#updateTiles();
+      this.currentBid.redoubler = this.systemManager.currentChooser;
     }));
     this.tiles.push(redouble);
 
     const pass = document.createElement("pass-tile");
-    pass.onClick(this.#createPopupOnclick(pass, () => {
-      this.systemManager.update(undefined, undefined, undefined, undefined, true);
-      this.currentChooser = this.#nextChooser();
-      this.#updateTiles();
-    }));
+    pass.onClick(this.#createPopupOnclick(pass, () => {}));
     this.tiles.push(pass);
   }
 
@@ -67,7 +56,11 @@ class BidBoard extends HTMLElement {
       };
       popup.onConfirm = () => {
         this.table.removeChild(popup);
+        const madeBid = this.systemManager.update(tile);
         onConfirm();
+        this.onChosen(madeBid);
+        this.systemManager.selectNextChooser();
+        this.#updateTiles();
       };
       this.table.appendChild(popup);
     }
@@ -75,15 +68,6 @@ class BidBoard extends HTMLElement {
 
   #updateTiles() {
     for (let tile of this.tiles) {
-      const numberAttr = tile.getAttribute("number");
-      const number = numberAttr === null ? null : parseInt(numberAttr);
-
-      const suitAttr = tile.getAttribute("suit");
-      const suit = suitAttr === null ? null : Suit[suitAttr];
-
-      const double = tile instanceof DoubleTile;
-      const redouble = tile instanceof RedoubleTile;
-
       tile.makeSystemic(this.#isBidSystemic(tile));
 
       const isBidAvailable = this.#isBidAvailable(tile);
@@ -92,40 +76,29 @@ class BidBoard extends HTMLElement {
     }
   }
 
-  #nextChooser() {
-    const values = Object.values(CurrentChooser);
-    const idx = values.findIndex(e => e === this.currentChooser);
-    return values[(idx + 1) % values.length];
-  }
-
   #isBidSystemic(tile) {
     return this.systemManager.bidInfo(tile).systemic;
   }
 
   #isBidAvailable(tile) {
-    const number = tile.hasAttribute("number") ? parseInt(tile.getAttribute("number")) : undefined;
-    const suit = Suit[tile.getAttribute("suit")];
-    const isDouble = tile instanceof DoubleTile;
-    const isRedouble = tile instanceof RedoubleTile;
-
     if (this.currentBid.bidder === null) {
-      return !isDouble && !isRedouble;
+      return !tile.isDouble && !tile.isRedouble;
     }
 
-    if (number !== undefined && suit !== undefined) {
-      return number > this.currentBid.number || (number === this.currentBid.number && compareSuits(suit, this.currentBid.suit) > 0);
+    if (tile.number !== undefined && tile.suit !== undefined) {
+      return tile.number > this.currentBid.number || (tile.number === this.currentBid.number && compareSuits(tile.suit, this.currentBid.suit) > 0);
     }
 
     const chooserValues = Object.values(CurrentChooser);
     const bidTeam = chooserValues.findIndex(e => e === this.currentBid.bidder) % 2;
     const doubleTeam = chooserValues.findIndex(e => e === this.currentBid.doubler) % 2;
     const redoubleTeam = chooserValues.findIndex(e => e === this.currentBid.redoubler) % 2;
-    const chooserTeam = chooserValues.findIndex(e => e === this.currentChooser) % 2;
+    const chooserTeam = chooserValues.findIndex(e => e === this.systemManager.currentChooser) % 2;
 
     if (chooserTeam === bidTeam) {
-      return !isDouble && (!isRedouble || (doubleTeam !== -1 && doubleTeam !== chooserTeam));
+      return !tile.isDouble && (!tile.isRedouble || (doubleTeam !== -1 && doubleTeam !== chooserTeam));
     } else {
-      return (!isDouble || (doubleTeam === -1 && redoubleTeam === -1)) && !isRedouble;
+      return (!tile.isDouble || (doubleTeam === -1 && redoubleTeam === -1)) && !tile.isRedouble;
     }
   }
 

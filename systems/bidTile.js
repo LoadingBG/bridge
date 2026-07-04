@@ -45,6 +45,32 @@ class BidTile extends HTMLElement {
     throw new Error(`${this.constructor.name} does not implement style()`);
   }
 
+  get number() {
+    const attr = this.getAttribute("number");
+    return attr === null ? undefined : parseInt(attr);
+  }
+
+  get suit() {
+    return Suit[this.suitName];
+  }
+
+  get suitName() {
+    const attr = this.getAttribute("suit");
+    return attr === null ? undefined : this.getAttribute("suit");
+  }
+
+  get isDouble() {
+    return this instanceof DoubleTile;
+  }
+
+  get isRedouble() {
+    return this instanceof RedoubleTile;
+  }
+
+  get isPass() {
+    return this instanceof PassTile;
+  }
+
   copy() {
     const clone = document.createElement(this.tagName);
     for (let attribute of this.attributes) {
