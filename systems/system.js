@@ -34,13 +34,13 @@ class System {
         || (tile.isPass && bid.pass)) {
         return {
           systemic: true,
-          info: bid,
+          bid: new MadeBid(tile.number, tile.suit, tile.isDouble, tile.isRedouble, tile.isPass, bid.isAlert, bid.hcp, bid.description),
         };
       }
     }
     return {
       systemic: false,
-      info: this.nonsystemicBid,
+      bid: new MadeBid(tile.number, tile.suit, tile.isDouble, tile.isRedouble, tile.isPass, this.nonsystemicBid.isAlert, this.nonsystemicBid.hcp, this.nonsystemicBid.description),
     };
   }
 
@@ -58,9 +58,7 @@ class System {
           && (bid.redouble === chosenTile.isRedouble || (bid.redouble === undefined && !chosenTile.isRedouble))
           && (bid.pass === chosenTile.isPass || (bid.pass === undefined && !chosenTile.isPass))) {
         this.availableBids = bid.continuations;
-        return new MadeBid(
-          chosenTile.number, chosenTile.suit, chosenTile.isDouble, chosenTile.isRedouble, chosenTile.isPass, bid.hcp, bid.description,
-        );
+        return new MadeBid(chosenTile.number, chosenTile.suit, chosenTile.isDouble, chosenTile.isRedouble, chosenTile.isPass, bid.isAlert, bid.hcp, bid.description);
       }
     }
 

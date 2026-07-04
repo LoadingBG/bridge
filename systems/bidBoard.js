@@ -1,10 +1,11 @@
-
 class BidBoard extends HTMLElement {
+
   constructor() {
     super();
     this.currentBid = new Bid(null, null, null, null, null);
     this.systemManager = undefined;
     this.onChosen = undefined;
+    this.visualizePopup = undefined;
 
     this.table = undefined;
 
@@ -44,26 +45,15 @@ class BidBoard extends HTMLElement {
 
   #createPopupOnclick(tile, onConfirm) {
     return () => {
-      const popup = document.createElement("bid-popup");
-      popup.tile = tile.copy();
-
-      const bidInfo = this.systemManager.bidInfo(tile);
-      popup.hcp = bidInfo.info.hcp;
-      popup.description = bidInfo.info.description;
-      
-      popup.onCancel = () => {
-        this.table.removeChild(popup);
-      };
-      popup.onConfirm = () => {
-        this.table.removeChild(popup);
+      const bid = this.systemManager.bidInfo(tile).bid;
+      this.visualizePopup(bid, () => {
         const madeBid = this.systemManager.update(tile);
         onConfirm();
         this.onChosen(madeBid);
         this.systemManager.selectNextChooser();
         this.#updateTiles();
-      };
-      this.table.appendChild(popup);
-    }
+      });
+    };
   }
 
   #updateTiles() {
@@ -156,14 +146,6 @@ class BidBoard extends HTMLElement {
       pass-tile {
         width: ${tileSize * 3 + gapSize * 2}px;
         height: ${tileSize}px;
-      }
-
-      bid-popup {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
       }
     `;
 

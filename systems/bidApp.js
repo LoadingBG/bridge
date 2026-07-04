@@ -2,6 +2,7 @@ import fmi from "./fmi.json" with { type: "json" };
 
 class BidApp extends HTMLElement {
   #bidHistoryTable;
+  #container;
 
   constructor() {
     super();
@@ -9,11 +10,26 @@ class BidApp extends HTMLElement {
     this.systemManager = new System(fmi.name, fmi.nonsystemicBid, fmi.bids);
   }
 
+  #visualizePopup(madeBid, onConfirm) {
+    const popup = document.createElement("bid-popup");
+    popup.tile = BidTile.fromMadeBid(madeBid);
+    popup.hcp = madeBid.hcp;
+    popup.description = madeBid.description;
+    popup.onCancel = () => {
+      this.#container.removeChild(popup);
+    };
+    popup.onConfirm = () => {
+      this.#container.removeChild(popup);
+      onConfirm();
+    };
+    this.#container.appendChild(popup);
+  }
+
   connectedCallback() {
     const dom = this.attachShadow({ mode: "open" });
 
-    const container = document.createElement("div");
-    container.setAttribute("class", "container");
+    this.#container = document.createElement("div");
+    this.#container.setAttribute("class", "container");
 
     const bidBoard = document.createElement("bid-board");
     bidBoard.setAttribute("tile-size", "100");
@@ -21,16 +37,18 @@ class BidApp extends HTMLElement {
     bidBoard.onChosen = (madeBid) => {
       this.#bidHistoryTable.appendTile(madeBid, this.systemManager.currentChooser);
     };
-    container.appendChild(bidBoard);
+    bidBoard.visualizePopup = (tile, onConfirm) => this.#visualizePopup(tile, onConfirm);
+    this.#container.appendChild(bidBoard);
 
     const spacer = document.createElement("span");
     spacer.setAttribute("class", "spacer");
-    container.appendChild(spacer);
+    this.#container.appendChild(spacer);
 
     this.#bidHistoryTable = document.createElement("bid-history-table");
-    container.appendChild(this.#bidHistoryTable);
+    this.#bidHistoryTable.visualizePopup = (tile, onConfirm) => this.#visualizePopup(tile, onConfirm);
+    this.#container.appendChild(this.#bidHistoryTable);
 
-    dom.appendChild(container);
+    dom.appendChild(this.#container);
     const style = document.createElement("style");
     style.textContent = `
       .spacer {
@@ -41,6 +59,14 @@ class BidApp extends HTMLElement {
       bid-history-table {
         display: block;
         width: ${bidBoard.offsetWidth}px;
+      }
+
+      bid-popup {
+        position: fixed;
+        top: 0;
+        // left: 0;
+        width: ${bidBoard.offsetWidth}px;
+        height: 100vh;
       }
     `;
     dom.appendChild(style);

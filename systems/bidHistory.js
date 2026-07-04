@@ -3,6 +3,8 @@ class BidHistoryTable extends HTMLElement {
 
   constructor() {
     super();
+
+    this.visualizePopup = undefined;
   }
 
   #createColumn(chooser) {
@@ -20,20 +22,10 @@ class BidHistoryTable extends HTMLElement {
   appendTile(madeBid, side) {
     const sideIdx = Object.values(CurrentChooser).findIndex(e => e === side);
 
-    const tile = document.createElement(
-      madeBid.isPass
-        ? "pass-tile"
-        : madeBid.isDoubled
-          ? "double-tile"
-          : madeBid.isRedoubled
-            ? "redouble-tile"
-            : "number-suit-tile"
-    );
-    if (madeBid.number !== undefined && madeBid.suit !== undefined) {
-      tile.setAttribute("number", madeBid.number);
-      tile.setAttribute("suit", Object.keys(Suit)[Object.values(Suit).findIndex(e => e === madeBid.suit)]);
-    }
+    const tile = BidTile.fromMadeBid(madeBid);
     tile.makeAvailable(true);
+    tile.onClick(() => this.visualizePopup(madeBid, () => {}));
+    tile.enableClick(true);
 
     this.#columns[sideIdx].appendChild(tile);
   }
@@ -67,7 +59,7 @@ class BidHistoryTable extends HTMLElement {
 
       .column {
         margin: 0px;
-        padding: 0px;
+        padding: 0px 0px 10px 0px;
         border: 0px;
 
         width: 20%;

@@ -37,6 +37,23 @@ class BidTile extends HTMLElement {
     }
   }
 
+  static fromMadeBid(madeBid) {
+    const tile = document.createElement(
+      madeBid.isPass
+        ? "pass-tile"
+        : madeBid.isDoubled
+          ? "double-tile"
+          : madeBid.isRedoubled
+            ? "redouble-tile"
+            : "number-suit-tile"
+    );
+    if (madeBid.number !== undefined && madeBid.suit !== undefined) {
+      tile.setAttribute("number", madeBid.number);
+      tile.setAttribute("suit", Object.keys(Suit)[Object.values(Suit).findIndex(e => e === madeBid.suit)]);
+    }
+    return tile;
+  }
+
   component() {
     throw new Error(`${this.constructor.name} does not implement component()`);
   }
