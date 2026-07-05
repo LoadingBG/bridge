@@ -27,6 +27,15 @@ class BidPopup extends HTMLElement {
       return document.createTextNode(part);
     }
 
+    switch (part.type) {
+      case "link": return this.#linkToHTML(part);
+      case "tile": return this.#tileToHTML(part);
+      case undefined: throw new Error("Cannot parse part without type");
+      default: throw new Error(`Unrecognized type: ${part.type}`);
+    }
+  }
+
+  #linkToHTML(part) {
     const convention = this.#conventions[part.link];
     console.log(convention);
     if (convention === undefined) {
@@ -63,6 +72,39 @@ class BidPopup extends HTMLElement {
     return span;
   }
 
+  #tileToHTML(part) {
+    const madeBid = new MadeBid(part.number, Suit[part.suit], part.double, part.redouble, part.pass);
+    const tile = BidTile.fromMadeBid(madeBid);
+    tile.makeAvailable(true);
+
+    const span = document.createElement("span");
+    span.setAttribute("class", "descriptioned-tile");
+    span.appendChild(tile);
+    return span;
+    // const span = document.createElement("span");
+    // span.textContent = part.text;
+
+    // const helperBox = document.createElement("div");
+    // helperBox.setAttribute("class", "helper-box");
+
+    // const helperTitle = document.createElement("span");
+    // helperTitle.setAttribute("class", "helper-title");
+    // helperTitle.textContent = convention.title;
+    // helperBox.appendChild(helperTitle);
+
+    // helperBox.style.display = "none";
+    // convention.description.map(part => this.#toHTML(part)).forEach(elem => helperBox.appendChild(elem));
+    // span.appendChild(helperBox);
+
+    // let isDescriptionOpen = false;
+    // span.onclick = () => {
+    //   isDescriptionOpen = !isDescriptionOpen;
+    //   helperBox.style.display = isDescriptionOpen ? "flex" : "none";
+    // };
+
+    // return span;
+  }
+
   connectedCallback() {
     const dom = this.attachShadow({ mode: "open" });
 
@@ -78,14 +120,22 @@ class BidPopup extends HTMLElement {
     infobox.appendChild(this.tile);
 
     const hcpBox = document.createElement("div");
-    [{text: "ТО", link: "high-card-points"}, `: ${this.hcp}`].map(part => this.#toHTML(part)).forEach(elem => hcpBox.appendChild(elem));
+    [{type: "link", text: "ТО", link: "high-card-points"}, `: ${this.hcp}`].map(part => this.#toHTML(part)).forEach(elem => hcpBox.appendChild(elem));
     // hcpBox.textContent = `ТО: ${this.hcp}`;
     infobox.appendChild(hcpBox);
+
+    const spacer1 = document.createElement("div");
+    spacer1.setAttribute("class", "spacer");
+    infobox.appendChild(spacer1);
 
     const descriptionBox = document.createElement("div");
     descriptionBox.setAttribute("class", "description");
     this.description.map(part => this.#toHTML(part)).forEach(elem => descriptionBox.appendChild(elem));
     infobox.appendChild(descriptionBox);
+
+    const spacer2 = document.createElement("div");
+    spacer2.setAttribute("class", "spacer");
+    infobox.appendChild(spacer2);
 
     const buttonRow = document.createElement("div");
     buttonRow.setAttribute("class", "button-row");
@@ -117,6 +167,8 @@ class BidPopup extends HTMLElement {
         display: flex;
         flex-direction: column;
         align-items: center;
+
+        font-size: 20px;
         
         width: 80%;
         height: 60%;
@@ -132,11 +184,13 @@ class BidPopup extends HTMLElement {
         aspect-ratio: 1 / 1;
       }
 
-      .description {
+      .spacer {
         flex: 1;
-        display: flex;
-        align-items: center;
+      }
+
+      .description {
         white-space: pre;
+        text-wrap: auto;
       }
 
       .button-row {
@@ -155,6 +209,21 @@ class BidPopup extends HTMLElement {
         color: blue;
         text-decoration: underline;
         position: relative;
+      }
+
+      .descriptioned-tile {
+        position: relative;
+        display: inline-block;
+        width: 1em;
+        height: 1em;
+      }
+
+      .descriptioned-tile number-suit-tile, .descriptioned-tile double-tile .descriptioned-tile redouble-tile, .descriptioned-tile pass-tile {
+        position: absolute;
+        top: 0;
+        display: inline-block;
+        width: 1em;
+        height: 1em;
       }
 
       .descriptioned-text.error {
@@ -176,13 +245,13 @@ class BidPopup extends HTMLElement {
         bottom: 100%;
         left: 50%;
         transform: translateX(-50%);
-        box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+        box-shadow: rgba(100, 100, 111) 0px 7px 29px 0px;
         background-color: white;
       }
 
       .helper-title {
         color: black;
-        font-size: 20px;
+        font-size: 1.5em;
         font-weight: bold;
       }
     `;

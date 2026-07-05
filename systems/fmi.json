@@ -1,5 +1,6 @@
 {
   "name": "ФМИ",
+
   "conventions": {
     "high-card-points": {
       "title": "Точки от оньори",
@@ -20,12 +21,15 @@
       ]
     }
   },
+
   "nonsystemicBid": {
     "hcp": "-",
     "description": [
       "Извънсистемно обявление"
     ]
   },
+  "noInformationText": "Няма индикация",
+
   "bids": [
     {
       "pass": true,
@@ -33,13 +37,8 @@
       "description": [
         "Ръка с недостатъчно точки за откриване."
       ],
-      "hcp": "< 12",
-      "cards": {
-        "CLUB": "Няма индикация",
-        "DIAMOND": "Няма индикация",
-        "HEART": "Няма индикация",
-        "SPADE": "Няма индикация"
-      },
+      "hcp": "< 11",
+      "cards": {},
       "continuations": []
     },
     {
@@ -47,12 +46,11 @@
       "suit": "CLUB",
       "isAlert": false,
       "description": [
-        "Откриваща ръка, в която спатиите са по-добри от карите."
+        "Отваряща ръка, в която спатиите са по-добри от карите. Също се обявява при 3 спатии и 3 кари в ръката."
       ],
-      "hcp": ">= 12",
+      "hcp": ">= 11",
       "cards": {
         "CLUB": ">= 3",
-        "DIAMOND": "Няма индикация",
         "HEART": "< 5",
         "SPADE": "< 5"
       },
@@ -65,7 +63,6 @@
           ],
           "hcp": "< 15",
           "cards": {
-            "CLUB": "Няма информация",
             "DIAMOND": "< 4",
             "HEART": "< 5",
             "SPADE": "< 5"
@@ -77,12 +74,13 @@
           "isAlert": true,
           "description": [
             {
+              "type": "link",
               "text": "Информативна контра",
               "link": "takeout-double"
             },
             " на спатии."
           ],
-          "hcp": "> 12",
+          "hcp": "> 11",
           "cards": {
             "CLUB": "<= 1",
             "DIAMOND": ">= 3",
@@ -98,11 +96,10 @@
       "suit": "DIAMOND",
       "isAlert": false,
       "description": [
-        "Откриваща ръка, в която карите са по-добри от спатиите."
+        "Отваряща ръка, в която карите са по-добри от спатиите. Също се обявява при 4 спатии и 4 кари."
       ],
-      "hcp": ">= 12",
+      "hcp": ">= 11",
       "cards": {
-        "CLUB": "Няма индикация",
         "DIAMOND": ">= 3",
         "HEART": "< 5",
         "SPADE": "< 5"
@@ -114,14 +111,11 @@
       "suit": "HEART",
       "isAlert": false,
       "description": [
-        "Откриваща ръка с поне 5 купи."
+        "Отваряща ръка с поне 5 купи. Не отрича 5 пики."
       ],
-      "hcp": ">= 12",
+      "hcp": ">= 11",
       "cards": {
-        "CLUB": "Няма индикация",
-        "DIAMOND": "Няма индикация",
-        "HEART": ">= 5",
-        "SPADE": "Няма индикация"
+        "HEART": ">= 5"
       },
       "continuations": []
     },
@@ -130,12 +124,16 @@
       "suit": "SPADE",
       "isAlert": false,
       "description": [
-        "Откриваща ръка с поне 5 пики. Тъй като не е обявено 1 купа, липсват 5 купи в ръката."
+        "Отваряща ръка с поне 5 пики. Тъй като не е обявено ",
+        {
+          "type": "tile",
+          "number": 1,
+          "suit": "HEART"
+        },
+        ", липсват 5 купи в ръката."
       ],
-      "hcp": ">= 12",
+      "hcp": ">= 11",
       "cards": {
-        "CLUB": "Няма индикация",
-        "DIAMOND": "Няма индикация",
         "HEART": "< 5",
         "SPADE": ">= 5"
       },
@@ -162,15 +160,22 @@
       "suit": "CLUB",
       "isAlert": true,
       "description": [
-        "Много силна, но небалансирана ръка. Поне 4 ръце от раз."
+        "Много силна, но небалансирана ръка. Поне 4 ръце от раз. Форсира отговор.\nВъзможно е да се обяви на изключително силна (поне 23 ",
+        {
+          "type": "link",
+          "text": "ТО",
+          "link": "high-card-points"
+        },
+        ") балансирана ръка, в която има повече точки от ",
+        {
+          "type": "tile",
+          "number": "2",
+          "suit": "NO_TRUMP"
+        },
+        "."
       ],
       "hcp": ">= 20",
-      "cards": {
-        "CLUB": "Няма информация",
-        "DIAMOND": "Няма информация",
-        "HEART": "Няма информация",
-        "SPADE": "Няма информация"
-      },
+      "cards": {},
       "continuations": []
     },
     {
@@ -179,6 +184,7 @@
       "isAlert": true,
       "description": [
         {
+          "type": "link",
           "text": "Бараж",
           "link": "barrage"
         },
@@ -186,10 +192,131 @@
       ],
       "hcp": "<= 10",
       "cards": {
-        "CLUB": "Няма информация",
-        "DIAMOND": ">= 6",
-        "HEART": "Няма информация",
-        "SPADE": "Няма информация"
+        "DIAMOND": ">= 6"
+      },
+      "continuations": []
+    },
+    {
+      "number": 2,
+      "suit": "HEART",
+      "isAlert": true,
+      "description": [
+        {
+          "type": "link",
+          "text": "Бараж",
+          "link": "barrage"
+        },
+        " на купи."
+      ],
+      "hcp": "<= 10",
+      "cards": {
+        "HEART": ">= 6"
+      },
+      "continuations": []
+    },
+    {
+      "number": 2,
+      "suit": "SPADE",
+      "isAlert": true,
+      "description": [
+        {
+          "type": "link",
+          "text": "Бараж",
+          "link": "barrage"
+        },
+        " на пики."
+      ],
+      "hcp": "<= 10",
+      "cards": {
+        "SPADE": ">= 6"
+      },
+      "continuations": []
+    },
+    {
+      "number": 2,
+      "suit": "NO_TRUMP",
+      "isAlert": false,
+      "description": [
+        "Балансирана ръка - поне по две карти от всяка боя и максимум една двойна боя. Има оньори във всяка боя."
+      ],
+      "hcp": "20 - 22",
+      "cards": {
+        "CLUB": ">= 2",
+        "DIAMOND": ">= 2",
+        "HEART": ">= 2",
+        "SPADE": ">= 2"
+      },
+      "continuations": []
+    },
+    {
+      "number": 3,
+      "suit": "CLUB",
+      "isAlert": true,
+      "description": [
+        {
+          "type": "link",
+          "text": "Бараж",
+          "link": "barrage"
+        },
+        " на спатии."
+      ],
+      "hcp": "<= 10",
+      "cards": {
+        "CLUB": ">= 7"
+      },
+      "continuations": []
+    },
+    {
+      "number": 3,
+      "suit": "DIAMOND",
+      "isAlert": true,
+      "description": [
+        {
+          "type": "link",
+          "text": "Бараж",
+          "link": "barrage"
+        },
+        " на кари."
+      ],
+      "hcp": "<= 10",
+      "cards": {
+        "DIAMOND": ">= 7"
+      },
+      "continuations": []
+    },
+    {
+      "number": 3,
+      "suit": "HEART",
+      "isAlert": true,
+      "description": [
+        {
+          "type": "link",
+          "text": "Бараж",
+          "link": "barrage"
+        },
+        " на купи."
+      ],
+      "hcp": "<= 10",
+      "cards": {
+        "HEART": ">= 7"
+      },
+      "continuations": []
+    },
+    {
+      "number": 3,
+      "suit": "SPADE",
+      "isAlert": true,
+      "description": [
+        {
+          "type": "link",
+          "text": "Бараж",
+          "link": "barrage"
+        },
+        " на пики."
+      ],
+      "hcp": "<= 10",
+      "cards": {
+        "SPADE": ">= 7"
       },
       "continuations": []
     }

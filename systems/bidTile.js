@@ -366,13 +366,14 @@ class NumberSuitTile extends BidTile {
       .number-part {
         margin: 0px;
         height: 100%;
-        width: 40%;
+        flex: 2;
 
         display: flex;
         align-items: center;
         justify-content: center;
 
         background: #0f253f;
+        overflow: hidden;
       }
 
       .available .number-part {
@@ -380,9 +381,8 @@ class NumberSuitTile extends BidTile {
       }
 
       .number-part svg {
-        padding: 5px;
         height: 100%;
-        width: 100%;
+        width: 90%;
 
         stroke: #4c5c71;
         fill: #4c5c71;
@@ -402,7 +402,7 @@ class NumberSuitTile extends BidTile {
       .suit-part {
         margin: 0pt;
         height: 100%;
-        width: 60%;
+        flex: 3;
 
         background: #0f253f;
       }
