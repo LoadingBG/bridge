@@ -19,6 +19,30 @@
       "description": [
         "Добра ръка с липса (сек или шикан) на контрираната боя. Казва на съотборника да обяви хубава за него боя на базата, че контрата му обещава подкрепа във всяка друга боя."
       ]
+    },
+    "stayman": {
+      "title": "Стеймън (Stayman)",
+      "description": [
+        "По тази конвенция отговор ",
+        {
+          "type": "tile",
+          "number": 2,
+          "suit": "CLUB"
+        },
+        " на ",
+        {
+          "type": "tile",
+          "number": 1,
+          "suit": "NO_TRUMP"
+        },
+        " е запитване за четвърти мажор. Ако и двамата съотборници имат еднакъв мажор, могат да играят на боята вместо на без коз."
+      ]
+    },
+    "jacoby-transfer": {
+      "title": "Трансфер Якоби",
+      "description": [
+        "Показва дължина в следващата по поредност боя. Обявяване на пика е трансфер за спатии.\nБез коз е силна обява. По тази причина безкозовата ръка е хубаво да се държи скрита. Затова се обявява предишната боя - така играчът със силната ръка може да обяви игралната боя и да задържи ръката си скрита."
+      ]
     }
   },
 
@@ -74,9 +98,9 @@
           "isAlert": true,
           "description": [
             {
-              "type": "link",
+              "type": "convention",
               "text": "Информативна контра",
-              "link": "takeout-double"
+              "convention": "takeout-double"
             },
             " на спатии."
           ],
@@ -153,7 +177,129 @@
         "HEART": ">= 2",
         "SPADE": ">= 2"
       },
-      "continuations": []
+      "continuations": [
+        {
+          "pass": true,
+          "isAlert": false,
+          "description": [
+            "Ръка без подходящо обявяване."
+          ],
+          "hcp": "< 15",
+          "cards": {},
+          "continuations": [
+            {
+              "number": 2,
+              "suit": "CLUB",
+              "isAlert": true,
+              "description": [
+                {
+                  "type": "convention",
+                  "text": "Стеймън",
+                  "convention": "stayman"
+                },
+                "."
+              ],
+              "hcp": ">= 8",
+              "cards": {},
+              "continuations": []
+            },
+            {
+              "number": 2,
+              "suit": "DIAMOND",
+              "isAlert": true,
+              "description": [
+                {
+                  "type": "convention",
+                  "text": "Трансфер Якоби",
+                  "convention": "jacoby-transfer"
+                },
+                " за купа."
+              ],
+              "hcp": "-",
+              "cards": {
+                "HEART": ">= 5"
+              },
+              "continuations": []
+            },
+            {
+              "number": 2,
+              "suit": "HEART",
+              "isAlert": true,
+              "description": [
+                {
+                  "type": "convention",
+                  "text": "Трансфер Якоби",
+                  "convention": "jacoby-transfer"
+                },
+                " за пика."
+              ],
+              "hcp": "-",
+              "cards": {
+                "SPADE": ">= 5"
+              },
+              "continuations": []
+            },
+            {
+              "number": 2,
+              "suit": "SPADE",
+              "isAlert": true,
+              "description": [
+                {
+                  "type": "convention",
+                  "text": "Трансфер Якоби",
+                  "convention": "jacoby-transfer"
+                },
+                " за спатия."
+              ],
+              "hcp": "-",
+              "cards": {
+                "CLUB": ">= 5"
+              },
+              "continuations": []
+            },
+            {
+              "number": 2,
+              "suit": "NO_TRUMP",
+              "isAlert": false,
+              "description": [
+                "Подкрепа на без коз. Покана за манш."
+              ],
+              "hcp": "9 - 10",
+              "cards": {},
+              "continuations": []
+            },
+            {
+              "number": 3,
+              "suit": "CLUB",
+              "isAlert": true,
+              "description": [
+                {
+                  "type": "convention",
+                  "text": "Трансфер Якоби",
+                  "convention": "jacoby-transfer"
+                },
+                " за каро."
+              ],
+              "hcp": "-",
+              "cards": {
+                "DIAMOND": ">= 5"
+              },
+              "continuations": []
+            },
+            {
+              "number": 3,
+              "suit": "NO_TRUMP",
+              "isAlert": false,
+              "description": [
+                "Подкрепа на без коз. Манш за игра."
+              ],
+              "hcp": "11 - 12",
+              "cards": {},
+              "continuations": []
+            }
+          ]
+        }
+      ]
     },
     {
       "number": 2,
@@ -162,9 +308,9 @@
       "description": [
         "Много силна, но небалансирана ръка. Поне 4 ръце от раз. Форсира отговор.\nВъзможно е да се обяви на изключително силна (поне 23 ",
         {
-          "type": "link",
+          "type": "convention",
           "text": "ТО",
-          "link": "high-card-points"
+          "convention": "high-card-points"
         },
         ") балансирана ръка, в която има повече точки от ",
         {
@@ -184,11 +330,11 @@
       "isAlert": true,
       "description": [
         {
-          "type": "link",
+          "type": "convention",
           "text": "Бараж",
-          "link": "barrage"
+          "convention": "barrage"
         },
-        " на кари."
+        " на кари с поне шесторна боя."
       ],
       "hcp": "<= 10",
       "cards": {
@@ -202,11 +348,11 @@
       "isAlert": true,
       "description": [
         {
-          "type": "link",
+          "type": "convention",
           "text": "Бараж",
-          "link": "barrage"
+          "convention": "barrage"
         },
-        " на купи."
+        " на купи с поне шесторна боя."
       ],
       "hcp": "<= 10",
       "cards": {
@@ -220,11 +366,11 @@
       "isAlert": true,
       "description": [
         {
-          "type": "link",
+          "type": "convention",
           "text": "Бараж",
-          "link": "barrage"
+          "convention": "barrage"
         },
-        " на пики."
+        " на пики с поне шесторна боя."
       ],
       "hcp": "<= 10",
       "cards": {
@@ -254,11 +400,11 @@
       "isAlert": true,
       "description": [
         {
-          "type": "link",
+          "type": "convention",
           "text": "Бараж",
-          "link": "barrage"
+          "convention": "barrage"
         },
-        " на спатии."
+        " на спатии с поне седморна боя."
       ],
       "hcp": "<= 10",
       "cards": {
@@ -272,11 +418,11 @@
       "isAlert": true,
       "description": [
         {
-          "type": "link",
+          "type": "convention",
           "text": "Бараж",
-          "link": "barrage"
+          "convention": "barrage"
         },
-        " на кари."
+        " на кари с поне седморна боя."
       ],
       "hcp": "<= 10",
       "cards": {
@@ -290,11 +436,11 @@
       "isAlert": true,
       "description": [
         {
-          "type": "link",
+          "type": "convention",
           "text": "Бараж",
-          "link": "barrage"
+          "convention": "barrage"
         },
-        " на купи."
+        " на купи с поне седморна боя."
       ],
       "hcp": "<= 10",
       "cards": {
@@ -308,11 +454,11 @@
       "isAlert": true,
       "description": [
         {
-          "type": "link",
+          "type": "convention",
           "text": "Бараж",
-          "link": "barrage"
+          "convention": "barrage"
         },
-        " на пики."
+        " на пики с поне седморна боя."
       ],
       "hcp": "<= 10",
       "cards": {

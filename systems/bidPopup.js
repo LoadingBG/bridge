@@ -28,19 +28,16 @@ class BidPopup extends HTMLElement {
     }
 
     switch (part.type) {
-      case "link": return this.#linkToHTML(part);
+      case "convention": return this.#conventionToHTML(part);
       case "tile": return this.#tileToHTML(part);
       case undefined: throw new Error("Cannot parse part without type");
       default: throw new Error(`Unrecognized type: ${part.type}`);
     }
   }
 
-  #linkToHTML(part) {
-    const convention = this.#conventions[part.link];
-    console.log(convention);
+  #conventionToHTML(part) {
+    const convention = this.#conventions[part.convention];
     if (convention === undefined) {
-      console.log("in");
-      console.log(part);
       const span = document.createElement("span");
       span.setAttribute("class", "descriptioned-text error");
       span.textContent = part.text;
@@ -120,8 +117,7 @@ class BidPopup extends HTMLElement {
     infobox.appendChild(this.tile);
 
     const hcpBox = document.createElement("div");
-    [{type: "link", text: "ТО", link: "high-card-points"}, `: ${this.hcp}`].map(part => this.#toHTML(part)).forEach(elem => hcpBox.appendChild(elem));
-    // hcpBox.textContent = `ТО: ${this.hcp}`;
+    [{type: "convention", text: "ТО", convention: "high-card-points"}, `: ${this.hcp}`].map(part => this.#toHTML(part)).forEach(elem => hcpBox.appendChild(elem));
     infobox.appendChild(hcpBox);
 
     const spacer1 = document.createElement("div");
