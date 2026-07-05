@@ -28,12 +28,21 @@ class BidPopup extends HTMLElement {
     }
 
     const convention = this.#conventions[part.link];
+    console.log(convention);
+    if (convention === undefined) {
+      console.log("in");
+      console.log(part);
+      const span = document.createElement("span");
+      span.setAttribute("class", "descriptioned-text error");
+      span.textContent = part.text;
+      return span;
+    }
 
     const span = document.createElement("span");
     span.setAttribute("class", "descriptioned-text");
     span.textContent = part.text;
 
-    const helperBox = document.createElement("span");
+    const helperBox = document.createElement("div");
     helperBox.setAttribute("class", "helper-box");
 
     const helperTitle = document.createElement("span");
@@ -48,7 +57,6 @@ class BidPopup extends HTMLElement {
     let isDescriptionOpen = false;
     span.onclick = () => {
       isDescriptionOpen = !isDescriptionOpen;
-      console.log(`in: ${isDescriptionOpen}`);
       helperBox.style.display = isDescriptionOpen ? "flex" : "none";
     };
 
@@ -70,7 +78,8 @@ class BidPopup extends HTMLElement {
     infobox.appendChild(this.tile);
 
     const hcpBox = document.createElement("div");
-    hcpBox.textContent = `ТО: ${this.hcp}`;
+    [{text: "ТО", link: "high-card-points"}, `: ${this.hcp}`].map(part => this.#toHTML(part)).forEach(elem => hcpBox.appendChild(elem));
+    // hcpBox.textContent = `ТО: ${this.hcp}`;
     infobox.appendChild(hcpBox);
 
     const descriptionBox = document.createElement("div");
@@ -148,6 +157,10 @@ class BidPopup extends HTMLElement {
         position: relative;
       }
 
+      .descriptioned-text.error {
+        color: red;
+      }
+
       .helper-box {
         display: flex;
         flex-direction: column;
@@ -156,6 +169,7 @@ class BidPopup extends HTMLElement {
         width: 300px;
         text-wrap: balance;
         text-align: center;
+        white-space: break-spaces;
         color: black;
 
         position: absolute;
