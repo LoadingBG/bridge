@@ -23,6 +23,7 @@ class BidApp extends HTMLElement {
     popup.onConfirm = () => {
       this.#container.removeChild(popup);
       onConfirm();
+      this.#bidHistoryTable.selectSide(this.systemManager.currentChooser);
     };
     this.#container.appendChild(popup);
   }
@@ -32,6 +33,7 @@ class BidApp extends HTMLElement {
 
     this.#container = document.createElement("div");
     this.#container.setAttribute("class", "container");
+    dom.appendChild(this.#container);
 
     const bidBoard = document.createElement("bid-board");
     bidBoard.setAttribute("tile-size", "100");
@@ -49,8 +51,8 @@ class BidApp extends HTMLElement {
     this.#bidHistoryTable = document.createElement("bid-history-table");
     this.#bidHistoryTable.visualizePopup = (tile, onConfirm) => this.#visualizePopup(tile, onConfirm);
     this.#container.appendChild(this.#bidHistoryTable);
+    this.#bidHistoryTable.selectSide(this.systemManager.currentChooser);
 
-    dom.appendChild(this.#container);
     const style = document.createElement("style");
     style.textContent = `
       .container {

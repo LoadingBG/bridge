@@ -19,6 +19,13 @@ class BidHistoryTable extends HTMLElement {
     return column;
   }
 
+  selectSide(side) {
+    this.#columns.forEach(c => c.children[0].setAttribute("class", "label-box"));
+    const idx = Side.indexOf(side);
+    const highlighted = this.#columns[idx].children[0];
+    highlighted.setAttribute("class", "label-box active");
+  }
+
   appendTile(madeBid, side) {
     const sideIdx = Side.indexOf(side);
 
@@ -81,6 +88,10 @@ class BidHistoryTable extends HTMLElement {
 
       svg {
         fill: #4c5c71;
+      }
+
+      .label-box.active svg {
+        fill: #fff;
       }
 
       number-suit-tile, double-tile, redouble-tile, pass-tile {
