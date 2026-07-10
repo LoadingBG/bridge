@@ -11,12 +11,15 @@ class CurrentBid {
 
 
 class BidBoard extends HTMLElement {
+  #passesInARow = 0;
+
   constructor() {
     super();
     this.currentBid = new CurrentBid(null, null, null, null, null);
     this.systemManager = undefined;
     this.onChosen = undefined;
     this.visualizePopup = undefined;
+    this.onBiddingEnd = undefined;
 
     this.table = undefined;
 
@@ -30,6 +33,7 @@ class BidBoard extends HTMLElement {
           this.currentBid.doubler = null;
           this.currentBid.redoubler = null;
           this.currentBid = new CurrentBid(i, suit, this.systemManager.currentChooser, null, null);
+          this.#passesInARow = 0;
         }));
         this.tiles.push(tile);
       }
@@ -39,6 +43,7 @@ class BidBoard extends HTMLElement {
     double.onClick(this.#createPopupOnclick(double, () => {
       this.currentBid.doubler = this.systemManager.currentChooser;
       this.currentBid.redoubler = null;
+      this.#passesInARow = 0;
     }));
     this.tiles.push(double);
 
@@ -46,11 +51,14 @@ class BidBoard extends HTMLElement {
     redouble.onClick(this.#createPopupOnclick(redouble, () => {
       this.currentBid.doubler = null;
       this.currentBid.redoubler = this.systemManager.currentChooser;
+      this.#passesInARow = 0;
     }));
     this.tiles.push(redouble);
 
     const pass = document.createElement("pass-tile");
-    pass.onClick(this.#createPopupOnclick(pass, () => {}));
+    pass.onClick(this.#createPopupOnclick(pass, () => {
+      this.#passesInARow++;
+    }));
     this.tiles.push(pass);
   }
 
@@ -62,6 +70,9 @@ class BidBoard extends HTMLElement {
         onConfirm();
         this.onChosen(madeBid);
         this.systemManager.selectNextChooser();
+        if ((this.currentBid.bidder === null && this.#passesInARow === 4) || (this.currentBid.bidder !== null && this.#passesInARow >= 3)) {
+          this.onBiddingEnd();
+        }
         this.#updateTiles();
       });
     };
@@ -83,7 +94,11 @@ class BidBoard extends HTMLElement {
 
   #isBidAvailable(tile) {
     if (this.currentBid.bidder === null) {
-      return !tile.isDouble && !tile.isRedouble;
+      return this.#passesInARow < 4 && !tile.isDouble && !tile.isRedouble;
+    }
+
+    if (this.#passesInARow >= 3) {
+      return false;
     }
 
     if (tile.number !== undefined && tile.suit !== undefined) {

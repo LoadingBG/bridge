@@ -1,5 +1,6 @@
 class BidHistoryTable extends HTMLElement {
   #columns = [];
+  #sideSelectionDisabled = false;
 
   constructor() {
     super();
@@ -19,8 +20,20 @@ class BidHistoryTable extends HTMLElement {
     return column;
   }
 
+  disableSideSelection(disable) {
+    this.#sideSelectionDisabled = disable;
+  }
+
   selectSide(side) {
+    if (this.#sideSelectionDisabled) {
+      return;
+    }
+
     this.#columns.forEach(c => c.children[0].setAttribute("class", "label-box"));
+    if (side === undefined) {
+      return;
+    }
+
     const idx = Side.indexOf(side);
     const highlighted = this.#columns[idx].children[0];
     highlighted.setAttribute("class", "label-box active");

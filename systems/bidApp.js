@@ -51,6 +51,10 @@ class BidApp extends HTMLElement {
       this.#bidHistoryTable.appendTile(madeBid, this.systemManager.currentChooser);
       settingsBar.disableSideMenu(true);
     };
+    this.#bidBoard.onBiddingEnd = () => {
+      this.#bidHistoryTable.selectSide(undefined);
+      this.#bidHistoryTable.disableSideSelection(true);
+    };
     this.#bidBoard.visualizePopup = (tile, onConfirm) => this.#visualizePopup(tile, onConfirm);
     this.#container.appendChild(this.#bidBoard);
 
