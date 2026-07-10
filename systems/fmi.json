@@ -63,7 +63,331 @@
       ],
       "hcp": "< 11",
       "cards": {},
-      "continuations": []
+      "continuations": [
+        {
+          "pass": true,
+          "isAlert": false,
+          "description": [
+            "Ръка с недостатъчно точки за откриване."
+          ],
+          "hcp": "< 11",
+          "cards": {},
+          "continuations": [
+            {
+              "number": 1,
+              "suit": "SPADE",
+              "isAlert": false,
+              "description": [
+                "Отваряща ръка с поне 5 пики. Тъй като не е обявено ",
+                {
+                  "type": "tile",
+                  "number": 1,
+                  "suit": "HEART"
+                },
+                ", липсват 5 купи в ръката."
+              ],
+              "hcp": ">= 11",
+              "cards": {
+                "HEART": "< 5",
+                "SPADE": ">= 5"
+              },
+              "continuations": [
+                {
+                  "pass": true,
+                  "isAlert": false,
+                  "description": [
+                    "Ръка с недостатъчно точки за обявяване."
+                  ],
+                  "hcp": "< 11",
+                  "cards": {},
+                  "continuations": [
+                    {
+                      "pass": true,
+                      "isAlert": false,
+                      "description": [
+                        "Слаба ръка."
+                      ],
+                      "hcp": "< 6",
+                      "cards": {},
+                      "continuations": [
+                        {
+                          "pass": true,
+                          "isAlert": false,
+                          "description": [
+                            "Край на обявяването."
+                          ],
+                          "hcp": "-",
+                          "cards": {},
+                          "continuations": []
+                        },
+                        {
+                          "double": true,
+                          "isAlert": true,
+                          "description": [
+                            {
+                              "type": "convention",
+                              "text": "Информативна контра",
+                              "convention": "takeout-double"
+                            },
+                            " на пика."
+                          ],
+                          "hcp": "> 11",
+                          "cards": {
+                            "CLUB": ">= 3",
+                            "DIAMOND": ">= 3",
+                            "HEART": ">= 3"
+                          },
+                          "continuations": [
+                            {
+                              "number": 2,
+                              "suit": "SPADE",
+                              "isAlert": false,
+                              "description": [
+                                "Повтаряне на боята за показване на дължина."
+                              ],
+                              "hcp": ">= 12",
+                              "cards": {
+                                "SPADE": ">= 6"
+                              },
+                              "continuations": [
+                                {
+                                  "number": 3,
+                                  "suit": "CLUB",
+                                  "isAlert": false,
+                                  "description": [
+                                    "Отговор на ",
+                                    {
+                                      "type": "convention",
+                                      "text": "информативната контра",
+                                      "convention": "takeout-double"
+                                    },
+                                    " на спатия. Обявена е най-силната боя."
+                                  ],
+                                  "hcp": "8 - 12",
+                                  "cards": {
+                                    "CLUB": ">= 5"
+                                  },
+                                  "continuations": [
+                                    {
+                                      "pass": true,
+                                      "isAlert": false,
+                                      "description": [
+                                        "Нищо ново за обявяване."
+                                      ],
+                                      "hcp": "<= 5",
+                                      "cards": {},
+                                      "continuations": [
+                                        {
+                                          "pass": true,
+                                          "isAlert": false,
+                                          "description": [
+                                            "Съгласие за игра на спатия. Няма достатъчна сила за игра на по-високо ниво."
+                                          ],
+                                          "hcp": "> 11",
+                                          "cards": {
+                                            "CLUB": ">= 3",
+                                            "DIAMOND": ">= 3",
+                                            "HEART": ">= 3"
+                                          },
+                                          "continuations": [
+                                            {
+                                              "pass": true,
+                                              "isAlert": false,
+                                              "description": [
+                                                "Край на обявяването."
+                                              ],
+                                              "hcp": ">= 12",
+                                              "cards": {
+                                                "SPADE": ">= 6"
+                                              },
+                                              "continuations": []
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "number": 1,
+          "suit": "NO_TRUMP",
+          "isAlert": false,
+          "description": [
+            "Балансирана ръка - поне по две карти от всяка боя и максимум една двойна боя. Има оньори във всяка боя."
+          ],
+          "hcp": "15 - 17",
+          "cards": {
+            "CLUB": ">= 2",
+            "DIAMOND": ">= 2",
+            "HEART": ">= 2",
+            "SPADE": ">= 2"
+          },
+          "continuations": [
+            {
+              "pass": true,
+              "isAlert": false,
+              "description": [
+                "Ръка с недостатъчно точки за обявяване."
+              ],
+              "hcp": "< 11",
+              "cards": {},
+              "continuations": [
+                {
+                  "number": 2,
+                  "suit": "DIAMOND",
+                  "isAlert": true,
+                  "description": [
+                    {
+                      "type": "convention",
+                      "text": "Трансфер Якоби",
+                      "convention": "jacoby-transfer"
+                    },
+                    " за купи."
+                  ],
+                  "hcp": "-",
+                  "cards": {
+                    "HEART": ">= 5"
+                  },
+                  "continuations": [
+                    {
+                      "pass": true,
+                      "isAlert": false,
+                      "description": [
+                        "Нищо ново за обявяване."
+                      ],
+                      "hcp": "-",
+                      "cards": {},
+                      "continuations": [
+                        {
+                          "number": 2,
+                          "suit": "HEART",
+                          "isAlert": true,
+                          "description": [
+                            {
+                              "type": "convention",
+                              "text": "Трансфериране",
+                              "convention": "jacoby-transfer"
+                            },
+                            "."
+                          ],
+                          "hcp": "15-17",
+                          "cards": {
+                            "CLUB": ">= 2",
+                            "DIAMOND": ">= 2",
+                            "HEART": ">= 2",
+                            "SPADE": ">= 2"
+                          },
+                          "continuations": [
+                            {
+                              "pass": true,
+                              "isAlert": false,
+                              "description": [
+                                "Нищо ново за обявяване."
+                              ],
+                              "hcp": "-",
+                              "cards": {},
+                              "continuations": [
+                                {
+                                  "number": 3,
+                                  "suit": "NO_TRUMP",
+                                  "isAlert": false,
+                                  "description": [
+                                    "Дава право на съотборника да избере кой манш да се играе - купи или без коз. Показва добра ръка поради скока в манш."
+                                  ],
+                                  "hcp": "11 - 15",
+                                  "cards": {
+                                    "HEART": ">= 5"
+                                  },
+                                  "continuations": [
+                                    {
+                                      "pass": true,
+                                      "isAlert": false,
+                                      "description": [
+                                        "Нищо ново за обявяване."
+                                      ],
+                                      "hcp": "-",
+                                      "cards": {},
+                                      "continuations": [
+                                        {
+                                          "number": 4,
+                                          "suit": "HEART",
+                                          "isAlert": false,
+                                          "description": [
+                                            "Избран е манш на купи."
+                                          ],
+                                          "hcp": "15 - 17",
+                                          "cards": {
+                                            "CLUB": ">= 2",
+                                            "DIAMOND": ">= 2",
+                                            "HEART": ">= 3",
+                                            "SPADE": ">= 2"
+                                          },
+                                          "continuations": [
+                                            {
+                                              "pass": true,
+                                              "isAlert": false,
+                                              "description": [
+                                                "Нищо ново за обявяване."
+                                              ],
+                                              "hcp": "-",
+                                              "cards": {},
+                                              "continuations": [
+                                                {
+                                                  "pass": true,
+                                                  "isAlert": false,
+                                                  "description": [
+                                                    "Игра на манш купи."
+                                                  ],
+                                                  "hcp": "11 - 15",
+                                                  "cards": {
+                                                    "HEART": ">= 5"
+                                                  },
+                                                  "continuations": [
+                                                    {
+                                                      "pass": true,
+                                                      "isAlert": false,
+                                                      "description": [
+                                                        "Край на обявяването."
+                                                      ],
+                                                      "hcp": "-",
+                                                      "cards": {},
+                                                      "continuations": []
+                                                    }
+                                                  ]
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "number": 1,
@@ -102,7 +426,7 @@
               "text": "Информативна контра",
               "convention": "takeout-double"
             },
-            " на спатии."
+            " на спатия."
           ],
           "hcp": "> 11",
           "cards": {
