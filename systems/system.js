@@ -14,17 +14,12 @@ class MadeBid {
 
 
 class System {
-  #currentChooser = Side.NORTH;
-
   constructor(name, conventions, nonsystemicBid, bids) {
+    this.currentChooser = Side.NORTH;
     this.name = name;
     this.conventions = conventions;
     this.nonsystemicBid = nonsystemicBid;
     this.availableBids = bids;
-  }
-
-  get currentChooser() {
-    return this.#currentChooser;
   }
 
   bidInfo(tile) {
@@ -47,8 +42,8 @@ class System {
 
   selectNextChooser() {
     const values = Side.values;
-    const idx = Side.indexOf(this.#currentChooser);
-    this.#currentChooser = values[(idx + 1) % values.length];
+    const idx = Side.indexOf(this.currentChooser);
+    this.currentChooser = values[(idx + 1) % values.length];
   }
 
   update(chosenTile) {

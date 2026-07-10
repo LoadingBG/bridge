@@ -2,6 +2,7 @@ import fmi from "./fmi.json" with { type: "json" };
 
 class BidApp extends HTMLElement {
   #bidHistoryTable;
+  #bidBoard;
   #container;
 
   constructor() {
@@ -35,14 +36,23 @@ class BidApp extends HTMLElement {
     this.#container.setAttribute("class", "container");
     dom.appendChild(this.#container);
 
-    const bidBoard = document.createElement("bid-board");
-    bidBoard.setAttribute("tile-size", "100");
-    bidBoard.systemManager = this.systemManager;
-    bidBoard.onChosen = (madeBid) => {
-      this.#bidHistoryTable.appendTile(madeBid, this.systemManager.currentChooser);
+    const settingsBar = document.createElement("app-settings");
+    this.#container.appendChild(settingsBar);
+    settingsBar.onSideChosen = (side) => {
+      side = Side[side];
+      this.systemManager.currentChooser = side;
+      this.#bidHistoryTable.selectSide(side);
     };
-    bidBoard.visualizePopup = (tile, onConfirm) => this.#visualizePopup(tile, onConfirm);
-    this.#container.appendChild(bidBoard);
+
+    this.#bidBoard = document.createElement("bid-board");
+    this.#bidBoard.setAttribute("tile-size", "100");
+    this.#bidBoard.systemManager = this.systemManager;
+    this.#bidBoard.onChosen = (madeBid) => {
+      this.#bidHistoryTable.appendTile(madeBid, this.systemManager.currentChooser);
+      settingsBar.disableSideMenu(true);
+    };
+    this.#bidBoard.visualizePopup = (tile, onConfirm) => this.#visualizePopup(tile, onConfirm);
+    this.#container.appendChild(this.#bidBoard);
 
     const spacer = document.createElement("span");
     spacer.setAttribute("class", "spacer");
@@ -66,14 +76,18 @@ class BidApp extends HTMLElement {
 
       bid-history-table {
         display: block;
-        width: ${bidBoard.offsetWidth}px;
+        width: ${this.#bidBoard.offsetWidth}px;
       }
 
       bid-popup {
         position: absolute;
         top: 0;
-        width: ${bidBoard.offsetWidth}px;
+        width: ${this.#bidBoard.offsetWidth}px;
         height: 100%;
+      }
+
+      app-settings {
+        width: ${this.#bidBoard.offsetWidth}px;
       }
     `;
     dom.appendChild(style);

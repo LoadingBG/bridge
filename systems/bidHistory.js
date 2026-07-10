@@ -34,6 +34,14 @@ class BidHistoryTable extends HTMLElement {
     tile.onClick(() => this.visualizePopup(madeBid, () => {}));
     tile.enableClick(true);
 
+    for (let i = 0; i < sideIdx; i++) {
+      while (this.#columns[i].childElementCount <= this.#columns[sideIdx].childElementCount) {
+        const emptyTile = document.createElement("div");
+        emptyTile.setAttribute("class", "empty-tile");
+        this.#columns[i].appendChild(emptyTile);
+      }
+    }
+
     this.#columns[sideIdx].appendChild(tile);
   }
 
@@ -94,7 +102,7 @@ class BidHistoryTable extends HTMLElement {
         fill: #fff;
       }
 
-      number-suit-tile, double-tile, redouble-tile, pass-tile {
+      number-suit-tile, double-tile, redouble-tile, pass-tile, .empty-tile {
         width: 100%;
         aspect-ratio: 1 / 1;
       }
