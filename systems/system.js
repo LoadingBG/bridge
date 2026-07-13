@@ -1,25 +1,27 @@
 class MadeBid {
-  constructor(number, suit, isDoubled, isRedoubled, isPass, isAlert, hcp, description) {
+  constructor(number, suit, isDoubled, isRedoubled, isPass, isAlert, hcp, description, cards) {
     this.number = number;
     this.suit = suit;
     this.isDoubled = isDoubled;
     this.isRedoubled = isRedoubled;
     this.isPass = isPass;
     this.isAlert = isAlert;
+    this.cards = cards;
     this.hcp = hcp;
     this.description = description;
+    this.cards = cards;
   }
 }
 
 
 
 class System {
-  constructor(name, conventions, nonsystemicBid, bids) {
+  constructor() {
     this.currentChooser = Side.NORTH;
-    this.name = name;
-    this.conventions = conventions;
-    this.nonsystemicBid = nonsystemicBid;
-    this.availableBids = bids;
+  }
+
+  static fromJSON(json) {
+    return Object.assign(new System(), json);
   }
 
   bidInfo(tile) {
@@ -30,13 +32,13 @@ class System {
         || (tile.isPass && bid.pass)) {
         return {
           systemic: true,
-          bid: new MadeBid(tile.number, tile.suit, tile.isDouble, tile.isRedouble, tile.isPass, bid.isAlert, bid.hcp, bid.description),
+          bid: new MadeBid(tile.number, tile.suit, tile.isDouble, tile.isRedouble, tile.isPass, bid.isAlert, bid.hcp, bid.description, bid.cards),
         };
       }
     }
     return {
       systemic: false,
-      bid: new MadeBid(tile.number, tile.suit, tile.isDouble, tile.isRedouble, tile.isPass, this.nonsystemicBid.isAlert, this.nonsystemicBid.hcp, this.nonsystemicBid.description),
+      bid: new MadeBid(tile.number, tile.suit, tile.isDouble, tile.isRedouble, tile.isPass, this.nonsystemicBid.isAlert, this.nonsystemicBid.hcp, this.nonsystemicBid.description, {}),
     };
   }
 
@@ -54,11 +56,11 @@ class System {
           && (bid.redouble === chosenTile.isRedouble || (bid.redouble === undefined && !chosenTile.isRedouble))
           && (bid.pass === chosenTile.isPass || (bid.pass === undefined && !chosenTile.isPass))) {
         this.availableBids = bid.continuations;
-        return new MadeBid(chosenTile.number, chosenTile.suit, chosenTile.isDouble, chosenTile.isRedouble, chosenTile.isPass, bid.isAlert, bid.hcp, bid.description);
+        return new MadeBid(chosenTile.number, chosenTile.suit, chosenTile.isDouble, chosenTile.isRedouble, chosenTile.isPass, bid.isAlert, bid.hcp, bid.description, bid.cards);
       }
     }
 
     this.availableBids = [];
-    return new MadeBid(chosenTile.number, chosenTile.suit, chosenTile.isDouble, chosenTile.isRedouble, chosenTile.isPass, this.nonsystemicBid.isAlert, this.nonsystemicBid.hcp, this.nonsystemicBid.description);
+    return new MadeBid(chosenTile.number, chosenTile.suit, chosenTile.isDouble, chosenTile.isRedouble, chosenTile.isPass, this.nonsystemicBid.isAlert, this.nonsystemicBid.hcp, this.nonsystemicBid.description, {});
   }
 }

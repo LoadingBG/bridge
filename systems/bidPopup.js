@@ -1,13 +1,11 @@
 class BidPopup extends HTMLElement {
   #cancelButton = document.createElement("button");
   #confirmButton = document.createElement("button");
-  #conventions;
+  #systemManager;
   
   constructor() {
     super();
-    this.tile = undefined;
-    this.hcp = undefined;
-    this.description = undefined;
+    this.madeBid = undefined;
   }
 
   set onCancel(callback) {
@@ -18,8 +16,8 @@ class BidPopup extends HTMLElement {
     this.#confirmButton.onclick = callback;
   }
 
-  set conventions(conventions) {
-    this.#conventions = conventions;
+  set systemManager(systemManager) {
+    this.#systemManager = systemManager;
   }
 
   #toHTML(part) {
@@ -36,7 +34,7 @@ class BidPopup extends HTMLElement {
   }
 
   #conventionToHTML(part) {
-    const convention = this.#conventions[part.convention];
+    const convention = this.#systemManager.conventions[part.convention];
     if (convention === undefined) {
       const span = document.createElement("span");
       span.setAttribute("class", "descriptioned-text error");
@@ -102,6 +100,43 @@ class BidPopup extends HTMLElement {
     // return span;
   }
 
+  static #CARD_ROWS = 2;
+  static #CARD_SUITS = [Suit.CLUB, Suit.DIAMOND, Suit.HEART, Suit.SPADE];
+  static #CARD_COLS = this.#CARD_SUITS.length / this.#CARD_ROWS;
+  #createCardInfos() {
+    const table = document.createElement("div");
+    table.setAttribute("class", "card-table");
+
+    for (let i = 0; i < this.constructor.#CARD_ROWS; i++) {
+      const row = document.createElement("div");
+      row.setAttribute("class", "card-row");
+
+      for (let j = 0; j < this.constructor.#CARD_COLS; j++) {
+        const suit = this.constructor.#CARD_SUITS[this.constructor.#CARD_COLS * i + j];
+        const cell = document.createElement("span");
+        cell.setAttribute("class", "card-card");
+
+        const descriptionBox = document.createElement("span");
+        descriptionBox.setAttribute("class", "card-description");
+        descriptionBox.style.backgroundColor = suit.numberColor;
+        descriptionBox.textContent = this.madeBid.cards[Suit.nameOf(suit)] ?? this.#systemManager.noCardInformationText;
+
+        const suitBox = document.createElement("span");
+        suitBox.setAttribute("class", "card-suit");
+        suitBox.style.backgroundColor = suit.suitColor;
+        suitBox.appendChild(suit.svg());
+
+        cell.appendChild(descriptionBox);
+        cell.appendChild(suitBox);
+        row.appendChild(cell);
+      }
+
+      table.appendChild(row);
+    }
+
+    return table;
+  }
+
   connectedCallback() {
     const dom = this.attachShadow({ mode: "open" });
 
@@ -112,12 +147,13 @@ class BidPopup extends HTMLElement {
     infobox.setAttribute("class", "infobox");
     container.appendChild(infobox);
 
-    this.tile.makeSystemic(false);
-    this.tile.makeAvailable(true);
-    infobox.appendChild(this.tile);
+    const tile = BidTile.fromMadeBid(this.madeBid);
+    tile.makeSystemic(false);
+    tile.makeAvailable(true);
+    infobox.appendChild(tile);
 
     const hcpBox = document.createElement("div");
-    [{type: "convention", text: "ТО", convention: "high-card-points"}, `: ${this.hcp}`].map(part => this.#toHTML(part)).forEach(elem => hcpBox.appendChild(elem));
+    [{type: "convention", text: "ТО", convention: "high-card-points"}, `: ${this.madeBid.hcp}`].map(part => this.#toHTML(part)).forEach(elem => hcpBox.appendChild(elem));
     infobox.appendChild(hcpBox);
 
     const spacer1 = document.createElement("div");
@@ -126,12 +162,14 @@ class BidPopup extends HTMLElement {
 
     const descriptionBox = document.createElement("div");
     descriptionBox.setAttribute("class", "description");
-    this.description.map(part => this.#toHTML(part)).forEach(elem => descriptionBox.appendChild(elem));
+    this.madeBid.description.map(part => this.#toHTML(part)).forEach(elem => descriptionBox.appendChild(elem));
     infobox.appendChild(descriptionBox);
 
     const spacer2 = document.createElement("div");
     spacer2.setAttribute("class", "spacer");
     infobox.appendChild(spacer2);
+
+    infobox.appendChild(this.#createCardInfos());
 
     const buttonRow = document.createElement("div");
     buttonRow.setAttribute("class", "button-row");
@@ -249,6 +287,44 @@ class BidPopup extends HTMLElement {
         color: black;
         font-size: 1.5em;
         font-weight: bold;
+      }
+
+      .card-table {
+        margin: 10px 0;
+        width: 100%;
+        height: ${10 * this.constructor.#CARD_ROWS}%;
+
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+
+      .card-row {
+        flex: 1;
+        display: flex;
+        gap: 2px;
+      }
+
+      .card-card {
+        flex: 1;
+        display: block;
+        display: flex;
+      }
+
+      .card-description {
+        flex: 1;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .card-suit {
+        aspect-ratio: 1 / 1;
+      }
+
+      .card-suit svg {
+        fill: #fff;
       }
     `;
 
