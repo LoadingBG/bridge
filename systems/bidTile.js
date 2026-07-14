@@ -21,6 +21,7 @@ const createPass     = () => createSVG("0 0 512 128", "M72.51 15.42H34.65c-.15 0
 export default class BidTile extends HTMLElement {
   #container = document.createElement("span");
   #border = document.createElement("span");
+  #tileInfo;
   #onClick;
 
   constructor() {
@@ -37,16 +38,17 @@ export default class BidTile extends HTMLElement {
     const tile = document.createElement(
       tileInfo.isPass
         ? "pass-tile"
-        : tileInfo.isDoubled
+        : tileInfo.isDouble
           ? "double-tile"
-          : tileInfo.isRedoubled
+          : tileInfo.isRedouble
             ? "redouble-tile"
             : "number-suit-tile"
     );
     if (tileInfo.isNumberSuit) {
-      tile.setAttribute("number", tileInfo.number);
+      tile.setAttribute("number", tileInfo.number.toString());
       tile.setAttribute("suit", Suit.nameOf(tileInfo.suit));
     }
+    tile.#tileInfo = tileInfo;
     return tile;
   }
 

@@ -57,7 +57,7 @@ function conventionToHTML(part, systemManager) {
 }
 
 function tileToHTML(part) {
-  const tileInfo = new TileInfo(part.number, Suit[part.suit], part.double, part.redouble, part.pass);
+  const tileInfo = new TileInfo(part.number ?? null, Suit[part.suit] ?? null, part.double ?? false, part.redouble ?? false, part.pass ?? false);
   const tile = BidTile.fromTileInfo(tileInfo);
   tile.makeAvailable(true);
 

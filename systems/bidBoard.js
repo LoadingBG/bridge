@@ -1,5 +1,7 @@
 import Side from "./side.js";
 import Suit from "./suit.js";
+import TileInfo from "./tileInfo.js";
+import BidTile from "./bidTile.js";
 
 class CurrentBid {
   constructor(number, suit, bidder, doubler, redoubler) {
@@ -29,10 +31,9 @@ class BidBoard extends HTMLElement {
     this.tiles = [];
     for (let i = 1; i <= 7; i++) {
       for (let suit of Suit.values) {
-        const tile = document.createElement("number-suit-tile");
-        tile.setAttribute("number", i.toString());
-        tile.setAttribute("suit", Suit.nameOf(suit));
-        tile.onClick(this.#createPopupOnclick(tile, () => {
+        const tileInfo = TileInfo.numberSuit(i, suit);
+        const tile = BidTile.fromTileInfo(tileInfo);
+        tile.onClick(this.#createPopupOnclick(tileInfo, () => {
           this.currentBid.doubler = null;
           this.currentBid.redoubler = null;
           this.currentBid = new CurrentBid(i, suit, this.systemManager.currentChooser, null, null);
@@ -42,34 +43,34 @@ class BidBoard extends HTMLElement {
       }
     }
 
-    const double = document.createElement("double-tile");
-    double.onClick(this.#createPopupOnclick(double, () => {
+    const double = BidTile.fromTileInfo(TileInfo.DOUBLE);
+    double.onClick(this.#createPopupOnclick(TileInfo.DOUBLE, () => {
       this.currentBid.doubler = this.systemManager.currentChooser;
       this.currentBid.redoubler = null;
       this.#passesInARow = 0;
     }));
     this.tiles.push(double);
 
-    const redouble = document.createElement("redouble-tile");
-    redouble.onClick(this.#createPopupOnclick(redouble, () => {
+    const redouble = BidTile.fromTileInfo(TileInfo.REDOUBLE);
+    redouble.onClick(this.#createPopupOnclick(TileInfo.REDOUBLE, () => {
       this.currentBid.doubler = null;
       this.currentBid.redoubler = this.systemManager.currentChooser;
       this.#passesInARow = 0;
     }));
     this.tiles.push(redouble);
 
-    const pass = document.createElement("pass-tile");
-    pass.onClick(this.#createPopupOnclick(pass, () => {
+    const pass = BidTile.fromTileInfo(TileInfo.PASS);
+    pass.onClick(this.#createPopupOnclick(TileInfo.PASS, () => {
       this.#passesInARow++;
     }));
     this.tiles.push(pass);
   }
 
-  #createPopupOnclick(tile, onConfirm) {
+  #createPopupOnclick(tileInfo, onConfirm) {
     return () => {
-      const bidInfo = this.systemManager.bidInfo(tile.info);
+      const bidInfo = this.systemManager.bidInfo(tileInfo);
       this.visualizePopup(bidInfo, () => {
-        this.systemManager.update(tile.info);
+        this.systemManager.update(tileInfo);
         onConfirm();
         this.onChosen(bidInfo);
         this.systemManager.selectNextChooser();
@@ -83,29 +84,29 @@ class BidBoard extends HTMLElement {
 
   #updateTiles() {
     for (let tile of this.tiles) {
-      tile.makeSystemic(this.#isBidSystemic(tile));
+      tile.makeSystemic(this.#isBidSystemic(tile.info));
 
-      const isBidAvailable = this.#isBidAvailable(tile);
+      const isBidAvailable = this.#isBidAvailable(tile.info);
       tile.makeAvailable(isBidAvailable);
       tile.enableClick(isBidAvailable);
     }
   }
 
-  #isBidSystemic(tile) {
-    return this.systemManager.bidInfo(tile.info).systemic;
+  #isBidSystemic(tileInfo) {
+    return this.systemManager.bidInfo(tileInfo).systemic;
   }
 
-  #isBidAvailable(tile) {
+  #isBidAvailable(tileInfo) {
     if (this.currentBid.bidder === null) {
-      return this.#passesInARow < 4 && !tile.isDouble && !tile.isRedouble;
+      return this.#passesInARow < 4 && !tileInfo.isDouble && !tileInfo.isRedouble;
     }
 
     if (this.#passesInARow >= 3) {
       return false;
     }
 
-    if (tile.number !== undefined && tile.suit !== undefined) {
-      return tile.number > this.currentBid.number || (tile.number === this.currentBid.number && Suit.compare(tile.suit, this.currentBid.suit) > 0);
+    if (tileInfo.isNumberSuit) {
+      return tileInfo.number > this.currentBid.number || (tileInfo.number === this.currentBid.number && Suit.compare(tileInfo.suit, this.currentBid.suit) > 0);
     }
 
     const bidTeam = Side.indexOf(this.currentBid.bidder) % 2;
@@ -114,9 +115,9 @@ class BidBoard extends HTMLElement {
     const chooserTeam = Side.indexOf(this.systemManager.currentChooser) % 2;
 
     if (chooserTeam === bidTeam) {
-      return !tile.isDouble && (!tile.isRedouble || (doubleTeam !== -1 && doubleTeam !== chooserTeam));
+      return !tileInfo.isDouble && (!tileInfo.isRedouble || (doubleTeam !== -1 && doubleTeam !== chooserTeam));
     } else {
-      return (!tile.isDouble || (doubleTeam === -1 && redoubleTeam === -1)) && !tile.isRedouble;
+      return (!tileInfo.isDouble || (doubleTeam === -1 && redoubleTeam === -1)) && !tileInfo.isRedouble;
     }
   }
 
