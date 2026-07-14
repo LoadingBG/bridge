@@ -1,6 +1,6 @@
 import createComponent from "../createComponent.js";
 import Side from "../side.js";
-import BidTile from "../bidTile.js";
+import "./bid-tile.js";
 
 await createComponent("bid-history-table", template =>
   class BidHistoryTable extends HTMLElement {
@@ -39,7 +39,8 @@ await createComponent("bid-history-table", template =>
     appendTile(bidInfo, side) {
       const sideIdx = Side.indexOf(side);
 
-      const tile = BidTile.fromTileInfo(bidInfo.tileInfo);
+      const tile = document.createElement("bid-tile");
+      tile.info = bidInfo.tileInfo;
       tile.makeAvailable(true);
       tile.onClick(() => this.visualizePopup(bidInfo, () => {}));
       tile.enableClick(true);

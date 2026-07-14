@@ -1,7 +1,7 @@
 import Side from "./side.js";
 import Suit from "./suit.js";
 import TileInfo from "./tileInfo.js";
-import BidTile from "./bidTile.js";
+import "./components/bid-tile.js";
 
 class CurrentBid {
   constructor(number, suit, bidder, doubler, redoubler) {
@@ -32,7 +32,8 @@ class BidBoard extends HTMLElement {
     for (let i = 1; i <= 7; i++) {
       for (let suit of Suit.values) {
         const tileInfo = TileInfo.numberSuit(i, suit);
-        const tile = BidTile.fromTileInfo(tileInfo);
+        const tile = document.createElement("bid-tile");
+        tile.info = tileInfo;
         tile.onClick(this.#createPopupOnclick(tileInfo, () => {
           this.currentBid.doubler = null;
           this.currentBid.redoubler = null;
@@ -43,7 +44,8 @@ class BidBoard extends HTMLElement {
       }
     }
 
-    const double = BidTile.fromTileInfo(TileInfo.DOUBLE);
+    const double = document.createElement("bid-tile");
+    double.info = TileInfo.DOUBLE;
     double.onClick(this.#createPopupOnclick(TileInfo.DOUBLE, () => {
       this.currentBid.doubler = this.systemManager.currentChooser;
       this.currentBid.redoubler = null;
@@ -51,7 +53,8 @@ class BidBoard extends HTMLElement {
     }));
     this.tiles.push(double);
 
-    const redouble = BidTile.fromTileInfo(TileInfo.REDOUBLE);
+    const redouble = document.createElement("bid-tile");
+    redouble.info = TileInfo.REDOUBLE;
     redouble.onClick(this.#createPopupOnclick(TileInfo.REDOUBLE, () => {
       this.currentBid.doubler = null;
       this.currentBid.redoubler = this.systemManager.currentChooser;
@@ -59,7 +62,8 @@ class BidBoard extends HTMLElement {
     }));
     this.tiles.push(redouble);
 
-    const pass = BidTile.fromTileInfo(TileInfo.PASS);
+    const pass = document.createElement("bid-tile");
+    pass.info = TileInfo.PASS;
     pass.onClick(this.#createPopupOnclick(TileInfo.PASS, () => {
       this.#passesInARow++;
     }));
@@ -146,9 +150,11 @@ class BidBoard extends HTMLElement {
     lastRow.appendChild(this.tiles[37]);
     this.table.appendChild(lastRow);
 
+
     const tileSize = parseInt(this.getAttribute("tile-size"));
     const gapSize = 2;
     const style = document.createElement("style");
+    this.tiles[37].style.width = `${tileSize * 3 + gapSize * 2}px`;
     style.textContent = `
       .bid-board {
         position: relative;
@@ -167,13 +173,8 @@ class BidBoard extends HTMLElement {
         gap: ${gapSize}px;
       }
 
-      number-suit-tile, double-tile, redouble-tile {
+      bid-tile {
         width: ${tileSize}px;
-        height: ${tileSize}px;
-      }
-
-      pass-tile {
-        width: ${tileSize * 3 + gapSize * 2}px;
         height: ${tileSize}px;
       }
     `;

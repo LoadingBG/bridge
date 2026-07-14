@@ -49,15 +49,15 @@ class BidApp extends HTMLElement {
     this.#bidBoard = document.createElement("bid-board");
     this.#bidBoard.setAttribute("tile-size", "100");
     this.#bidBoard.systemManager = this.systemManager;
-    this.#bidBoard.onChosen = (madeBid) => {
-      this.#bidHistoryTable.appendTile(madeBid, this.systemManager.currentChooser);
+    this.#bidBoard.onChosen = (tileInfo) => {
+      this.#bidHistoryTable.appendTile(tileInfo, this.systemManager.currentChooser);
       settingsBar.disableSideMenu(true);
     };
     this.#bidBoard.onBiddingEnd = () => {
       this.#bidHistoryTable.selectSide(undefined);
       this.#bidHistoryTable.disableSideSelection(true);
     };
-    this.#bidBoard.visualizePopup = (tile, onConfirm) => this.#visualizePopup(tile, onConfirm);
+    this.#bidBoard.visualizePopup = (tileInfo, onConfirm) => this.#visualizePopup(tileInfo, onConfirm);
     this.#container.appendChild(this.#bidBoard);
 
     const spacer = document.createElement("span");
@@ -65,7 +65,7 @@ class BidApp extends HTMLElement {
     this.#container.appendChild(spacer);
 
     this.#bidHistoryTable = document.createElement("bid-history-table");
-    this.#bidHistoryTable.visualizePopup = (tile, onConfirm) => this.#visualizePopup(tile, onConfirm);
+    this.#bidHistoryTable.visualizePopup = (tileInfo, onConfirm) => this.#visualizePopup(tileInfo, onConfirm);
     this.#container.appendChild(this.#bidHistoryTable);
     this.#bidHistoryTable.selectSide(this.systemManager.currentChooser);
 

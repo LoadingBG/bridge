@@ -1,8 +1,8 @@
 import createComponent from "../createComponent.js";
 import descriptionToHTML from "../descriptionCreator.js";
-import "./bid-popup-card-table.js";
 import Suit from "../suit.js";
-import BidTile from "../bidTile.js";
+import "./bid-popup-card-table.js";
+import "./bid-tile.js";
 
 await createComponent("bid-popup", template =>
   class BidPopup extends HTMLElement {
@@ -43,13 +43,15 @@ await createComponent("bid-popup", template =>
 
     set bidInfo(bidInfo) {
       this.#cardTable.info = bidInfo.cards;
-      this.#setTile(bidInfo.tileInfo);
+      this.#setTile(bidInfo.tileInfo, bidInfo.isAlert);
       this.#setHCPBox(bidInfo.hcp);
       this.#setDescription(bidInfo.description);
     }
 
-    #setTile(tileInfo) {
-      const tile = BidTile.fromTileInfo(tileInfo);
+    #setTile(tileInfo, isAlert) {
+      const tile = document.createElement("bid-tile");
+      tile.info = tileInfo;
+      tile.isAlert = isAlert;
       tile.makeSystemic(false);
       tile.makeAvailable(true);
       this.#infobox.removeChild(this.#infobox.firstChild);
@@ -70,5 +72,3 @@ await createComponent("bid-popup", template =>
     }
   }
 );
-
-

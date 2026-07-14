@@ -25,7 +25,7 @@
   padding: 2%;
 }
 
-number-suit-tile, double-tile, redouble-tile, pass-tile {
+bid-tile {
   display: block;
   width: 20%;
   aspect-ratio: 1 / 1;
@@ -65,11 +65,12 @@ number-suit-tile, double-tile, redouble-tile, pass-tile {
   height: 1em;
 }
 
-.descriptioned-tile number-suit-tile, .descriptioned-tile double-tile .descriptioned-tile redouble-tile, .descriptioned-tile pass-tile {
+.descriptioned-tile bid-tile {
   position: absolute;
   top: 0;
   width: 1em;
   height: 1em;
+  white-space: normal;
 }
 
 .descriptioned-text.error {

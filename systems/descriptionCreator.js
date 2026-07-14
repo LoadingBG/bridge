@@ -1,7 +1,7 @@
 import { BidInfo } from "./system.js";
 import TileInfo from "./tileInfo.js";
 import Suit from "./suit.js";
-import BidTile from "./bidTile.js";
+import "./components/bid-tile.js";
 
 export default function descriptionToHTML(description, systemManager) {
   return description.map(part => descriptionPartToHTML(part, systemManager));
@@ -58,7 +58,8 @@ function conventionToHTML(part, systemManager) {
 
 function tileToHTML(part) {
   const tileInfo = new TileInfo(part.number ?? null, Suit[part.suit] ?? null, part.double ?? false, part.redouble ?? false, part.pass ?? false);
-  const tile = BidTile.fromTileInfo(tileInfo);
+  const tile = document.createElement("bid-tile");
+  tile.info = tileInfo;
   tile.makeAvailable(true);
 
   const span = document.createElement("span");

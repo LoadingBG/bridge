@@ -39,7 +39,7 @@ svg {
   fill: #fff;
 }
 
-number-suit-tile, double-tile, redouble-tile, pass-tile, .empty-tile {
+bid-tile, .empty-tile {
   width: 100%;
   aspect-ratio: 1 / 1;
 }
