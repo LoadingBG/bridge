@@ -68,7 +68,6 @@ number-suit-tile, double-tile, redouble-tile, pass-tile {
 .descriptioned-tile number-suit-tile, .descriptioned-tile double-tile .descriptioned-tile redouble-tile, .descriptioned-tile pass-tile {
   position: absolute;
   top: 0;
-  display: inline-block;
   width: 1em;
   height: 1em;
 }

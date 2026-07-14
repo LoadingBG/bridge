@@ -39,9 +39,11 @@ function conventionToHTML(part, systemManager) {
   helperTitle.setAttribute("class", "helper-title");
   helperTitle.textContent = convention.title;
   helperBox.appendChild(helperTitle);
-
+  
   helperBox.style.display = "none";
-  convention.description.map(part => descriptionPartToHTML(part)).forEach(elem => helperBox.appendChild(elem));
+  const description = document.createElement("span");
+  convention.description.map(part => descriptionPartToHTML(part)).forEach(elem => description.appendChild(elem));
+  helperBox.appendChild(description);
   span.appendChild(helperBox);
 
   let isDescriptionOpen = false;
