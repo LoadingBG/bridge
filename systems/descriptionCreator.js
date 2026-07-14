@@ -1,4 +1,5 @@
-import { MadeBid } from "./system.js";
+import { BidInfo } from "./system.js";
+import TileInfo from "./tileInfo.js";
 import Suit from "./suit.js";
 import BidTile from "./bidTile.js";
 
@@ -56,8 +57,8 @@ function conventionToHTML(part, systemManager) {
 }
 
 function tileToHTML(part) {
-  const madeBid = new MadeBid(part.number, Suit[part.suit], part.double, part.redouble, part.pass);
-  const tile = BidTile.fromMadeBid(madeBid);
+  const tileInfo = new TileInfo(part.number, Suit[part.suit], part.double, part.redouble, part.pass);
+  const tile = BidTile.fromTileInfo(tileInfo);
   tile.makeAvailable(true);
 
   const span = document.createElement("span");

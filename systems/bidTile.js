@@ -1,5 +1,6 @@
 import createSVG from "./createSVG.js";
 import Suit from "./suit.js";
+import TileInfo from "./tileInfo.js";
 
 // const ONE = createSVG("65 85 220 365", "M 100 200 L 150 150 V 400 H 64.64466 V 450 H 285.35534 V 400 H 215 V 85 H 150 L 65 165 Z");
 const createOne   = () => createSVG("0 0 16 16", "M6.64594 0L2.32922 2.15836L3.67086 4.84164L7.00004 3.17705V13H3.00004V16H13V13H10V0H6.64594Z");
@@ -32,21 +33,31 @@ export default class BidTile extends HTMLElement {
     }
   }
 
-  static fromMadeBid(madeBid) {
+  static fromTileInfo(tileInfo) {
     const tile = document.createElement(
-      madeBid.isPass
+      tileInfo.isPass
         ? "pass-tile"
-        : madeBid.isDoubled
+        : tileInfo.isDoubled
           ? "double-tile"
-          : madeBid.isRedoubled
+          : tileInfo.isRedoubled
             ? "redouble-tile"
             : "number-suit-tile"
     );
-    if (madeBid.number !== undefined && madeBid.suit !== undefined) {
-      tile.setAttribute("number", madeBid.number);
-      tile.setAttribute("suit", Suit.nameOf(madeBid.suit));
+    if (tileInfo.isNumberSuit) {
+      tile.setAttribute("number", tileInfo.number);
+      tile.setAttribute("suit", Suit.nameOf(tileInfo.suit));
     }
     return tile;
+  }
+
+  get info() {
+    return this.isDouble
+      ? TileInfo.DOUBLE
+      : this.isRedouble
+        ? TileInfo.REDOUBLE
+        : this.isPass
+          ? TileInfo.PASS
+          : TileInfo.numberSuit(this.number, this.suit);
   }
 
   component() {

@@ -42,12 +42,12 @@ class BidHistoryTable extends HTMLElement {
     highlighted.setAttribute("class", "label-box active");
   }
 
-  appendTile(madeBid, side) {
+  appendTile(bidInfo, side) {
     const sideIdx = Side.indexOf(side);
 
-    const tile = BidTile.fromMadeBid(madeBid);
+    const tile = BidTile.fromTileInfo(bidInfo.tileInfo);
     tile.makeAvailable(true);
-    tile.onClick(() => this.visualizePopup(madeBid, () => {}));
+    tile.onClick(() => this.visualizePopup(bidInfo, () => {}));
     tile.enableClick(true);
 
     for (let i = 0; i < sideIdx; i++) {

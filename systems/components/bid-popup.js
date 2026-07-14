@@ -41,15 +41,15 @@ await createComponent("bid-popup", template =>
       this.#systemManager = systemManager;
     }
 
-    set madeBid(madeBid) {
-      this.#cardTable.info = madeBid.cards;
-      this.#setTile(madeBid);
-      this.#setHCPBox(madeBid.hcp);
-      this.#setDescription(madeBid.description);
+    set bidInfo(bidInfo) {
+      this.#cardTable.info = bidInfo.cards;
+      this.#setTile(bidInfo.tileInfo);
+      this.#setHCPBox(bidInfo.hcp);
+      this.#setDescription(bidInfo.description);
     }
 
-    #setTile(madeBid) {
-      const tile = BidTile.fromMadeBid(madeBid);
+    #setTile(tileInfo) {
+      const tile = BidTile.fromTileInfo(tileInfo);
       tile.makeSystemic(false);
       tile.makeAvailable(true);
       this.#infobox.removeChild(this.#infobox.firstChild);

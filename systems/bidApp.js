@@ -15,10 +15,10 @@ class BidApp extends HTMLElement {
     this.systemManager = System.fromJSON(fmi);
   }
 
-  #visualizePopup(madeBid, onConfirm) {
+  #visualizePopup(bidInfo, onConfirm) {
     const popup = document.createElement("bid-popup");
     popup.systemManager = this.systemManager;
-    popup.madeBid = madeBid;
+    popup.bidInfo = bidInfo;
     popup.onCancel = () => {
       this.#container.removeChild(popup);
     };

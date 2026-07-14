@@ -67,11 +67,11 @@ class BidBoard extends HTMLElement {
 
   #createPopupOnclick(tile, onConfirm) {
     return () => {
-      const bid = this.systemManager.bidInfo(tile).bid;
-      this.visualizePopup(bid, () => {
-        const madeBid = this.systemManager.update(tile);
+      const bidInfo = this.systemManager.bidInfo(tile.info);
+      this.visualizePopup(bidInfo, () => {
+        this.systemManager.update(tile.info);
         onConfirm();
-        this.onChosen(madeBid);
+        this.onChosen(bidInfo);
         this.systemManager.selectNextChooser();
         if ((this.currentBid.bidder === null && this.#passesInARow === 4) || (this.currentBid.bidder !== null && this.#passesInARow >= 3)) {
           this.onBiddingEnd();
@@ -92,7 +92,7 @@ class BidBoard extends HTMLElement {
   }
 
   #isBidSystemic(tile) {
-    return this.systemManager.bidInfo(tile).systemic;
+    return this.systemManager.bidInfo(tile.info).systemic;
   }
 
   #isBidAvailable(tile) {
