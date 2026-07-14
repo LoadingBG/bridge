@@ -1,4 +1,7 @@
-class MadeBid {
+import Side from "./side.js";
+import Suit from "./suit.js";
+
+export class MadeBid {
   constructor(number, suit, isDoubled, isRedoubled, isPass, isAlert, hcp, description, cards) {
     this.number = number;
     this.suit = suit;
@@ -15,7 +18,7 @@ class MadeBid {
 
 
 
-class System {
+export class System {
   constructor() {
     this.currentChooser = Side.NORTH;
   }

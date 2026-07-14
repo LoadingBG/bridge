@@ -1,3 +1,6 @@
+import Side from "./side.js";
+import Suit from "./suit.js";
+
 class CurrentBid {
   constructor(number, suit, bidder, doubler, redoubler) {
     this.number = number;

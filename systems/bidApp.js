@@ -1,4 +1,6 @@
 import fmi from "./fmi.json" with { type: "json" };
+import { System } from "./system.js";
+import Side from "./side.js";
 import {} from "./components/app-settings.js";
 
 class BidApp extends HTMLElement {

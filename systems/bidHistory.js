@@ -1,3 +1,6 @@
+import Side from "./side.js";
+import BidTile from "./bidTile.js";
+
 class BidHistoryTable extends HTMLElement {
   #columns = [];
   #sideSelectionDisabled = false;

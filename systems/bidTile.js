@@ -1,12 +1,5 @@
-function createSVG(viewBox, path) {
-	const result = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-  result.setAttribute("viewBox", viewBox);
-  const pathElem = document.createElementNS("http://www.w3.org/2000/svg", "path");
-  pathElem.setAttribute("d", path);
-  pathElem.setAttribute("fill-rule", "evenodd");
-  result.appendChild(pathElem);
-  return result;
-}
+import createSVG from "./createSVG.js";
+import Suit from "./suit.js";
 
 // const ONE = createSVG("65 85 220 365", "M 100 200 L 150 150 V 400 H 64.64466 V 450 H 285.35534 V 400 H 215 V 85 H 150 L 65 165 Z");
 const createOne   = () => createSVG("0 0 16 16", "M6.64594 0L2.32922 2.15836L3.67086 4.84164L7.00004 3.17705V13H3.00004V16H13V13H10V0H6.64594Z");
@@ -24,7 +17,7 @@ const createPass     = () => createSVG("0 0 512 128", "M72.51 15.42H34.65c-.15 0
 
 
 
-class BidTile extends HTMLElement {
+export default class BidTile extends HTMLElement {
   #container = document.createElement("span");
   #border = document.createElement("span");
   #onClick;

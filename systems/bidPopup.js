@@ -1,3 +1,7 @@
+import { MadeBid } from "./system.js";
+import Suit from "./suit.js";
+import BidTile from "./bidTile.js";
+
 class BidPopup extends HTMLElement {
   #cancelButton = document.createElement("button");
   #confirmButton = document.createElement("button");
