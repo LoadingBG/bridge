@@ -1,0 +1,45 @@
+.container {
+  margin: 0px;
+  padding: 0px;
+  border: 0px;
+
+  width: 100%;
+  display: flex;
+  background: #0f253f;
+  justify-content: space-evenly;
+}
+
+.column {
+  margin: 0px;
+  padding: 0px 0px 10px 0px;
+  border: 0px;
+
+  width: 20%;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.label-box {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+}
+
+.bids-box {
+  min-height: 10px;
+  background: #4c5c71;
+}
+
+svg {
+  fill: #4c5c71;
+}
+
+.label-box.active svg {
+  fill: #fff;
+}
+
+number-suit-tile, double-tile, redouble-tile, pass-tile, .empty-tile {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+}

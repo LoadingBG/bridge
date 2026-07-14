@@ -3,6 +3,7 @@ import { System } from "./system.js";
 import Side from "./side.js";
 import "./components/app-settings.js";
 import "./components/bid-popup.js";
+import "./components/bid-history-table.js";
 
 class BidApp extends HTMLElement {
   #bidHistoryTable;
