@@ -1,4 +1,5 @@
 import fmi from "./fmi.json" with { type: "json" };
+import {} from "./components/app-settings.js";
 
 class BidApp extends HTMLElement {
   #bidHistoryTable;
@@ -34,12 +35,12 @@ class BidApp extends HTMLElement {
     dom.appendChild(this.#container);
 
     const settingsBar = document.createElement("app-settings");
-    this.#container.appendChild(settingsBar);
     settingsBar.onSideChosen = (side) => {
       side = Side[side];
       this.systemManager.currentChooser = side;
       this.#bidHistoryTable.selectSide(side);
     };
+    this.#container.appendChild(settingsBar);
 
     this.#bidBoard = document.createElement("bid-board");
     this.#bidBoard.setAttribute("tile-size", "100");
@@ -85,10 +86,6 @@ class BidApp extends HTMLElement {
         top: 0;
         width: ${this.#bidBoard.offsetWidth}px;
         height: 100%;
-      }
-
-      app-settings {
-        width: ${this.#bidBoard.offsetWidth}px;
       }
     `;
     dom.appendChild(style);
