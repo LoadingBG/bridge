@@ -6,8 +6,6 @@ import "./bid-tile.js";
 
 await createComponent("bid-popup", template =>
   class BidPopup extends HTMLElement {
-    static observedAttributes = ["disabled"];
-
     #systemManager;
 
     #container;
@@ -82,12 +80,6 @@ await createComponent("bid-popup", template =>
       [...this.#descriptionBox.childNodes].forEach(child => this.#descriptionBox.removeChild(child));
       descriptionToHTML(description, this.#systemManager)
         .forEach(elem => this.#descriptionBox.appendChild(elem));
-    }
-
-    attributeChangedCallback(name, oldValue, newValue) {
-      if (name === "disabled" && newValue === null) {
-        this.#infobox.style.width = `${this.#container.offsetWidth * 0.8}px`;
-      }
     }
   }
 );
