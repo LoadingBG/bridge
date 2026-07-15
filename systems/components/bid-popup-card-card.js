@@ -1,5 +1,7 @@
 import createComponent from "../createComponent.js";
 
+const DEFAULT_DESCRIPTION = "Няма индикация";
+
 await createComponent("bid-popup-card-card", template =>
   class BidPopupCardCard extends HTMLElement {
     #description;
@@ -15,9 +17,7 @@ await createComponent("bid-popup-card-card", template =>
     }
 
     set description(description) {
-      if (description !== undefined) {
-        this.#description.textContent = description;
-      }
+      this.#description.textContent = description ?? DEFAULT_DESCRIPTION;
     }
 
     set suit(suit) {

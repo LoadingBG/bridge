@@ -6,8 +6,11 @@ import "./bid-tile.js";
 
 await createComponent("bid-popup", template =>
   class BidPopup extends HTMLElement {
+    static observedAttributes = ["disabled"];
+
     #systemManager;
 
+    #container;
     #infobox;
     #hcpBox;
     #descriptionBox;
@@ -21,6 +24,7 @@ await createComponent("bid-popup", template =>
       const dom = this.attachShadow({ mode: "open" });
       dom.appendChild(document.importNode(template, true));
 
+      this.#container = dom.querySelector(".container");
       this.#infobox = dom.querySelector(".infobox");
       this.#hcpBox = dom.querySelector("#hcp-box");
       this.#descriptionBox = dom.querySelector(".description");
@@ -54,7 +58,7 @@ await createComponent("bid-popup", template =>
       tile.isAlert = isAlert;
       tile.makeSystemic(false);
       tile.makeAvailable(true);
-      this.#infobox.removeChild(this.#infobox.firstChild);
+      this.#infobox.removeChild(this.#infobox.firstElementChild);
       this.#infobox.prepend(tile);
     }
 
@@ -71,6 +75,12 @@ await createComponent("bid-popup", template =>
       [...this.#descriptionBox.childNodes].forEach(child => this.#descriptionBox.removeChild(child));
       descriptionToHTML(description, this.#systemManager)
         .forEach(elem => this.#descriptionBox.appendChild(elem));
+    }
+
+    attributeChangedCallback(name, oldValue, newValue) {
+      if (name === "disabled" && newValue === null) {
+        this.#infobox.style.width = `${this.#container.offsetWidth * 0.8}px`;
+      }
     }
   }
 );

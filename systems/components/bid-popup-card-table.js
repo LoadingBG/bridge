@@ -14,22 +14,23 @@ await createComponent("bid-popup-card-table", template =>
 
       const dom = this.attachShadow({ mode: "open" });
       dom.appendChild(document.importNode(template, true));
+
       this.#clubCard = dom.querySelector("#club-card");
       this.#diamondCard = dom.querySelector("#diamond-card");
       this.#heartCard = dom.querySelector("#heart-card");
       this.#spadeCard = dom.querySelector("#spade-card");
+
+      this.#clubCard.suit = Suit.CLUB;
+      this.#diamondCard.suit = Suit.DIAMOND;
+      this.#heartCard.suit = Suit.HEART;
+      this.#spadeCard.suit = Suit.SPADE;
     }
 
     set info(info) {
-      this.#setupCard(this.#clubCard, Suit.CLUB, info);
-      this.#setupCard(this.#diamondCard, Suit.DIAMOND, info);
-      this.#setupCard(this.#heartCard, Suit.HEART, info);
-      this.#setupCard(this.#spadeCard, Suit.SPADE, info);
-    }
-
-    #setupCard(card, suit, info) {
-      card.description = info[Suit.nameOf(suit)];
-      card.suit = suit;
+      this.#clubCard.description = info[Suit.nameOf(Suit.CLUB)];
+      this.#diamondCard.description = info[Suit.nameOf(Suit.DIAMOND)];
+      this.#heartCard.description = info[Suit.nameOf(Suit.HEART)];
+      this.#spadeCard.description = info[Suit.nameOf(Suit.SPADE)];
     }
   }
 );
