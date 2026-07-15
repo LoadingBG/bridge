@@ -1,13 +1,7 @@
 .card-table {
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.card-row {
-  flex: 1;
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, auto);
   gap: 2px;
 }
 
