@@ -2,7 +2,7 @@
   "name": "ФМИ",
 
   "conventions": {
-    "high-card-points": {
+    "highCardPoints": {
       "title": "Точки от оньори",
       "description": [
         "Използват се за оценка на ръката. Точки се приписват на следните карти:\nА - 4\tK - 3\tQ - 2\tJ - 1\nВсички останали карти не носят точки. Накрая всичките точки се събират."
@@ -14,7 +14,7 @@
         "Слаба ръка с дълга боя. Обявява се, за да спре разговора на противниците.\nБараж се обявява на минимум 6 карти от боята, като се открива на второ ниво. Всяка допълнителна карта от боята позволява бараж от по-високо ниво - например седморна боя може да се обяви на трето ниво."
       ]
     },
-    "takeout-double": {
+    "takeoutDouble": {
       "title": "Информативна (тейкаут) контра",
       "description": [
         "Добра ръка с липса (сек или шикан) на контрираната боя. Казва на съотборника да обяви хубава за него боя на базата, че контрата му обещава подкрепа във всяка друга боя."
@@ -38,7 +38,7 @@
         " е запитване за четвърти мажор. Ако и двамата съотборници имат еднакъв мажор, могат да играят на боята вместо на без коз."
       ]
     },
-    "jacoby-transfer": {
+    "jacobyTransfer": {
       "title": "Трансфер Якоби",
       "description": [
         "Показва дължина в следващата по поредност боя. Обявяване на пика е трансфер за спатии.\nБез коз е силна обява. По тази причина безкозовата ръка е хубаво да се държи скрита. Затова се обявява предишната боя - така играчът със силната ръка може да обяви игралната боя и да задържи ръката си скрита."
@@ -148,7 +148,7 @@
                             {
                               "type": "convention",
                               "text": "Информативна контра",
-                              "convention": "takeout-double"
+                              "convention": "takeoutDouble"
                             },
                             " на пика."
                           ],
@@ -192,7 +192,7 @@
                                     {
                                       "type": "convention",
                                       "text": "информативната контра",
-                                      "convention": "takeout-double"
+                                      "convention": "takeoutDouble"
                                     },
                                     " на спатия. Обявена е най-силната боя."
                                   ],
@@ -323,7 +323,7 @@
                     {
                       "type": "convention",
                       "text": "Трансфер Якоби",
-                      "convention": "jacoby-transfer"
+                      "convention": "jacobyTransfer"
                     },
                     " за купи."
                   ],
@@ -347,7 +347,7 @@
                             {
                               "type": "convention",
                               "text": "Трансфериране",
-                              "convention": "jacoby-transfer"
+                              "convention": "jacobyTransfer"
                             },
                             "."
                           ],
@@ -529,7 +529,7 @@
             {
               "type": "convention",
               "text": "Информативна контра",
-              "convention": "takeout-double"
+              "convention": "takeoutDouble"
             },
             " на спатия."
           ],
@@ -683,7 +683,7 @@
                 {
                   "type": "convention",
                   "text": "Трансфер Якоби",
-                  "convention": "jacoby-transfer"
+                  "convention": "jacobyTransfer"
                 },
                 " за купа."
               ],
@@ -700,7 +700,7 @@
                 {
                   "type": "convention",
                   "text": "Трансфер Якоби",
-                  "convention": "jacoby-transfer"
+                  "convention": "jacobyTransfer"
                 },
                 " за пика."
               ],
@@ -717,7 +717,7 @@
                 {
                   "type": "convention",
                   "text": "Трансфер Якоби",
-                  "convention": "jacoby-transfer"
+                  "convention": "jacobyTransfer"
                 },
                 " за спатия."
               ],
@@ -752,7 +752,7 @@
                 {
                   "type": "convention",
                   "text": "Трансфер Якоби",
-                  "convention": "jacoby-transfer"
+                  "convention": "jacobyTransfer"
                 },
                 " за каро."
               ],
@@ -792,7 +792,7 @@
         {
           "type": "convention",
           "text": "ТО",
-          "convention": "high-card-points"
+          "convention": "highCardPoints"
         },
         ") балансирана ръка, в която има повече точки от ",
         {
