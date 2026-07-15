@@ -4,6 +4,7 @@ import Side from "./side.js";
 import "./components/app-settings.js";
 import "./components/bid-popup.js";
 import "./components/bid-history-table.js";
+import "./components/bid-board.js";
 
 class BidApp extends HTMLElement {
   #bidHistoryTable;
