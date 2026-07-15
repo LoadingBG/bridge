@@ -13,10 +13,11 @@ function descriptionPartToHTML(part, systemManager) {
   }
 
   switch (part.type) {
-    case "convention": return conventionToHTML(part, systemManager);
-    case "tile": return tileToHTML(part, systemManager);
-    case undefined: throw new Error("Cannot parse part without type");
-    default: throw new Error(`Unrecognized type: ${part.type}`);
+    case "convention":      return conventionToHTML(part, systemManager);
+    case "numberOperation": return numberOperationToHTML(part, systemManager);
+    case "tile":            return tileToHTML(part, systemManager);
+    case undefined:         throw new Error("Cannot parse part without type");
+    default:                throw new Error(`Unrecognized type: ${part.type}`);
   }
 }
 
@@ -88,4 +89,18 @@ function tileToHTML(part) {
   // };
 
   // return span;
+}
+
+function numberOperationToHTML(part, systemManager) {
+  const span = document.createElement("span");
+  switch (part.operation) {
+    case "lessThan":        span.textContent = `под ${part.number}`; break;
+    case "lessThanOrEqual": span.textContent = `най-много ${part.number}`; break;
+    case "moreThan":        span.textContent = `над ${part.number}`; break;
+    case "moreThanOrEqual": span.textContent = `поне ${part.number}`; break;
+    case "between":         span.textContent = `между ${part.lowerBound} и ${part.upperBound}`; break;
+    case undefined:         throw new Error("Number operation is undefined"); break;
+    default:                throw new Error(`Unknown number operation: ${part.operation}`);
+  }
+  return span;
 }

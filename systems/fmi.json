@@ -53,7 +53,13 @@
       "description": [
         "Ръка с недостатъчно точки за откриване."
       ],
-      "hcp": "< 11",
+      "hcp": [
+        {
+          "type": "numberOperation",
+          "operation": "lessThan",
+          "number": 11
+        }
+      ],
       "cards": {},
       "continuations": [
         {
@@ -62,7 +68,13 @@
           "description": [
             "Ръка с недостатъчно точки за откриване."
           ],
-          "hcp": "< 11",
+          "hcp": [
+            {
+              "type": "numberOperation",
+              "operation": "lessThan",
+              "number": 11
+            }
+          ],
           "cards": {},
           "continuations": [
             {
@@ -78,7 +90,13 @@
                 },
                 ", липсват 5 купи в ръката."
               ],
-              "hcp": ">= 11",
+              "hcp": [
+                {
+                  "type": "numberOperation",
+                  "operation": "moreThanOrEqual",
+                  "number": 11
+                }
+              ],
               "cards": {
                 "HEART": "< 5",
                 "SPADE": ">= 5"
@@ -90,7 +108,13 @@
                   "description": [
                     "Ръка с недостатъчно точки за обявяване."
                   ],
-                  "hcp": "< 11",
+                  "hcp": [
+                    {
+                      "type": "numberOperation",
+                      "operation": "lessThan",
+                      "number": 11
+                    }
+                  ],
                   "cards": {},
                   "continuations": [
                     {
@@ -99,7 +123,13 @@
                       "description": [
                         "Слаба ръка."
                       ],
-                      "hcp": "< 6",
+                      "hcp": [
+                        {
+                          "type": "numberOperation",
+                          "operation": "lessThan",
+                          "number": 6
+                        }
+                      ],
                       "cards": {},
                       "continuations": [
                         {
@@ -108,7 +138,6 @@
                           "description": [
                             "Край на обявяването."
                           ],
-                          "hcp": "-",
                           "cards": {},
                           "continuations": []
                         },
@@ -123,7 +152,13 @@
                             },
                             " на пика."
                           ],
-                          "hcp": "> 11",
+                          "hcp": [
+                            {
+                              "type": "numberOperation",
+                              "operation": "moreThan",
+                              "number": 11
+                            }
+                          ],
                           "cards": {
                             "CLUB": ">= 3",
                             "DIAMOND": ">= 3",
@@ -137,7 +172,13 @@
                               "description": [
                                 "Повтаряне на боята за показване на дължина."
                               ],
-                              "hcp": ">= 12",
+                              "hcp": [
+                                {
+                                  "type": "numberOperation",
+                                  "operation": "moreThanOrEqual",
+                                  "number": 12
+                                }
+                              ],
                               "cards": {
                                 "SPADE": ">= 6"
                               },
@@ -155,7 +196,14 @@
                                     },
                                     " на спатия. Обявена е най-силната боя."
                                   ],
-                                  "hcp": "8 - 12",
+                                  "hcp": [
+                                    {
+                                      "type": "numberOperation",
+                                      "operation": "between",
+                                      "lowerBound": 8,
+                                      "upperBound": 12
+                                    }
+                                  ],
                                   "cards": {
                                     "CLUB": ">= 5"
                                   },
@@ -166,7 +214,13 @@
                                       "description": [
                                         "Нищо ново за обявяване."
                                       ],
-                                      "hcp": "<= 5",
+                                      "hcp": [
+                                        {
+                                          "type": "numberOperation",
+                                          "operation": "lessThanOrEqual",
+                                          "number": 5
+                                        }
+                                      ],
                                       "cards": {},
                                       "continuations": [
                                         {
@@ -175,7 +229,13 @@
                                           "description": [
                                             "Съгласие за игра на спатия. Няма достатъчна сила за игра на по-високо ниво."
                                           ],
-                                          "hcp": "> 11",
+                                          "hcp": [
+                                            {
+                                              "type": "numberOperation",
+                                              "operation": "moreThan",
+                                              "number": 11
+                                            }
+                                          ],
                                           "cards": {
                                             "CLUB": ">= 3",
                                             "DIAMOND": ">= 3",
@@ -188,7 +248,13 @@
                                               "description": [
                                                 "Край на обявяването."
                                               ],
-                                              "hcp": ">= 12",
+                                              "hcp": [
+                                                {
+                                                  "type": "numberOperation",
+                                                  "operation": "moreThanOrEqual",
+                                                  "number": 12
+                                                }
+                                              ],
                                               "cards": {
                                                 "SPADE": ">= 6"
                                               },
@@ -219,7 +285,14 @@
           "description": [
             "Балансирана ръка - поне по две карти от всяка боя и максимум една двойна боя. Има оньори във всяка боя."
           ],
-          "hcp": "15 - 17",
+          "hcp": [
+            {
+              "type": "numberOperation",
+              "operation": "between",
+              "lowerBound": 15,
+              "upperBound": 17
+            }
+          ],
           "cards": {
             "CLUB": ">= 2",
             "DIAMOND": ">= 2",
@@ -233,7 +306,13 @@
               "description": [
                 "Ръка с недостатъчно точки за обявяване."
               ],
-              "hcp": "< 11",
+              "hcp": [
+                {
+                  "type": "numberOperation",
+                  "operation": "lessThan",
+                  "number": 11
+                }
+              ],
               "cards": {},
               "continuations": [
                 {
@@ -248,7 +327,6 @@
                     },
                     " за купи."
                   ],
-                  "hcp": "-",
                   "cards": {
                     "HEART": ">= 5"
                   },
@@ -259,7 +337,6 @@
                       "description": [
                         "Нищо ново за обявяване."
                       ],
-                      "hcp": "-",
                       "cards": {},
                       "continuations": [
                         {
@@ -274,7 +351,14 @@
                             },
                             "."
                           ],
-                          "hcp": "15-17",
+                          "hcp": [
+                            {
+                              "type": "numberOperation",
+                              "operation": "between",
+                              "lowerBound": 15,
+                              "upperBound": 17
+                            }
+                          ],
                           "cards": {
                             "CLUB": ">= 2",
                             "DIAMOND": ">= 2",
@@ -288,7 +372,6 @@
                               "description": [
                                 "Нищо ново за обявяване."
                               ],
-                              "hcp": "-",
                               "cards": {},
                               "continuations": [
                                 {
@@ -298,7 +381,14 @@
                                   "description": [
                                     "Дава право на съотборника да избере кой манш да се играе - купи или без коз. Показва добра ръка поради скока в манш."
                                   ],
-                                  "hcp": "11 - 15",
+                                  "hcp": [
+                                    {
+                                      "type": "numberOperation",
+                                      "operation": "between",
+                                      "lowerBound": 11,
+                                      "upperBound": 15
+                                    }
+                                  ],
                                   "cards": {
                                     "HEART": ">= 5"
                                   },
@@ -309,7 +399,6 @@
                                       "description": [
                                         "Нищо ново за обявяване."
                                       ],
-                                      "hcp": "-",
                                       "cards": {},
                                       "continuations": [
                                         {
@@ -319,7 +408,14 @@
                                           "description": [
                                             "Избран е манш на купи."
                                           ],
-                                          "hcp": "15 - 17",
+                                          "hcp": [
+                                            {
+                                              "type": "numberOperation",
+                                              "operation": "between",
+                                              "lowerBound": 15,
+                                              "upperBound": 17
+                                            }
+                                          ],
                                           "cards": {
                                             "CLUB": ">= 2",
                                             "DIAMOND": ">= 2",
@@ -333,7 +429,6 @@
                                               "description": [
                                                 "Нищо ново за обявяване."
                                               ],
-                                              "hcp": "-",
                                               "cards": {},
                                               "continuations": [
                                                 {
@@ -342,7 +437,14 @@
                                                   "description": [
                                                     "Игра на манш купи."
                                                   ],
-                                                  "hcp": "11 - 15",
+                                                  "hcp": [
+                                                    {
+                                                      "type": "numberOperation",
+                                                      "operation": "between",
+                                                      "lowerBound": 11,
+                                                      "upperBound": 15
+                                                    }
+                                                  ],
                                                   "cards": {
                                                     "HEART": ">= 5"
                                                   },
@@ -353,7 +455,6 @@
                                                       "description": [
                                                         "Край на обявяването."
                                                       ],
-                                                      "hcp": "-",
                                                       "cards": {},
                                                       "continuations": []
                                                     }
@@ -388,7 +489,13 @@
       "description": [
         "Отваряща ръка без петорни купа и пика, в която спатиите са по-добри от карите. Също се обявява при 3 спатии и 3 кари в ръката."
       ],
-      "hcp": ">= 11",
+      "hcp": [
+        {
+          "type": "numberOperation",
+          "operation": "moreThanOrEqual",
+          "number": 11
+        }
+      ],
       "cards": {
         "CLUB": ">= 3",
         "HEART": "< 5",
@@ -401,7 +508,13 @@
           "description": [
             "Ръка без подходяща обява, незадължително слаба."
           ],
-          "hcp": "< 15",
+          "hcp": [
+            {
+              "type": "numberOperation",
+              "operation": "lessThan",
+              "number": 15
+            }
+          ],
           "cards": {
             "DIAMOND": "< 4",
             "HEART": "< 5",
@@ -420,7 +533,13 @@
             },
             " на спатия."
           ],
-          "hcp": "> 11",
+          "hcp": [
+            {
+              "type": "numberOperation",
+              "operation": "moreThan",
+              "number": 11
+            }
+          ],
           "cards": {
             "CLUB": "<= 1",
             "DIAMOND": ">= 3",
@@ -438,7 +557,13 @@
       "description": [
         "Отваряща ръка без петорни купа и пика, в която карите са по-добри от спатиите. Също се обявява при 4 спатии и 4 кари."
       ],
-      "hcp": ">= 11",
+      "hcp": [
+        {
+          "type": "numberOperation",
+          "operation": "moreThanOrEqual",
+          "number": 11
+        }
+      ],
       "cards": {
         "DIAMOND": ">= 3",
         "HEART": "< 5",
@@ -453,7 +578,13 @@
       "description": [
         "Отваряща ръка с поне 5 купи. Не отрича 5 пики."
       ],
-      "hcp": ">= 11",
+      "hcp": [
+        {
+          "type": "numberOperation",
+          "operation": "moreThanOrEqual",
+          "number": 11
+        }
+      ],
       "cards": {
         "HEART": ">= 5"
       },
@@ -472,7 +603,13 @@
         },
         ", липсват 5 купи в ръката."
       ],
-      "hcp": ">= 11",
+      "hcp": [
+        {
+          "type": "numberOperation",
+          "operation": "moreThanOrEqual",
+          "number": 11
+        }
+      ],
       "cards": {
         "HEART": "< 5",
         "SPADE": ">= 5"
@@ -486,7 +623,14 @@
       "description": [
         "Балансирана ръка - поне по две карти от всяка боя и максимум една двойна боя. Има оньори във всяка боя."
       ],
-      "hcp": "15 - 17",
+      "hcp": [
+        {
+          "type": "numberOperation",
+          "operation": "between",
+          "lowerBound": 15,
+          "upperBound": 17
+        }
+      ],
       "cards": {
         "CLUB": ">= 2",
         "DIAMOND": ">= 2",
@@ -500,7 +644,13 @@
           "description": [
             "Ръка без подходящо обявяване."
           ],
-          "hcp": "< 15",
+          "hcp": [
+            {
+              "type": "numberOperation",
+              "operation": "lessThan",
+              "number": 15
+            }
+          ],
           "cards": {},
           "continuations": [
             {
@@ -515,7 +665,13 @@
                 },
                 "."
               ],
-              "hcp": ">= 8",
+              "hcp": [
+                {
+                  "type": "numberOperation",
+                  "operation": "moreThanOrEqual",
+                  "number": 8
+                }
+              ],
               "cards": {},
               "continuations": []
             },
@@ -531,7 +687,6 @@
                 },
                 " за купа."
               ],
-              "hcp": "-",
               "cards": {
                 "HEART": ">= 5"
               },
@@ -549,7 +704,6 @@
                 },
                 " за пика."
               ],
-              "hcp": "-",
               "cards": {
                 "SPADE": ">= 5"
               },
@@ -567,7 +721,6 @@
                 },
                 " за спатия."
               ],
-              "hcp": "-",
               "cards": {
                 "CLUB": ">= 5"
               },
@@ -580,7 +733,14 @@
               "description": [
                 "Подкрепа на без коз. Покана за манш."
               ],
-              "hcp": "9 - 10",
+              "hcp": [
+                {
+                  "type": "numberOperation",
+                  "operation": "between",
+                  "lowerBound": 9,
+                  "upperBound": 10
+                }
+              ],
               "cards": {},
               "continuations": []
             },
@@ -596,7 +756,6 @@
                 },
                 " за каро."
               ],
-              "hcp": "-",
               "cards": {
                 "DIAMOND": ">= 5"
               },
@@ -609,7 +768,14 @@
               "description": [
                 "Подкрепа на без коз. Манш за игра."
               ],
-              "hcp": "11 - 12",
+              "hcp": [
+                {
+                  "type": "numberOperation",
+                  "operation": "between",
+                  "lowerBound": 11,
+                  "upperBound": 12
+                }
+              ],
               "cards": {},
               "continuations": []
             }
@@ -636,7 +802,13 @@
         },
         "."
       ],
-      "hcp": ">= 20",
+      "hcp": [
+        {
+          "type": "numberOperation",
+          "operation": "moreThanOrEqual",
+          "number": 20
+        }
+      ],
       "cards": {},
       "continuations": []
     },
@@ -652,7 +824,13 @@
         },
         " на кари с поне шесторна боя."
       ],
-      "hcp": "<= 10",
+      "hcp": [
+        {
+          "type": "numberOperation",
+          "operation": "lessThanOrEqual",
+          "number": 10
+        }
+      ],
       "cards": {
         "DIAMOND": ">= 6"
       },
@@ -670,7 +848,13 @@
         },
         " на купи с поне шесторна боя."
       ],
-      "hcp": "<= 10",
+      "hcp": [
+        {
+          "type": "numberOperation",
+          "operation": "lessThanOrEqual",
+          "number": 10
+        }
+      ],
       "cards": {
         "HEART": ">= 6"
       },
@@ -688,7 +872,13 @@
         },
         " на пики с поне шесторна боя."
       ],
-      "hcp": "<= 10",
+      "hcp": [
+        {
+          "type": "numberOperation",
+          "operation": "lessThanOrEqual",
+          "number": 10
+        }
+      ],
       "cards": {
         "SPADE": ">= 6"
       },
@@ -701,7 +891,14 @@
       "description": [
         "Балансирана ръка - поне по две карти от всяка боя и максимум една двойна боя. Има оньори във всяка боя."
       ],
-      "hcp": "20 - 22",
+      "hcp": [
+        {
+          "type": "numberOperation",
+          "operation": "between",
+          "lowerBound": 20,
+          "upperBound": 22
+        }
+      ],
       "cards": {
         "CLUB": ">= 2",
         "DIAMOND": ">= 2",
@@ -722,7 +919,13 @@
         },
         " на спатии с поне седморна боя."
       ],
-      "hcp": "<= 10",
+      "hcp": [
+        {
+          "type": "numberOperation",
+          "operation": "lessThanOrEqual",
+          "number": 10
+        }
+      ],
       "cards": {
         "CLUB": ">= 7"
       },
@@ -740,7 +943,13 @@
         },
         " на кари с поне седморна боя."
       ],
-      "hcp": "<= 10",
+      "hcp": [
+        {
+          "type": "numberOperation",
+          "operation": "lessThanOrEqual",
+          "number": 10
+        }
+      ],
       "cards": {
         "DIAMOND": ">= 7"
       },
@@ -758,7 +967,13 @@
         },
         " на купи с поне седморна боя."
       ],
-      "hcp": "<= 10",
+      "hcp": [
+        {
+          "type": "numberOperation",
+          "operation": "lessThanOrEqual",
+          "number": 10
+        }
+      ],
       "cards": {
         "HEART": ">= 7"
       },
@@ -776,7 +991,13 @@
         },
         " на пики с поне седморна боя."
       ],
-      "hcp": "<= 10",
+      "hcp": [
+        {
+          "type": "numberOperation",
+          "operation": "lessThanOrEqual",
+          "number": 10
+        }
+      ],
       "cards": {
         "SPADE": ">= 7"
       },
