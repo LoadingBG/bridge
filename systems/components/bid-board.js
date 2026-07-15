@@ -19,11 +19,10 @@ await createComponent("bid-board", template =>
 
     #currentBid = new CurrentBid(null, null, null, null, null);
     #passesInARow = 0;
+    #systemManager;
 
     constructor() {
       super();
-
-      this.systemManager = undefined;
 
       const dom = this.attachShadow({ mode: "open" });
       dom.appendChild(document.importNode(template, true));
@@ -34,7 +33,7 @@ await createComponent("bid-board", template =>
           const tile = this.#tiles[(i - 1) * Suit.values.length + suit];
           tile.info = TileInfo.numberSuit(i, Suit.values[suit]);
           tile.onClick(this.#createPopupOnclick(tile.info, () => {
-            this.#currentBid = new CurrentBid(i, Suit.values[suit], this.systemManager.currentChooser, null, null);
+            this.#currentBid = new CurrentBid(i, Suit.values[suit], this.#systemManager.currentChooser, null, null);
             this.#passesInARow = 0;
           }));
         }
@@ -43,7 +42,7 @@ await createComponent("bid-board", template =>
       const double = this.#tiles[35];
       double.info = TileInfo.DOUBLE;
       double.onClick(this.#createPopupOnclick(TileInfo.DOUBLE, () => {
-        this.#currentBid.doubler = this.systemManager.currentChooser;
+        this.#currentBid.doubler = this.#systemManager.currentChooser;
         this.#currentBid.redoubler = null;
         this.#passesInARow = 0;
       }));
@@ -52,7 +51,7 @@ await createComponent("bid-board", template =>
       redouble.info = TileInfo.REDOUBLE;
       redouble.onClick(this.#createPopupOnclick(TileInfo.REDOUBLE, () => {
         this.#currentBid.doubler = null;
-        this.#currentBid.redoubler = this.systemManager.currentChooser;
+        this.#currentBid.redoubler = this.#systemManager.currentChooser;
         this.#passesInARow = 0;
       }));
 
@@ -63,14 +62,19 @@ await createComponent("bid-board", template =>
       }));
     }
 
+    set systemManager(systemManager) {
+      this.#systemManager = systemManager;
+      this.#updateTiles();
+    }
+
     #createPopupOnclick(tileInfo, onConfirm) {
       return () => {
-        const bidInfo = this.systemManager.bidInfo(tileInfo);
+        const bidInfo = this.#systemManager.bidInfo(tileInfo);
         this.visualizePopup(bidInfo, () => {
-          this.systemManager.update(tileInfo);
+          this.#systemManager.update(tileInfo);
           onConfirm();
           this.onChosen(bidInfo);
-          this.systemManager.selectNextChooser();
+          this.#systemManager.selectNextChooser();
           if ((this.#currentBid.bidder === null && this.#passesInARow === 4) || (this.#currentBid.bidder !== null && this.#passesInARow >= 3)) {
             this.onBiddingEnd();
           }
@@ -90,7 +94,7 @@ await createComponent("bid-board", template =>
     }
 
     #isBidSystemic(tileInfo) {
-      return this.systemManager.bidInfo(tileInfo).systemic;
+      return this.#systemManager.bidInfo(tileInfo).systemic;
     }
 
     #isBidAvailable(tileInfo) {
@@ -109,17 +113,13 @@ await createComponent("bid-board", template =>
       const bidTeam = Side.indexOf(this.#currentBid.bidder) % 2;
       const doubleTeam = Side.indexOf(this.#currentBid.doubler) % 2;
       const redoubleTeam = Side.indexOf(this.#currentBid.redoubler) % 2;
-      const chooserTeam = Side.indexOf(this.systemManager.currentChooser) % 2;
+      const chooserTeam = Side.indexOf(this.#systemManager.currentChooser) % 2;
 
       if (chooserTeam === bidTeam) {
         return !tileInfo.isDouble && (!tileInfo.isRedouble || (doubleTeam !== -1 && doubleTeam !== chooserTeam));
       } else {
         return (!tileInfo.isDouble || (doubleTeam === -1 && redoubleTeam === -1)) && !tileInfo.isRedouble;
       }
-    }
-
-    connectedCallback() {
-      this.#updateTiles();
     }
   }
 );

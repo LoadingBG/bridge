@@ -1,0 +1,24 @@
+.container {
+  position: relative;
+}
+
+.spacer {
+  display: block;
+  height: 100px;
+}
+
+bid-history-table {
+  display: block;
+  width: 100%;
+}
+
+bid-popup {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+bid-popup[disabled] {
+  display: none;
+}

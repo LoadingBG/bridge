@@ -59,6 +59,7 @@ await createComponent("bid-popup", template =>
     }
 
     #setHCPBox(hcp) {
+      [...this.#hcpBox.childNodes].forEach(child => this.#hcpBox.removeChild(child));
       descriptionToHTML([
         {type: "convention", text: "ТО", convention: "high-card-points"},
         `: ${hcp}`
@@ -67,6 +68,7 @@ await createComponent("bid-popup", template =>
     }
 
     #setDescription(description) {
+      [...this.#descriptionBox.childNodes].forEach(child => this.#descriptionBox.removeChild(child));
       descriptionToHTML(description, this.#systemManager)
         .forEach(elem => this.#descriptionBox.appendChild(elem));
     }
