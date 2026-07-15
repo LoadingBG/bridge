@@ -3,18 +3,18 @@ import TileInfo from "./tileInfo.js";
 import Suit from "./suit.js";
 import "./components/bid-tile.js";
 
-export default function descriptionToHTML(description, systemManager) {
-  return description.map(part => descriptionPartToHTML(part, systemManager));
+export default function descriptionToHTML(description, systemManager, options = {}) {
+  return description.map(part => descriptionPartToHTML(part, systemManager, options));
 }
 
-function descriptionPartToHTML(part, systemManager) {
+function descriptionPartToHTML(part, systemManager, options) {
   if (typeof(part) === "string") {
     return document.createTextNode(part);
   }
 
   switch (part.type) {
     case "convention":      return conventionToHTML(part, systemManager);
-    case "numberOperation": return numberOperationToHTML(part, systemManager);
+    case "numberOperation": return numberOperationToHTML(part, options);
     case "tile":            return tileToHTML(part, systemManager);
     case undefined:         throw new Error("Cannot parse part without type");
     default:                throw new Error(`Unrecognized type: ${part.type}`);
@@ -90,17 +90,43 @@ function tileToHTML(part) {
 
   // return span;
 }
-
-function numberOperationToHTML(part, systemManager) {
-  const span = document.createElement("span");
-  switch (part.operation) {
-    case "lessThan":        span.textContent = `под ${part.number}`; break;
-    case "lessThanOrEqual": span.textContent = `най-много ${part.number}`; break;
-    case "moreThan":        span.textContent = `над ${part.number}`; break;
-    case "moreThanOrEqual": span.textContent = `поне ${part.number}`; break;
-    case "between":         span.textContent = `между ${part.lowerBound} и ${part.upperBound}`; break;
-    case undefined:         throw new Error("Number operation is undefined"); break;
-    default:                throw new Error(`Unknown number operation: ${part.operation}`);
+ 
+const OPERATIONS_LABELS = {
+  "lessThan": {
+    "word": (part) => `под ${part.number}`,
+    "capitalWord": (part) => `Под ${part.number}`,
+    "symbol": (part) => `< ${part.number}`,
+  },
+  "lessThanOrEqual": {
+    "word": (part) => `най-много ${part.number}`,
+    "capitalWord": (part) => `Най-много ${part.number}`,
+    "symbol": (part) => `\u2264 ${part.number}`,
+  },
+  "moreThan": {
+    "word": (part) => `над ${part.number}`,
+    "capitalWord": (part) => `Над ${part.number}`,
+    "symbol": (part) => `> ${part.number}`,
+  },
+  "moreThanOrEqual": {
+    "word": (part) => `поне ${part.number}`,
+    "capitalWord": (part) => `Поне ${part.number}`,
+    "symbol": (part) => `\u2265 ${part.number}`,
+  },
+  "between": {
+    "word": (part) => `между ${part.lowerBound} и ${part.upperBound}`,
+    "capitalWord": (part) => `Между ${part.lowerBound} и ${part.upperBound}`,
+    "symbol": (part) => `${part.lowerBound} \u2013 ${part.upperBound}`,
   }
+};
+function numberOperationToHTML(part, options) {
+  const span = document.createElement("span");
+  console.log(options);
+  const template = OPERATIONS_LABELS[part.operation][options.numberOperationStyle ?? "word"];
+
+  if (template === undefined) {
+    throw new Error(`Unknown number operation: ${part.operation}`);
+  }
+
+  span.textContent = template(part);
   return span;
 }
