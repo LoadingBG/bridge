@@ -46,15 +46,6 @@
     }
   },
 
-  "nonsystemicBid": {
-    "isAlert": false,
-    "hcp": "-",
-    "description": [
-      "Извънсистемно обявление"
-    ],
-    "cards": {}
-  },
-
   "availableBids": [
     {
       "pass": true,

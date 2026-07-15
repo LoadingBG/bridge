@@ -46,13 +46,15 @@ await createComponent("bid-popup", template =>
     }
 
     set bidInfo(bidInfo) {
-      this.#cardTable.info = bidInfo.cards;
+      this.#cardTable.info = bidInfo.cards ?? {};
       this.#setTile(bidInfo.tileInfo, bidInfo.isAlert);
       this.#setHCPBox(bidInfo.hcp);
       this.#setDescription(bidInfo.description);
     }
 
     #setTile(tileInfo, isAlert) {
+      isAlert = isAlert ?? false;
+
       const tile = document.createElement("bid-tile");
       tile.info = tileInfo;
       tile.isAlert = isAlert;
@@ -63,6 +65,8 @@ await createComponent("bid-popup", template =>
     }
 
     #setHCPBox(hcp) {
+      hcp = hcp ?? "-";
+
       [...this.#hcpBox.childNodes].forEach(child => this.#hcpBox.removeChild(child));
       descriptionToHTML([
         {type: "convention", text: "ТО", convention: "high-card-points"},
@@ -72,6 +76,8 @@ await createComponent("bid-popup", template =>
     }
 
     #setDescription(description) {
+      description = description ?? ["Извънсистемно обявяване."];
+
       [...this.#descriptionBox.childNodes].forEach(child => this.#descriptionBox.removeChild(child));
       descriptionToHTML(description, this.#systemManager)
         .forEach(elem => this.#descriptionBox.appendChild(elem));

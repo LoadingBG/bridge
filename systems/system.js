@@ -31,7 +31,7 @@ export class BidInfo {
     );
   }
 
-  static nonSystemic(tileInfo, nonSystemicInfo) {
+  static nonSystemic(tileInfo) {
     return new BidInfo(
       false,
       tileInfo.number,
@@ -39,10 +39,10 @@ export class BidInfo {
       tileInfo.isDouble,
       tileInfo.isRedouble,
       tileInfo.isPass,
-      nonSystemicInfo.isAlert,
-      nonSystemicInfo.hcp,
-      nonSystemicInfo.description,
-      nonSystemicInfo.cards
+      undefined,
+      undefined,
+      undefined,
+      undefined
     );
   }
 
@@ -77,7 +77,7 @@ export class System {
         return BidInfo.systemic(bid);
       }
     }
-    return BidInfo.nonSystemic(tileInfo, this.nonsystemicBid);
+    return BidInfo.nonSystemic(tileInfo);
   }
 
   selectNextChooser() {
