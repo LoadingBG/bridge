@@ -41,6 +41,7 @@ await createComponent("bid-popup", template =>
 
     set systemManager(systemManager) {
       this.#systemManager = systemManager;
+      this.#cardTable.systemManager = systemManager;
     }
 
     set bidInfo(bidInfo) {

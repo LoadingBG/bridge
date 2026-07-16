@@ -1,11 +1,13 @@
 import createComponent from "../createComponent.js";
+import descriptionToHTML from "../descriptionCreator.js";
 
-const DEFAULT_DESCRIPTION = "Няма индикация";
+const DEFAULT_DESCRIPTION = ["Няма индикация"];
 
 await createComponent("bid-popup-card-card", template =>
   class BidPopupCardCard extends HTMLElement {
     #description;
     #suit;
+    #systemManager;
 
     constructor() {
       super();
@@ -16,12 +18,19 @@ await createComponent("bid-popup-card-card", template =>
       this.#suit = dom.querySelector(".card-suit");
     }
 
+    set systemManager(systemManager) {
+      this.#systemManager = systemManager;
+    }
+
     set description(description) {
-      this.#description.textContent = description ?? DEFAULT_DESCRIPTION;
+      [...this.#description.childNodes].forEach(elem => this.#description.removeChild(elem));
+
+      descriptionToHTML(description ?? DEFAULT_DESCRIPTION, this.#systemManager, { numberOperationStyle: "capitalWord" })
+        .forEach(elem => this.#description.appendChild(elem));
     }
 
     set suit(suit) {
-      [...this.#suit.children].forEach(elem => this.#suit.removeChild(elem));
+      [...this.#suit.childNodes].forEach(elem => this.#suit.removeChild(elem));
       this.#suit.appendChild(suit.svg());
 
       this.#description.style.backgroundColor = suit.numberColor;

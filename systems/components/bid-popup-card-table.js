@@ -26,6 +26,13 @@ await createComponent("bid-popup-card-table", template =>
       this.#spadeCard.suit = Suit.SPADE;
     }
 
+    set systemManager(systemManager) {
+      this.#clubCard.systemManager = systemManager;
+      this.#diamondCard.systemManager = systemManager;
+      this.#heartCard.systemManager = systemManager;
+      this.#spadeCard.systemManager = systemManager;
+    }
+
     set info(info) {
       this.#clubCard.description = info[Suit.nameOf(Suit.CLUB)];
       this.#diamondCard.description = info[Suit.nameOf(Suit.DIAMOND)];

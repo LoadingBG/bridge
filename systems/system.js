@@ -92,7 +92,7 @@ export class System {
         || (tileInfo.isRedouble && bid.redouble)
         || (tileInfo.isNumberSuit && tileInfo.number === bid.number && tileInfo.suit === Suit[bid.suit])
         || (tileInfo.isPass && bid.pass)) {
-        this.availableBids = bid.continuations;
+        this.availableBids = bid.continuations ?? [];
         return;
       }
     }

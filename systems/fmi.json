@@ -75,7 +75,6 @@
               "number": 11
             }
           ],
-          "cards": {},
           "continuations": [
             {
               "number": 1,
@@ -98,8 +97,20 @@
                 }
               ],
               "cards": {
-                "HEART": "< 5",
-                "SPADE": ">= 5"
+                "HEART": [
+                  {
+                    "type": "numberOperation",
+                    "operation": "lessThan",
+                    "number": 5
+                  }
+                ],
+                "SPADE": [
+                  {
+                    "type": "numberOperation",
+                    "operation": "moreThanOrEqual",
+                    "number": 5
+                  }
+                ]
               },
               "continuations": [
                 {
@@ -115,7 +126,6 @@
                       "number": 11
                     }
                   ],
-                  "cards": {},
                   "continuations": [
                     {
                       "pass": true,
@@ -130,16 +140,13 @@
                           "number": 6
                         }
                       ],
-                      "cards": {},
                       "continuations": [
                         {
                           "pass": true,
                           "isAlert": false,
                           "description": [
                             "Край на обявяването."
-                          ],
-                          "cards": {},
-                          "continuations": []
+                          ]
                         },
                         {
                           "double": true,
@@ -160,9 +167,27 @@
                             }
                           ],
                           "cards": {
-                            "CLUB": ">= 3",
-                            "DIAMOND": ">= 3",
-                            "HEART": ">= 3"
+                            "CLUB": [
+                              {
+                                "type": "numberOperation",
+                                "operation": "moreThanOrEqual",
+                                "number": 3
+                              }
+                            ],
+                            "DIAMOND": [
+                              {
+                                "type": "numberOperation",
+                                "operation": "moreThanOrEqual",
+                                "number": 3
+                              }
+                            ],
+                            "HEART": [
+                              {
+                                "type": "numberOperation",
+                                "operation": "moreThanOrEqual",
+                                "number": 3
+                              }
+                            ]
                           },
                           "continuations": [
                             {
@@ -180,7 +205,13 @@
                                 }
                               ],
                               "cards": {
-                                "SPADE": ">= 6"
+                                "SPADE": [
+                                  {
+                                    "type": "numberOperation",
+                                    "operation": "moreThanOrEqual",
+                                    "number": 6
+                                  }
+                                ]
                               },
                               "continuations": [
                                 {
@@ -205,7 +236,13 @@
                                     }
                                   ],
                                   "cards": {
-                                    "CLUB": ">= 5"
+                                    "CLUB": [
+                                      {
+                                        "type": "numberOperation",
+                                        "operation": "moreThanOrEqual",
+                                        "number": 5
+                                      }
+                                    ]
                                   },
                                   "continuations": [
                                     {
@@ -221,7 +258,6 @@
                                           "number": 5
                                         }
                                       ],
-                                      "cards": {},
                                       "continuations": [
                                         {
                                           "pass": true,
@@ -237,9 +273,27 @@
                                             }
                                           ],
                                           "cards": {
-                                            "CLUB": ">= 3",
-                                            "DIAMOND": ">= 3",
-                                            "HEART": ">= 3"
+                                            "CLUB": [
+                                              {
+                                                "type": "numberOperation",
+                                                "operation": "moreThanOrEqual",
+                                                "number": 3
+                                              }
+                                            ],
+                                            "DIAMOND": [
+                                              {
+                                                "type": "numberOperation",
+                                                "operation": "moreThanOrEqual",
+                                                "number": 3
+                                              }
+                                            ],
+                                            "HEART": [
+                                              {
+                                                "type": "numberOperation",
+                                                "operation": "moreThanOrEqual",
+                                                "number": 3
+                                              }
+                                            ]
                                           },
                                           "continuations": [
                                             {
@@ -256,9 +310,14 @@
                                                 }
                                               ],
                                               "cards": {
-                                                "SPADE": ">= 6"
-                                              },
-                                              "continuations": []
+                                                "SPADE": [
+                                                  {
+                                                    "type": "numberOperation",
+                                                    "operation": "moreThanOrEqual",
+                                                    "number": 6
+                                                  }
+                                                ]
+                                              }
                                             }
                                           ]
                                         }
@@ -294,10 +353,34 @@
             }
           ],
           "cards": {
-            "CLUB": ">= 2",
-            "DIAMOND": ">= 2",
-            "HEART": ">= 2",
-            "SPADE": ">= 2"
+            "CLUB": [
+              {
+                "type": "numberOperation",
+                "operation": "moreThanOrEqual",
+                "number": 2
+              }
+            ],
+            "DIAMOND": [
+              {
+                "type": "numberOperation",
+                "operation": "moreThanOrEqual",
+                "number": 2
+              }
+            ],
+            "HEART": [
+              {
+                "type": "numberOperation",
+                "operation": "moreThanOrEqual",
+                "number": 2
+              }
+            ],
+            "SPADE": [
+              {
+                "type": "numberOperation",
+                "operation": "moreThanOrEqual",
+                "number": 2
+              }
+            ]
           },
           "continuations": [
             {
@@ -313,7 +396,6 @@
                   "number": 11
                 }
               ],
-              "cards": {},
               "continuations": [
                 {
                   "number": 2,
@@ -328,7 +410,13 @@
                     " за купи."
                   ],
                   "cards": {
-                    "HEART": ">= 5"
+                    "HEART": [
+                      {
+                        "type": "numberOperation",
+                        "operation": "moreThanOrEqual",
+                        "number": 5
+                      }
+                    ]
                   },
                   "continuations": [
                     {
@@ -337,7 +425,6 @@
                       "description": [
                         "Нищо ново за обявяване."
                       ],
-                      "cards": {},
                       "continuations": [
                         {
                           "number": 2,
@@ -360,10 +447,34 @@
                             }
                           ],
                           "cards": {
-                            "CLUB": ">= 2",
-                            "DIAMOND": ">= 2",
-                            "HEART": ">= 2",
-                            "SPADE": ">= 2"
+                            "CLUB": [
+                              {
+                                "type": "numberOperation",
+                                "operation": "moreThanOrEqual",
+                                "number": 2
+                              }
+                            ],
+                            "DIAMOND": [
+                              {
+                                "type": "numberOperation",
+                                "operation": "moreThanOrEqual",
+                                "number": 2
+                              }
+                            ],
+                            "HEART": [
+                              {
+                                "type": "numberOperation",
+                                "operation": "moreThanOrEqual",
+                                "number": 2
+                              }
+                            ],
+                            "SPADE": [
+                              {
+                                "type": "numberOperation",
+                                "operation": "moreThanOrEqual",
+                                "number": 2
+                              }
+                            ]
                           },
                           "continuations": [
                             {
@@ -372,7 +483,6 @@
                               "description": [
                                 "Нищо ново за обявяване."
                               ],
-                              "cards": {},
                               "continuations": [
                                 {
                                   "number": 3,
@@ -390,7 +500,13 @@
                                     }
                                   ],
                                   "cards": {
-                                    "HEART": ">= 5"
+                                    "HEART": [
+                                      {
+                                        "type": "numberOperation",
+                                        "operation": "moreThanOrEqual",
+                                        "number": 5
+                                      }
+                                    ]
                                   },
                                   "continuations": [
                                     {
@@ -399,7 +515,6 @@
                                       "description": [
                                         "Нищо ново за обявяване."
                                       ],
-                                      "cards": {},
                                       "continuations": [
                                         {
                                           "number": 4,
@@ -417,10 +532,34 @@
                                             }
                                           ],
                                           "cards": {
-                                            "CLUB": ">= 2",
-                                            "DIAMOND": ">= 2",
-                                            "HEART": ">= 3",
-                                            "SPADE": ">= 2"
+                                            "CLUB": [
+                                              {
+                                                "type": "numberOperation",
+                                                "operation": "moreThanOrEqual",
+                                                "number": 2
+                                              }
+                                            ],
+                                            "DIAMOND": [
+                                              {
+                                                "type": "numberOperation",
+                                                "operation": "moreThanOrEqual",
+                                                "number": 2
+                                              }
+                                            ],
+                                            "HEART": [
+                                              {
+                                                "type": "numberOperation",
+                                                "operation": "moreThanOrEqual",
+                                                "number": 3
+                                              }
+                                            ],
+                                            "SPADE": [
+                                              {
+                                                "type": "numberOperation",
+                                                "operation": "moreThanOrEqual",
+                                                "number": 2
+                                              }
+                                            ]
                                           },
                                           "continuations": [
                                             {
@@ -429,7 +568,6 @@
                                               "description": [
                                                 "Нищо ново за обявяване."
                                               ],
-                                              "cards": {},
                                               "continuations": [
                                                 {
                                                   "pass": true,
@@ -446,7 +584,13 @@
                                                     }
                                                   ],
                                                   "cards": {
-                                                    "HEART": ">= 5"
+                                                    "HEART": [
+                                                      {
+                                                        "type": "numberOperation",
+                                                        "operation": "moreThanOrEqual",
+                                                        "number": 5
+                                                      }
+                                                    ]
                                                   },
                                                   "continuations": [
                                                     {
@@ -454,9 +598,7 @@
                                                       "isAlert": false,
                                                       "description": [
                                                         "Край на обявяването."
-                                                      ],
-                                                      "cards": {},
-                                                      "continuations": []
+                                                      ]
                                                     }
                                                   ]
                                                 }
@@ -497,9 +639,27 @@
         }
       ],
       "cards": {
-        "CLUB": ">= 3",
-        "HEART": "< 5",
-        "SPADE": "< 5"
+        "CLUB": [
+          {
+            "type": "numberOperation",
+            "operation": "moreThanOrEqual",
+            "number": 3
+          }
+        ],
+        "HEART": [
+          {
+            "type": "numberOperation",
+            "operation": "lessThan",
+            "number": 5
+          }
+        ],
+        "SPADE": [
+          {
+            "type": "numberOperation",
+            "operation": "lessThan",
+            "number": 5
+          }
+        ]
       },
       "continuations": [
         {
@@ -516,11 +676,28 @@
             }
           ],
           "cards": {
-            "DIAMOND": "< 4",
-            "HEART": "< 5",
-            "SPADE": "< 5"
-          },
-          "continuations": []
+            "DIAMOND": [
+              {
+                "type": "numberOperation",
+                "operation": "lessThan",
+                "number": 4
+              }
+            ],
+            "HEART": [
+              {
+                "type": "numberOperation",
+                "operation": "lessThan",
+                "number": 5
+              }
+            ],
+            "SPADE": [
+              {
+                "type": "numberOperation",
+                "operation": "lessThan",
+                "number": 5
+              }
+            ]
+          }
         },
         {
           "double": true,
@@ -541,12 +718,35 @@
             }
           ],
           "cards": {
-            "CLUB": "<= 1",
-            "DIAMOND": ">= 3",
-            "HEART": ">= 3",
-            "SPADE": ">= 3"
-          },
-          "continuations": []
+            "CLUB": [
+              {
+                "type": "numberOperation",
+                "operation": "lessThanOrEqual",
+                "number": 1
+              }
+            ],
+            "DIAMOND": [
+              {
+                "type": "numberOperation",
+                "operation": "moreThanOrEqual",
+                "number": 3
+              }
+            ],
+            "HEART": [
+              {
+                "type": "numberOperation",
+                "operation": "moreThanOrEqual",
+                "number": 3
+              }
+            ],
+            "SPADE": [
+              {
+                "type": "numberOperation",
+                "operation": "moreThanOrEqual",
+                "number": 3
+              }
+            ]
+          }
         }
       ]
     },
@@ -565,11 +765,28 @@
         }
       ],
       "cards": {
-        "DIAMOND": ">= 3",
-        "HEART": "< 5",
-        "SPADE": "< 5"
-      },
-      "continuations": []
+        "DIAMOND": [
+          {
+            "type": "numberOperation",
+            "operation": "moreThanOrEqual",
+            "number": 3
+          }
+        ],
+        "HEART": [
+          {
+            "type": "numberOperation",
+            "operation": "lessThan",
+            "number": 5
+          }
+        ],
+        "SPADE": [
+          {
+            "type": "numberOperation",
+            "operation": "lessThan",
+            "number": 5
+          }
+        ]
+      }
     },
     {
       "number": 1,
@@ -586,9 +803,14 @@
         }
       ],
       "cards": {
-        "HEART": ">= 5"
-      },
-      "continuations": []
+        "HEART": [
+          {
+            "type": "numberOperation",
+            "operation": "moreThanOrEqual",
+            "number": 5
+          }
+        ]
+      }
     },
     {
       "number": 1,
@@ -611,8 +833,20 @@
         }
       ],
       "cards": {
-        "HEART": "< 5",
-        "SPADE": ">= 5"
+        "HEART": [
+          {
+            "type": "numberOperation",
+            "operation": "lessThan",
+            "number": 5
+          }
+        ],
+        "SPADE": [
+          {
+            "type": "numberOperation",
+            "operation": "moreThanOrEqual",
+            "number": 5
+          }
+        ]
       },
       "continuations": []
     },
@@ -632,10 +866,34 @@
         }
       ],
       "cards": {
-        "CLUB": ">= 2",
-        "DIAMOND": ">= 2",
-        "HEART": ">= 2",
-        "SPADE": ">= 2"
+        "CLUB": [
+          {
+            "type": "numberOperation",
+            "operation": "moreThanOrEqual",
+            "number": 2
+          }
+        ],
+        "DIAMOND": [
+          {
+            "type": "numberOperation",
+            "operation": "moreThanOrEqual",
+            "number": 2
+          }
+        ],
+        "HEART": [
+          {
+            "type": "numberOperation",
+            "operation": "moreThanOrEqual",
+            "number": 2
+          }
+        ],
+        "SPADE": [
+          {
+            "type": "numberOperation",
+            "operation": "moreThanOrEqual",
+            "number": 2
+          }
+        ]
       },
       "continuations": [
         {
@@ -651,7 +909,6 @@
               "number": 15
             }
           ],
-          "cards": {},
           "continuations": [
             {
               "number": 2,
@@ -671,9 +928,7 @@
                   "operation": "moreThanOrEqual",
                   "number": 8
                 }
-              ],
-              "cards": {},
-              "continuations": []
+              ]
             },
             {
               "number": 2,
@@ -688,9 +943,14 @@
                 " за купа."
               ],
               "cards": {
-                "HEART": ">= 5"
-              },
-              "continuations": []
+                "HEART": [
+                  {
+                    "type": "numberOperation",
+                    "operation": "moreThanOrEqual",
+                    "number": 5
+                  }
+                ]
+              }
             },
             {
               "number": 2,
@@ -705,9 +965,14 @@
                 " за пика."
               ],
               "cards": {
-                "SPADE": ">= 5"
-              },
-              "continuations": []
+                "SPADE": [
+                  {
+                    "type": "numberOperation",
+                    "operation": "moreThanOrEqual",
+                    "number": 5
+                  }
+                ]
+              }
             },
             {
               "number": 2,
@@ -722,9 +987,14 @@
                 " за спатия."
               ],
               "cards": {
-                "CLUB": ">= 5"
-              },
-              "continuations": []
+                "CLUB": [
+                  {
+                    "type": "numberOperation",
+                    "operation": "moreThanOrEqual",
+                    "number": 5
+                  }
+                ]
+              }
             },
             {
               "number": 2,
@@ -740,9 +1010,7 @@
                   "lowerBound": 9,
                   "upperBound": 10
                 }
-              ],
-              "cards": {},
-              "continuations": []
+              ]
             },
             {
               "number": 3,
@@ -757,9 +1025,14 @@
                 " за каро."
               ],
               "cards": {
-                "DIAMOND": ">= 5"
-              },
-              "continuations": []
+                "DIAMOND": [
+                  {
+                    "type": "numberOperation",
+                    "operation": "moreThanOrEqual",
+                    "number": 5
+                  }
+                ]
+              }
             },
             {
               "number": 3,
@@ -775,9 +1048,7 @@
                   "lowerBound": 11,
                   "upperBound": 12
                 }
-              ],
-              "cards": {},
-              "continuations": []
+              ]
             }
           ]
         }
@@ -808,9 +1079,7 @@
           "operation": "moreThanOrEqual",
           "number": 20
         }
-      ],
-      "cards": {},
-      "continuations": []
+      ]
     },
     {
       "number": 2,
@@ -832,9 +1101,14 @@
         }
       ],
       "cards": {
-        "DIAMOND": ">= 6"
-      },
-      "continuations": []
+        "DIAMOND": [
+          {
+            "type": "numberOperation",
+            "operation": "moreThanOrEqual",
+            "number": 6
+          }
+        ]
+      }
     },
     {
       "number": 2,
@@ -856,9 +1130,14 @@
         }
       ],
       "cards": {
-        "HEART": ">= 6"
-      },
-      "continuations": []
+        "HEART": [
+          {
+            "type": "numberOperation",
+            "operation": "moreThanOrEqual",
+            "number": 6
+          }
+        ]
+      }
     },
     {
       "number": 2,
@@ -880,9 +1159,14 @@
         }
       ],
       "cards": {
-        "SPADE": ">= 6"
-      },
-      "continuations": []
+        "SPADE": [
+          {
+            "type": "numberOperation",
+            "operation": "moreThanOrEqual",
+            "number": 6
+          }
+        ]
+      }
     },
     {
       "number": 2,
@@ -900,12 +1184,35 @@
         }
       ],
       "cards": {
-        "CLUB": ">= 2",
-        "DIAMOND": ">= 2",
-        "HEART": ">= 2",
-        "SPADE": ">= 2"
-      },
-      "continuations": []
+        "CLUB": [
+          {
+            "type": "numberOperation",
+            "operation": "moreThanOrEqual",
+            "number": 2
+          }
+        ],
+        "DIAMOND": [
+          {
+            "type": "numberOperation",
+            "operation": "moreThanOrEqual",
+            "number": 2
+          }
+        ],
+        "HEART": [
+          {
+            "type": "numberOperation",
+            "operation": "moreThanOrEqual",
+            "number": 2
+          }
+        ],
+        "SPADE": [
+          {
+            "type": "numberOperation",
+            "operation": "moreThanOrEqual",
+            "number": 2
+          }
+        ]
+      }
     },
     {
       "number": 3,
@@ -927,9 +1234,14 @@
         }
       ],
       "cards": {
-        "CLUB": ">= 7"
-      },
-      "continuations": []
+        "CLUB": [
+          {
+            "type": "numberOperation",
+            "operation": "moreThanOrEqual",
+            "number": 7
+          }
+        ]
+      }
     },
     {
       "number": 3,
@@ -951,9 +1263,14 @@
         }
       ],
       "cards": {
-        "DIAMOND": ">= 7"
-      },
-      "continuations": []
+        "DIAMOND": [
+          {
+            "type": "numberOperation",
+            "operation": "moreThanOrEqual",
+            "number": 7
+          }
+        ]
+      }
     },
     {
       "number": 3,
@@ -975,9 +1292,14 @@
         }
       ],
       "cards": {
-        "HEART": ">= 7"
-      },
-      "continuations": []
+        "HEART": [
+          {
+            "type": "numberOperation",
+            "operation": "moreThanOrEqual",
+            "number": 7
+          }
+        ]
+      }
     },
     {
       "number": 3,
@@ -999,9 +1321,14 @@
         }
       ],
       "cards": {
-        "SPADE": ">= 7"
-      },
-      "continuations": []
+        "SPADE": [
+          {
+            "type": "numberOperation",
+            "operation": "moreThanOrEqual",
+            "number": 7
+          }
+        ]
+      }
     }
   ]
 }

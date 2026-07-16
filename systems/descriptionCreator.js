@@ -120,7 +120,6 @@ const OPERATIONS_LABELS = {
 };
 function numberOperationToHTML(part, options) {
   const span = document.createElement("span");
-  console.log(options);
   const template = OPERATIONS_LABELS[part.operation][options.numberOperationStyle ?? "word"];
 
   if (template === undefined) {
