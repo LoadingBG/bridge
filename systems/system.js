@@ -55,6 +55,21 @@ export class BidInfo {
           ? TileInfo.PASS
           : TileInfo.numberSuit(this.number, this.suit);
   }
+
+  clone() {
+    return new BidInfo(
+      this.systemic,
+      this.number,
+      this.suit,
+      this.isDoubled,
+      this.isRedoubled,
+      this.isPass,
+      this.isAlert,
+      structuredClone(this.hcp),
+      structuredClone(this.description),
+      structuredClone(this.cards)
+    );
+  }
 }
 
 
@@ -97,5 +112,9 @@ export class System {
       }
     }
     this.availableBids = [];
+  }
+
+  saveEdit(bidInfo) {
+    console.log("Save edit", bidInfo);
   }
 }

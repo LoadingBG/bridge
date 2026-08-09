@@ -1,20 +1,32 @@
 import createComponent from "../createComponent.js";
 import descriptionToHTML from "../descriptionCreator.js";
 import Suit from "../suit.js";
-import "./bid-popup-card-table.js";
 import "./bid-tile.js";
+import "./bid-popup-card-card.js";
+import "./description-editor.js";
 
 await createComponent("bid-popup", template =>
   class BidPopup extends HTMLElement {
     #systemManager;
+    #bidInfo;
+    #editedBidInfo;
 
     #container;
     #infobox;
     #hcpBox;
     #descriptionBox;
-    #cardTable;
     #cancelButton;
     #confirmButton;
+
+    #clubCard;
+    #diamondCard;
+    #heartCard;
+    #spadeCard;
+
+    #editButton;
+    #revertButton;
+    #saveButton;
+    #descriptionEditor;
   
     constructor() {
       super();
@@ -26,9 +38,100 @@ await createComponent("bid-popup", template =>
       this.#infobox = dom.querySelector(".infobox");
       this.#hcpBox = dom.querySelector("#hcp-box");
       this.#descriptionBox = dom.querySelector(".description");
-      this.#cardTable = dom.querySelector("bid-popup-card-table");
       this.#cancelButton = dom.querySelector("#cancel-button");
       this.#confirmButton = dom.querySelector("#confirm-button");
+
+      this.#editButton = dom.querySelector(".edit-button");
+      this.#revertButton = dom.querySelector(".revert-button");
+      this.#saveButton = dom.querySelector(".save-button");
+      this.#descriptionEditor = dom.querySelector("description-editor");
+
+      this.#editButton.onclick = () => {
+        this.#updateInfobox(this.#editedBidInfo);
+
+        this.#editButton.toggleAttribute("hidden", true);
+        this.#revertButton.toggleAttribute("hidden", false);
+        this.#saveButton.toggleAttribute("hidden", false);
+
+        this.#cancelButton.toggleAttribute("disabled", true);
+        this.#confirmButton.toggleAttribute("disabled", true);
+
+        this.#hcpBox.ondblclick = () => {
+          this.#descriptionEditor.description = this.#bidInfo.hcp;
+          this.#descriptionEditor.onConfirm = (description) => {
+            this.#editedBidInfo.hcp = description;
+            this.#updateInfobox(this.#editedBidInfo);
+            this.#descriptionEditor.toggleAttribute("hidden", true);
+          };
+          this.#descriptionEditor.toggleAttribute("hidden", false);
+        };
+
+        this.#descriptionBox.ondblclick = () => {
+          this.#descriptionEditor.description = this.#bidInfo.description;
+          this.#descriptionEditor.onConfirm = (description) => {
+            this.#editedBidInfo.description = description;
+            this.#updateInfobox(this.#editedBidInfo);
+            this.#descriptionEditor.toggleAttribute("hidden", true);
+          };
+          this.#descriptionEditor.toggleAttribute("hidden", false);
+        };
+
+        [[this.#clubCard, Suit.CLUB], [this.#diamondCard, Suit.DIAMOND], [this.#heartCard, Suit.HEART], [this.#spadeCard, Suit.SPADE]]
+          .forEach(([card, suit]) => {
+            card.ondblclick = () => {
+              this.#descriptionEditor.description = this.#bidInfo.cards[Suit.nameOf(suit)] ?? "-";
+              this.#descriptionEditor.onConfirm = (description) => {
+                this.#editedBidInfo.cards[Suit.nameOf(suit)] = description;
+                this.#updateInfobox(this.#editedBidInfo);
+                this.#descriptionEditor.toggleAttribute("hidden", true);
+              };
+              this.#descriptionEditor.toggleAttribute("hidden", false);
+            };
+          });
+      };
+
+      this.#revertButton.onclick = () => {
+        this.revertToDefault();
+        this.#editedBidInfo = this.#bidInfo.clone();
+        this.#updateInfobox(this.#bidInfo);
+      };
+
+      this.#saveButton.onclick = () => {
+        this.revertToDefault();
+        this.#bidInfo = this.#editedBidInfo;
+        this.#systemManager.saveEdit(this.#editedBidInfo);
+      };
+
+      this.#descriptionEditor.onCancel = () => {
+        this.#descriptionEditor.toggleAttribute("hidden", true);
+      }
+
+      this.#clubCard = dom.querySelector("#club-card");
+      this.#diamondCard = dom.querySelector("#diamond-card");
+      this.#heartCard = dom.querySelector("#heart-card");
+      this.#spadeCard = dom.querySelector("#spade-card");
+
+      this.#clubCard.suit = Suit.CLUB;
+      this.#diamondCard.suit = Suit.DIAMOND;
+      this.#heartCard.suit = Suit.HEART;
+      this.#spadeCard.suit = Suit.SPADE;
+    }
+
+    revertToDefault() {
+      this.#editButton.toggleAttribute("hidden", false);
+      this.#revertButton.toggleAttribute("hidden", true);
+      this.#saveButton.toggleAttribute("hidden", true);
+      this.#descriptionEditor.toggleAttribute("hidden", true);
+
+      this.#cancelButton.toggleAttribute("disabled", false);
+      this.#confirmButton.toggleAttribute("disabled", false);
+
+      this.#hcpBox.ondblclick = null;
+      this.#descriptionBox.ondblclick = null;
+      this.#clubCard.ondblclick = null;
+      this.#diamondCard.ondblclick = null;
+      this.#heartCard.ondblclick = null;
+      this.#spadeCard.ondblclick = null;
     }
 
     set onCancel(callback) {
@@ -41,11 +144,24 @@ await createComponent("bid-popup", template =>
 
     set systemManager(systemManager) {
       this.#systemManager = systemManager;
-      this.#cardTable.systemManager = systemManager;
+      this.#descriptionEditor.systemManager = systemManager;
+      this.#clubCard.systemManager = systemManager;
+      this.#diamondCard.systemManager = systemManager;
+      this.#heartCard.systemManager = systemManager;
+      this.#spadeCard.systemManager = systemManager;
     }
 
     set bidInfo(bidInfo) {
-      this.#cardTable.info = bidInfo.cards ?? {};
+      this.#bidInfo = bidInfo;
+      this.#editedBidInfo = bidInfo.clone();
+      this.#updateInfobox(bidInfo);
+    }
+
+    #updateInfobox(bidInfo) {
+      this.#clubCard.description = bidInfo.cards?.[Suit.nameOf(Suit.CLUB)];
+      this.#diamondCard.description = bidInfo.cards?.[Suit.nameOf(Suit.DIAMOND)];
+      this.#heartCard.description = bidInfo.cards?.[Suit.nameOf(Suit.HEART)];
+      this.#spadeCard.description = bidInfo.cards?.[Suit.nameOf(Suit.SPADE)];
       this.#setTile(bidInfo.tileInfo, bidInfo.isAlert);
       this.#setHCPBox(bidInfo.hcp);
       this.#setDescription(bidInfo.description);

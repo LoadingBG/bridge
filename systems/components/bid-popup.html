@@ -1,21 +1,42 @@
 <template>
   <div class="backdrop"></div>
-  <div class="container">
-    <div class="infobox">
-      <slot name="tile"></slot>
+  <div class="infobox">
+    <slot name="tile"></slot>
 
-      <div id="hcp-box"></div>
+    <div id="hcp-box"></div>
 
-      <div class="spacer"></div>
-      <div class="description"></div>
-      <div class="spacer"></div>
+    <div class="spacer"></div>
+    <div class="description"></div>
+    <div class="spacer"></div>
 
-      <bid-popup-card-table></bid-popup-card-table>
-
-      <div class="button-row">
-        <button id="cancel-button" class="button">Отказ</button>
-        <button id="confirm-button" class="button">Потвърждаване</button>
-      </div>
+    <div class="card-table">
+      <bid-popup-card-card id="club-card"></bid-popup-card-card>
+      <bid-popup-card-card id="diamond-card"></bid-popup-card-card>
+      <bid-popup-card-card id="heart-card"></bid-popup-card-card>
+      <bid-popup-card-card id="spade-card"></bid-popup-card-card>
     </div>
+
+    <div class="button-row">
+      <button id="cancel-button" class="button">Отказ</button>
+      <button id="confirm-button" class="button">Потвърждаване</button>
+    </div>
+
+    <button class="edit-button">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+        <path d="M10.681 18.207l-2.209 5.67 5.572-2.307-3.363-3.363zM26.855 6.097l-0.707-0.707c-0.78-0.781-2.047-0.781-2.828 0l-1.414 1.414 3.535 3.536 1.414-1.414c0.782-0.781 0.782-2.048 0-2.829zM10.793 17.918l0.506-0.506 3.535 3.535 9.9-9.9-3.535-3.535 0.707-0.708-11.113 11.114zM23.004 26.004l-17.026 0.006 0.003-17.026 11.921-0.004 1.868-1.98h-14.805c-0.552 0-1 0.447-1 1v19c0 0.553 0.448 1 1 1h19c0.553 0 1-0.447 1-1v-14.058l-2.015 1.977 0.054 11.085z"></path>
+      </svg>
+    </button>
+    <button class="revert-button" hidden>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+        <path d="M29,18c0,3.472-1.353,6.737-3.808,9.193C22.736,29.648,19.472,31,16,31c-3.473,0-6.737-1.353-9.192-3.808S3,21.472,3,18c0-1.104,0.896-2,2-2s2,0.896,2,2c0,2.403,0.937,4.664,2.636,6.364C11.336,26.064,13.596,27,16,27c2.403,0,4.664-0.936,6.364-2.636C24.063,22.664,25,20.404,25,18s-0.937-4.664-2.636-6.364C20.664,9.936,18.404,9,16,9h-2.172l1.586,1.586c0.781,0.781,0.781,2.047,0,2.828s-2.047,0.781-2.828,0l-5-5c-0.781-0.781-0.781-2.047,0-2.828l5-5c0.781-0.781,2.047-0.781,2.828,0s0.781,2.047,0,2.828L13.828,5H16c3.473,0,6.737,1.353,9.192,3.808C27.647,11.263,29,14.528,29,18z"></path>
+      </svg>
+    </button>
+    <button class="save-button" hidden>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M22.083,24H1.917C0.86,24,0,23.14,0,22.083V1.917C0,0.86,0.86,0,1.917,0h16.914L24,5.169v16.914C24,23.14,23.14,24,22.083,24z M20,22h2V5.998l-3-3V9c0,1.103-0.897,2-2,2H7c-1.103,0-2-0.897-2-2V2H2v20h2v-7c0-1.103,0.897-2,2-2h12c1.103,0,2,0.897,2,2V22z M6,22h12v-7.001L6,15V22z M7,2v7h10V2H7z M15,8h-4V3h4V8z"></path>
+      </svg>
+    </button>
   </div>
+
+  <description-editor hidden></description-editor>
 </template>

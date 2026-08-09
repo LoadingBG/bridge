@@ -4,24 +4,29 @@ import Suit from "./suit.js";
 import "./components/bid-tile.js";
 
 export default function descriptionToHTML(description, systemManager, options = {}) {
+  if (options.onclickEvents === undefined) {
+    options.onclickEvents = true;
+  }
   return description.map(part => descriptionPartToHTML(part, systemManager, options));
 }
 
 function descriptionPartToHTML(part, systemManager, options) {
   if (typeof(part) === "string") {
-    return document.createTextNode(part);
+    const span = document.createElement("span");
+    span.textContent = part;
+    return span;
   }
 
   switch (part.type) {
-    case "convention":      return conventionToHTML(part, systemManager);
+    case "convention":      return conventionToHTML(part, systemManager, options);
     case "numberOperation": return numberOperationToHTML(part, options);
-    case "tile":            return tileToHTML(part, systemManager);
+    case "tile":            return tileToHTML(part);
     case undefined:         throw new Error("Cannot parse part without type");
     default:                throw new Error(`Unrecognized type: ${part.type}`);
   }
 }
 
-function conventionToHTML(part, systemManager) {
+function conventionToHTML(part, systemManager, options) {
   const convention = systemManager.conventions[part.convention];
   if (convention === undefined) {
     const span = document.createElement("span");
@@ -33,6 +38,10 @@ function conventionToHTML(part, systemManager) {
   const span = document.createElement("span");
   span.setAttribute("class", "descriptioned-text");
   span.textContent = part.text;
+
+  if (!options.onclickEvents) {
+    return span;
+  }
 
   const helperBox = document.createElement("div");
   helperBox.setAttribute("class", "helper-box");

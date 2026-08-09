@@ -12,11 +12,6 @@
   justify-content: center;
 }
 
-.container {
-  width: 100%;
-  height: 100%;
-}
-
 .infobox {
   position: fixed;
   top: 50%;
@@ -118,9 +113,36 @@ bid-tile {
   font-weight: bold;
 }
 
-bid-popup-card-table {
+.card-table {
   margin: 10px 0;
   width: 100%;
   height: 20%;
   min-height: 100px;
+
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 2px;
+}
+
+bid-popup-card-card {
+  flex: 1;
+}
+
+.edit-button, .revert-button, .save-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 10%;
+  aspect-ratio: 1 / 1;
+  margin: 1%;
+  min-width: 50px;
+}
+
+.save-button {
+  top: 11%;
+}
+
+button[hidden], description-editor[hidden] {
+  display: none;
 }

@@ -32,6 +32,9 @@ await createComponent("bid-app", template =>
         this.#systemManager.currentChooser = side;
         this.#bidHistoryTable.selectSide(side);
       }
+      this.#settingsBar.onSave = () => {
+        console.log("Save system");
+      };
 
       this.#bidBoard.systemManager = this.#systemManager;
       this.#bidBoard.onChosen = (tileInfo) => {
