@@ -53,7 +53,12 @@ await createComponent("description-editor", template =>
     }
 
     #addOnclick(part, descriptionInfo, idx) {
+      part.setAttribute("contenteditable", this.#isTextEditable(descriptionInfo));
       this.#createHelperBox(part, descriptionInfo, idx);
+    }
+
+    #isTextEditable(descriptionInfo) {
+      return typeof(descriptionInfo) === "string" || descriptionInfo.type === "convention";
     }
 
     #createHelperBox(part, descriptionInfo, idx) {
@@ -71,6 +76,7 @@ await createComponent("description-editor", template =>
 
       if (typeof(descriptionInfo) === "string") {
         confirmButton.onclick = () => {
+          part.removeAttribute("contenteditable");
           helperBox.toggleAttribute("hidden", true);
           this.#description[idx] = [...part.childNodes]
             .filter(node => node.nodeType === Node.TEXT_NODE)
@@ -79,6 +85,7 @@ await createComponent("description-editor", template =>
           this.#updateEditbox();
         };
         cancelButton.onclick = () => {
+          part.removeAttribute("contenteditable");
           helperBox.toggleAttribute("hidden", true);
           this.#updateEditbox();
         };
@@ -100,6 +107,7 @@ await createComponent("description-editor", template =>
             helperBox.appendChild(table);
 
             confirmButton.onclick = () => {
+              part.removeAttribute("contenteditable");
               helperBox.toggleAttribute("hidden", true);
               this.#description[idx] = {
                 ...descriptionInfo,
@@ -113,6 +121,7 @@ await createComponent("description-editor", template =>
             };
 
             cancelButton.onclick = () => {
+              part.removeAttribute("contenteditable");
               helperBox.toggleAttribute("hidden", true);
               this.#updateEditbox();
             };
