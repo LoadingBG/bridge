@@ -47,7 +47,6 @@ bid-tile {
 }
 
 .description {
-  white-space: pre;
   text-wrap: auto;
 }
 
@@ -61,56 +60,6 @@ bid-tile {
 
 .button {
   flex: 1;
-}
-
-.descriptioned-text {
-  color: blue;
-  text-decoration: underline;
-  position: relative;
-}
-
-.descriptioned-tile {
-  position: relative;
-  display: inline-block;
-  width: 1em;
-  height: 1em;
-}
-
-.descriptioned-tile bid-tile {
-  position: absolute;
-  top: 0;
-  width: 1em;
-  height: 1em;
-  white-space: normal;
-}
-
-.descriptioned-text.error {
-  color: red;
-}
-
-.helper-box {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  width: 300px;
-  text-wrap: balance;
-  text-align: center;
-  white-space: break-spaces;
-  color: black;
-
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  box-shadow: rgba(100, 100, 111) 0px 7px 29px 0px;
-  background-color: white;
-}
-
-.helper-title {
-  color: black;
-  font-size: 1.5em;
-  font-weight: bold;
 }
 
 .card-table {

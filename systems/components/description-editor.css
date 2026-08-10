@@ -77,24 +77,3 @@
 .helper-box[hidden] {
   display: none;
 }
-
-.descriptioned-text {
-  color: blue;
-  text-decoration: underline;
-  position: relative;
-}
-
-.descriptioned-tile {
-  position: relative;
-  display: inline-block;
-  width: 1em;
-  height: 1em;
-}
-
-.descriptioned-tile bid-tile {
-  position: absolute;
-  top: 0;
-  width: 1em;
-  height: 1em;
-  white-space: normal;
-}
