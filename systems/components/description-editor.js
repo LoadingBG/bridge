@@ -10,6 +10,10 @@ await createComponent("description-editor", template =>
     #description;
     #systemManager;
 
+    #conventionButton;
+    #tileButton;
+    #numberOperationButton;
+
     constructor() {
       super();
 
@@ -19,6 +23,10 @@ await createComponent("description-editor", template =>
       this.#editbox = dom.querySelector(".editbox");
       this.#cancelButton = dom.querySelector("#cancel-button");
       this.#confirmButton = dom.querySelector("#confirm-button");
+
+      this.#conventionButton = dom.getElementById("convention-button");
+      this.#tileButton = dom.getElementById("tile-button");
+      this.#numberOperationButton = dom.getElementById("number-operation-button");
     }
 
     set systemManager(systemManager) {
@@ -43,22 +51,23 @@ await createComponent("description-editor", template =>
     #updateEditbox() {
       [...this.#editbox.childNodes].forEach(child => this.#editbox.removeChild(child));
 
-      const parts = descriptionToHTML(this.#description, this.#systemManager, { onclickEvents: false });
       parts
-        .map((part, idx) => [part, this.#description[idx]])
-        .forEach(([part, descriptionInfo], idx) => {
-          this.#addOnclick(part, descriptionInfo, idx);
-          this.#editbox.appendChild(part);
-        });
+        .map((part, idx) => this.#createElement(part, idx))
+        .forEach(elem => this.#editbox.addChild(elem));
     }
 
-    #addOnclick(part, descriptionInfo, idx) {
-      part.setAttribute("contenteditable", this.#isTextEditable(descriptionInfo));
-      this.#createHelperBox(part, descriptionInfo, idx);
-    }
+    #createElement(descriptionInfo, idx) {
+      if (typeof(part) === "string") {
+        return document.createTextElement(part);
+      }
 
-    #isTextEditable(descriptionInfo) {
-      return typeof(descriptionInfo) === "string" || descriptionInfo.type === "convention";
+      let element;
+      switch (part.type) {
+        case "convention": {} break;
+        case "tile": {} break;
+        case "numberOperation": {} break;
+        default: throw new Error(`Unrecognized type: ${part.type}`);
+      }
     }
 
     #createHelperBox(part, descriptionInfo, idx) {
@@ -92,6 +101,7 @@ await createComponent("description-editor", template =>
       } else {
         switch (descriptionInfo.type) {
           case "convention": {
+            console.log("in");
             const conventionChooser = document.createElement("select");
             Object.keys(this.#systemManager.conventions).forEach(convention => {
               const option = document.createElement("option");

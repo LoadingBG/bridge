@@ -35,6 +35,24 @@
   z-index: 1;
 }
 
+.insert-row {
+  display: flex;
+  gap: 1%;
+}
+.insert-row button {
+  flex: 1;
+}
+
+.editbox {
+  flex: 2;
+  width: 100%;
+  
+  box-sizing: border-box;
+  margin: 10px 0px;
+  padding: 5px 5px;
+  border: 1px solid black;
+}
+
 .spacer {
   flex: 1;
 }

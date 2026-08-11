@@ -1,10 +1,9 @@
 import { BidInfo } from "./system.js";
 import TileInfo from "./tileInfo.js";
 import Suit from "./suit.js";
-import "./components/bid-tile.js";
-import "./components/convention-description.js";
-import "./components/number-operation-description.js";
-import "./components/tile-description.js";
+import "./components/descriptions/convention-description.js";
+import "./components/descriptions/number-operation-description.js";
+import "./components/descriptions/tile-description.js";
 
 export default function descriptionToHTML(description, systemManager, options = {}) {
   if (options.onclickEvents === undefined) {
@@ -15,6 +14,7 @@ export default function descriptionToHTML(description, systemManager, options = 
 
 function descriptionPartToHTML(part, systemManager, options) {
   if (typeof(part) === "string") {
+    return document.createTextNode(part);
     const span = document.createElement("span");
     span.textContent = part;
     return span;
@@ -41,43 +41,4 @@ function descriptionPartToHTML(part, systemManager, options) {
     case undefined: throw new Error("Cannot parse part without type");
     default:        throw new Error(`Unrecognized type: ${part.type}`);
   }
-}
- 
-const OPERATIONS_LABELS = {
-  "lessThan": {
-    "word": (part) => `под ${part.number}`,
-    "capitalWord": (part) => `Под ${part.number}`,
-    "symbol": (part) => `< ${part.number}`,
-  },
-  "lessThanOrEqual": {
-    "word": (part) => `най-много ${part.number}`,
-    "capitalWord": (part) => `Най-много ${part.number}`,
-    "symbol": (part) => `\u2264 ${part.number}`,
-  },
-  "moreThan": {
-    "word": (part) => `над ${part.number}`,
-    "capitalWord": (part) => `Над ${part.number}`,
-    "symbol": (part) => `> ${part.number}`,
-  },
-  "moreThanOrEqual": {
-    "word": (part) => `поне ${part.number}`,
-    "capitalWord": (part) => `Поне ${part.number}`,
-    "symbol": (part) => `\u2265 ${part.number}`,
-  },
-  "between": {
-    "word": (part) => `между ${part.lowerBound} и ${part.upperBound}`,
-    "capitalWord": (part) => `Между ${part.lowerBound} и ${part.upperBound}`,
-    "symbol": (part) => `${part.lowerBound} \u2013 ${part.upperBound}`,
-  }
-};
-function numberOperationToHTML(part, options) {
-  const span = document.createElement("span");
-  const template = OPERATIONS_LABELS[part.operation][options.numberOperationStyle ?? "word"];
-
-  if (template === undefined) {
-    throw new Error(`Unknown number operation: ${part.operation}`);
-  }
-
-  span.textContent = template(part);
-  return span;
 }
