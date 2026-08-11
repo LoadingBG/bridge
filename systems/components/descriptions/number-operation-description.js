@@ -1,5 +1,4 @@
-import createComponent from "../createComponent.js";
-import descriptionToHTML from "../descriptionCreator.js";
+import createComponent from "../../createComponent.js";
 
 const OPERATIONS_LABELS = {
   "lessThan": {
@@ -29,7 +28,7 @@ const OPERATIONS_LABELS = {
   }
 }
 
-await createComponent("number-operation-description", template =>
+await createComponent("descriptions", "number-operation-description", template =>
   class NumberOperationDescription extends HTMLElement {
     #text;
 

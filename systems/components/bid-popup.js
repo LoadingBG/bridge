@@ -3,7 +3,7 @@ import descriptionToHTML from "../descriptionCreator.js";
 import Suit from "../suit.js";
 import "./bid-tile.js";
 import "./bid-popup-card-card.js";
-import "./description-editor.js";
+import "./descriptionEditing/description-editor.js";
 
 await createComponent("bid-popup", template =>
   class BidPopup extends HTMLElement {

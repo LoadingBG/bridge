@@ -1,9 +1,8 @@
-import createComponent from "../createComponent.js";
-import descriptionToHTML from "../descriptionCreator.js";
-import TileInfo from "../tileInfo.js";
-import Suit from "../suit.js";
+import createComponent from "../../createComponent.js";
+import TileInfo from "../../tileInfo.js";
+import Suit from "../../suit.js";
 
-await createComponent("tile-description", template =>
+await createComponent("descriptions", "tile-description", template =>
   class TileDescription extends HTMLElement {
     #tile;
 

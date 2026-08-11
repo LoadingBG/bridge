@@ -1,27 +1,14 @@
 :host {
   display: inline-block;
+  position: relative;
 }
 
-span[hidden], div[hidden] {
-  display: none;
-}
-
-.descriptioned-text {
+.text {
   color: blue;
   text-decoration: underline;
-  position: relative;
-  display: inline-block;
 }
 
-.descriptioned-tile bid-tile {
-  position: absolute;
-  top: 0;
-  width: 1em;
-  height: 1em;
-  white-space: normal;
-}
-
-.descriptioned-text.error {
+.text[error] {
   color: red;
 }
 
@@ -42,6 +29,10 @@ span[hidden], div[hidden] {
   transform: translateX(-50%);
   box-shadow: rgba(100, 100, 111) 0px 7px 29px 0px;
   background-color: white;
+}
+
+.helper-box[hidden] {
+  display: none;
 }
 
 .helper-title {
