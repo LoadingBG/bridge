@@ -1,0 +1,43 @@
+:host {
+  display: inline-block;
+  position: relative;
+}
+
+.text {
+  color: blue;
+  text-decoration: underline;
+}
+
+.text[error] {
+  color: red;
+}
+
+.helper-box {
+  padding: 10px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: fit-content;
+  text-wrap: balance;
+  text-align: center;
+  white-space: break-spaces;
+  color: black;
+
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: rgba(100, 100, 111) 0px 7px 29px 0px;
+  background-color: white;
+}
+
+.helper-box[hidden] {
+  display: none;
+}
+
+.row {
+  display: flex;
+  gap: 1em;
+}

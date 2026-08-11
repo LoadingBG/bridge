@@ -15,9 +15,6 @@ export default function descriptionToHTML(description, systemManager, options = 
 function descriptionPartToHTML(part, systemManager, options) {
   if (typeof(part) === "string") {
     return document.createTextNode(part);
-    const span = document.createElement("span");
-    span.textContent = part;
-    return span;
   }
 
   switch (part.type) {
