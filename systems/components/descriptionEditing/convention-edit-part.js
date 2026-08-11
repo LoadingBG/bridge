@@ -1,4 +1,5 @@
 import createComponent from "../../createComponent.js";
+import positionHelperBox from "./helperBoxPositioner.js";
 
 await createComponent("descriptionEditing", "convention-edit-part", template =>
   class ConventionEditPart extends HTMLElement {
@@ -62,14 +63,7 @@ await createComponent("descriptionEditing", "convention-edit-part", template =>
           this.#descriptionPart.text = this.#text.textContent;
           this.#descriptionPart.convention = this.#conventionMenu.value;
         } else {
-          // Move box if out of viewport
-          this.#helperBox.style.transform = "";
-          const boundingBox = this.#helperBox.getBoundingClientRect();
-          if (boundingBox.left < 0) {
-            this.#helperBox.style.transform = `translateX(calc(-50% - ${boundingBox.left}px + 1vw))`;
-          } else if (boundingBox.right > window.innerWidth) {
-            this.#helperBox.style.transform = `translateX(calc(-50% - ${boundingBox.right - window.innerWidth}px - 1vw))`;
-          }
+          positionHelperBox(this.#helperBox);
         }
       };
     }
