@@ -1,0 +1,43 @@
+:host {
+  display: inline-block;
+  position: relative;
+}
+
+.display {
+  display: block;
+  width: 1em;
+  aspect-ratio: 1 / 1;
+}
+
+.helper-box {
+  padding: 10px;
+
+  width: calc(5em + 8px);
+
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: rgba(100, 100, 111) 0px 7px 29px 0px;
+  background-color: white;
+}
+
+.helper-box[hidden] {
+  display: none;
+}
+
+.bid-board {
+  display: grid;
+  grid-template-columns: repeat(5, auto);
+  gap: 2px;
+}
+
+.bid-board bid-tile {
+  aspect-ratio: 1 / 1;
+}
+
+.bid-board bid-tile[pass] {
+  aspect-ratio: auto;
+  grid-column: 3 / span 3;
+  height: 1em;
+}

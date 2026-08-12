@@ -57,7 +57,7 @@ await createComponent("bid-popup", template =>
         this.#confirmButton.toggleAttribute("disabled", true);
 
         this.#hcpBox.ondblclick = () => {
-          this.#descriptionEditor.description = this.#bidInfo.hcp;
+          this.#descriptionEditor.description = this.#editedBidInfo.hcp;
           this.#descriptionEditor.onConfirm = (description) => {
             this.#editedBidInfo.hcp = description;
             this.#updateInfobox(this.#editedBidInfo);
@@ -67,7 +67,7 @@ await createComponent("bid-popup", template =>
         };
 
         this.#descriptionBox.ondblclick = () => {
-          this.#descriptionEditor.description = this.#bidInfo.description;
+          this.#descriptionEditor.description = this.#editedBidInfo.description;
           this.#descriptionEditor.onConfirm = (description) => {
             this.#editedBidInfo.description = description;
             this.#updateInfobox(this.#editedBidInfo);
@@ -79,7 +79,7 @@ await createComponent("bid-popup", template =>
         [[this.#clubCard, Suit.CLUB], [this.#diamondCard, Suit.DIAMOND], [this.#heartCard, Suit.HEART], [this.#spadeCard, Suit.SPADE]]
           .forEach(([card, suit]) => {
             card.ondblclick = () => {
-              this.#descriptionEditor.description = this.#bidInfo.cards[Suit.nameOf(suit)] ?? "-";
+              this.#descriptionEditor.description = this.#editedBidInfo.cards[Suit.nameOf(suit)] ?? "-";
               this.#descriptionEditor.onConfirm = (description) => {
                 this.#editedBidInfo.cards[Suit.nameOf(suit)] = description;
                 this.#updateInfobox(this.#editedBidInfo);
@@ -98,7 +98,7 @@ await createComponent("bid-popup", template =>
 
       this.#saveButton.onclick = () => {
         this.revertToDefault();
-        this.#bidInfo = this.#editedBidInfo;
+        this.#bidInfo = this.#editedBidInfo.clone();
         this.#systemManager.saveEdit(this.#editedBidInfo);
       };
 

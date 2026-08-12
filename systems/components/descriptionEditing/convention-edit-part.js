@@ -59,7 +59,6 @@ await createComponent("descriptionEditing", "convention-edit-part", template =>
         hidden = !hidden;
         this.#helperBox.toggleAttribute("hidden", hidden);
         if (hidden) {
-          // Reassign description part
           this.#descriptionPart.text = this.#text.textContent;
           this.#descriptionPart.convention = this.#conventionMenu.value;
         } else {
