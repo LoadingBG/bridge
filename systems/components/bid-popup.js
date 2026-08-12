@@ -79,8 +79,9 @@ await createComponent("bid-popup", template =>
         [[this.#clubCard, Suit.CLUB], [this.#diamondCard, Suit.DIAMOND], [this.#heartCard, Suit.HEART], [this.#spadeCard, Suit.SPADE]]
           .forEach(([card, suit]) => {
             card.ondblclick = () => {
-              this.#descriptionEditor.description = this.#editedBidInfo.cards[Suit.nameOf(suit)] ?? "-";
+              this.#descriptionEditor.description = this.#editedBidInfo.cards?.[Suit.nameOf(suit)];
               this.#descriptionEditor.onConfirm = (description) => {
+                this.#editedBidInfo.cards ??= {};
                 this.#editedBidInfo.cards[Suit.nameOf(suit)] = description;
                 this.#updateInfobox(this.#editedBidInfo);
                 this.#descriptionEditor.toggleAttribute("hidden", true);
@@ -158,6 +159,7 @@ await createComponent("bid-popup", template =>
     }
 
     #updateInfobox(bidInfo) {
+      console.log(bidInfo);
       this.#clubCard.description = bidInfo.cards?.[Suit.nameOf(Suit.CLUB)];
       this.#diamondCard.description = bidInfo.cards?.[Suit.nameOf(Suit.DIAMOND)];
       this.#heartCard.description = bidInfo.cards?.[Suit.nameOf(Suit.HEART)];

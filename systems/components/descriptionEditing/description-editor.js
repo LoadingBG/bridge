@@ -37,9 +37,11 @@ await createComponent("descriptionEditing", "description-editor", template =>
     set description(description) {
       [...this.#editbox.childNodes].forEach(child => this.#editbox.removeChild(child));
 
-      description
-        .map((part, idx) => this.#createElement(part, idx))
-        .forEach(elem => this.#editbox.appendChild(elem));
+      if (description) {
+        description
+          .map((part, idx) => this.#createElement(part, idx))
+          .forEach(elem => this.#editbox.appendChild(elem));
+      }
     }
 
     set onCancel(callback) {
@@ -52,11 +54,15 @@ await createComponent("descriptionEditing", "description-editor", template =>
         this.#editbox.childNodes.forEach(child => {
           if (child instanceof Text) {
             newDescription.push(child.textContent);
+          } else if (child instanceof HTMLDivElement) {
+            newDescription.push(child.textContent + "\n");
+          } else if (child instanceof HTMLBRElement) {
+            // Skip: only available if text is empty
           } else {
             newDescription.push(child.descriptionPart);
           }
         });
-        callback(newDescription);
+        callback(newDescription.length === 0 ? undefined : newDescription);
       };
     }
 
