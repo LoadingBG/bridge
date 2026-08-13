@@ -1,6 +1,7 @@
 import createComponent from "../../createComponent.js";
 import descriptionToHTML from "../../descriptionCreator.js";
 import "./convention-edit-part.js";
+import "./number-operation-edit-part.js";
 import "./tile-edit-part.js";
 
 await createComponent("descriptionEditing", "description-editor", template =>
@@ -79,7 +80,9 @@ await createComponent("descriptionEditing", "description-editor", template =>
         case "tile": {
           element = document.createElement("tile-edit-part");
         } break;
-        case "numberOperation": {} break;
+        case "numberOperation": {
+          element = document.createElement("number-operation-edit-part");
+        } break;
         default: throw new Error(`Unrecognized type: ${descriptionInfo.type}`);
       }
       element.systemManager = this.#systemManager;

@@ -1,0 +1,35 @@
+<template>
+  <span class="text"></span>
+  <div class="helper-box" hidden>
+    <span>Операция:</span>
+    <div class="button-row">
+      <div class="button">
+        <input type="radio" id="lt-button" name="operation-button" />
+        <label for="lt-button">&lt;</label>
+      </div>
+      <div class="button">
+        <input type="radio" id="le-button" name="operation-button" />
+        <label for="le-button">&le;</label>
+      </div>
+      <div class="button">
+        <input type="radio" id="gt-button" name="operation-button" />
+        <label for="gt-button">&gt;</label>
+      </div>
+      <div class="button">
+        <input type="radio" id="ge-button" name="operation-button" />
+        <label for="ge-button">&ge;</label>
+      </div>
+      <div class="button">
+        <input type="radio" id="between-button" name="operation-button" />
+        <label for="between-button">&#x2013;</label>
+      </div>
+    </div>
+
+    <span id="number-label">Число:</span>
+    <input id="number-field" type="number" min="0" max="37" />
+    <span id="lower-bound-label">Долна граница:</span>
+    <input id="lower-bound-field" type="number" min="0" max="37" />
+    <span id="upper-bound-label">Горна граница:</span>
+    <input id="upper-bound-field" type="number" min="0" max="37" />
+  </div>
+</template>

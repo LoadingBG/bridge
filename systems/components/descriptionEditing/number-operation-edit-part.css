@@ -1,0 +1,56 @@
+:host {
+  display: inline-block;
+  position: relative;
+}
+
+.text {
+  color: black;
+}
+
+.helper-box {
+  padding: 10px;
+  color: black;
+
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: rgba(100, 100, 111) 0px 7px 29px 0px;
+  background-color: white;
+
+  display: grid;
+  row-gap: 0.5em;
+  column-gap: 1em;
+  grid-template-columns: repeat(2, auto);
+}
+
+.helper-box[hidden] {
+  display: none;
+}
+
+.row {
+  display: flex;
+  gap: 1em;
+}
+
+.button-row {
+  display: flex;
+  width: fit-content;
+  gap: 1em;
+}
+
+input[type="radio"] {
+  display: none;
+}
+
+input[type="radio"] + label {
+  display: block;
+  aspect-ratio: 1 / 1;
+  border: 1px solid black;
+  width: 1em;
+  text-align: center;
+}
+
+input[type="radio"]:checked + label {
+  background: gray;
+}
