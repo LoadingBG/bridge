@@ -48,6 +48,7 @@ bid-tile {
 
 .description {
   text-wrap: auto;
+  white-space: break-spaces;
 }
 
 .button-row {

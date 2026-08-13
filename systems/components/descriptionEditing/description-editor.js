@@ -40,6 +40,19 @@ await createComponent("descriptionEditing", "description-editor", template =>
 
       if (description) {
         description
+          .flatMap(part => {
+            if (typeof(part) === "string") {
+              const newElements = [];
+              part.split("\n").forEach(elem => {
+                newElements.push(elem);
+                newElements.push(document.createElement("br"));
+              });
+              newElements.pop();
+              return newElements;
+            } else {
+              return part;
+            }
+          })
           .map((part, idx) => this.#createElement(part, idx))
           .forEach(elem => this.#editbox.appendChild(elem));
       }
@@ -54,15 +67,33 @@ await createComponent("descriptionEditing", "description-editor", template =>
         const newDescription = [];
         this.#editbox.childNodes.forEach(child => {
           if (child instanceof Text) {
-            newDescription.push(child.textContent);
-          } else if (child instanceof HTMLDivElement) {
-            newDescription.push(child.textContent + "\n");
+            if (typeof(newDescription.at(-1)) === "string") {
+              const lastString = newDescription.pop();
+              newDescription.push(lastString + child.textContent);
+            } else {
+              newDescription.push(child.textContent);
+            }
           } else if (child instanceof HTMLBRElement) {
-            // Skip: only available if text is empty
+            if (typeof(newDescription.at(-1)) === "string") {
+              const lastString = newDescription.pop();
+              newDescription.push(lastString + "\n");
+            } else {
+              newDescription.push("\n");
+            }
           } else {
             newDescription.push(child.descriptionPart);
           }
         });
+
+        if (typeof(newDescription.at(-1)) === "string") {
+          const lastString = newDescription.pop().trimEnd();
+          if (lastString !== "") {
+            newDescription.push(lastString);
+          }
+        }
+
+        console.log(newDescription);
+
         callback(newDescription.length === 0 ? undefined : newDescription);
       };
     }
@@ -70,6 +101,9 @@ await createComponent("descriptionEditing", "description-editor", template =>
     #createElement(descriptionInfo, idx) {
       if (typeof(descriptionInfo) === "string") {
         return document.createTextNode(descriptionInfo);
+      }
+      if (descriptionInfo instanceof HTMLBRElement) {
+        return descriptionInfo;
       }
 
       let element;
@@ -88,7 +122,7 @@ await createComponent("descriptionEditing", "description-editor", template =>
       element.systemManager = this.#systemManager;
       element.descriptionPart = descriptionInfo;
       element.onEdit = (isEditing) => {
-        this.#editbox.toggleAttribute("contenteditable", !isEditing);
+        this.#editbox.setAttribute("contenteditable", isEditing ? "false" : "plaintext-only");
         this.#cancelButton.toggleAttribute("disabled", isEditing);
         this.#confirmButton.toggleAttribute("disabled", isEditing);
         this.#conventionButton.toggleAttribute("disabled", isEditing);
