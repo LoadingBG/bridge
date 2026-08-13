@@ -29,6 +29,28 @@ await createComponent("descriptionEditing", "description-editor", template =>
       this.#conventionButton = dom.getElementById("convention-button");
       this.#tileButton = dom.getElementById("tile-button");
       this.#numberOperationButton = dom.getElementById("number-operation-button");
+
+      this.#conventionButton.onclick = () => {
+        this.#editbox.appendChild(this.#createElement({
+          type: "convention",
+          convention: Object.keys(this.#systemManager.conventions)[0],
+          text: "Конвенция",
+        }));
+      };
+      this.#tileButton.onclick = () => {
+        this.#editbox.appendChild(this.#createElement({
+          type: "tile",
+          number: 1,
+          suit: "CLUB",
+        }));
+      };
+      this.#numberOperationButton.onclick = () => {
+        this.#editbox.appendChild(this.#createElement({
+          type: "numberOperation",
+          operation: "lessThan",
+          number: 0,
+        }));
+      };
     }
 
     set systemManager(systemManager) {
@@ -53,7 +75,7 @@ await createComponent("descriptionEditing", "description-editor", template =>
               return part;
             }
           })
-          .map((part, idx) => this.#createElement(part, idx))
+          .map(part => this.#createElement(part))
           .forEach(elem => this.#editbox.appendChild(elem));
       }
     }
@@ -98,7 +120,7 @@ await createComponent("descriptionEditing", "description-editor", template =>
       };
     }
 
-    #createElement(descriptionInfo, idx) {
+    #createElement(descriptionInfo) {
       if (typeof(descriptionInfo) === "string") {
         return document.createTextNode(descriptionInfo);
       }
