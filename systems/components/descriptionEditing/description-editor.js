@@ -36,6 +36,7 @@ await createComponent("descriptionEditing", "description-editor", template =>
           convention: Object.keys(this.#systemManager.conventions)[0],
           text: "Конвенция",
         }));
+        this.#editbox.appendChild(document.createTextNode(" "));
       };
       this.#tileButton.onclick = () => {
         this.#editbox.appendChild(this.#createElement({
@@ -43,6 +44,7 @@ await createComponent("descriptionEditing", "description-editor", template =>
           number: 1,
           suit: "CLUB",
         }));
+        this.#editbox.appendChild(document.createTextNode(" "));
       };
       this.#numberOperationButton.onclick = () => {
         this.#editbox.appendChild(this.#createElement({
@@ -50,6 +52,7 @@ await createComponent("descriptionEditing", "description-editor", template =>
           operation: "lessThan",
           number: 0,
         }));
+        this.#editbox.appendChild(document.createTextNode(" "));
       };
     }
 
@@ -62,19 +65,19 @@ await createComponent("descriptionEditing", "description-editor", template =>
 
       if (description) {
         description
-          .flatMap(part => {
-            if (typeof(part) === "string") {
-              const newElements = [];
-              part.split("\n").forEach(elem => {
-                newElements.push(elem);
-                newElements.push(document.createElement("br"));
-              });
-              newElements.pop();
-              return newElements;
-            } else {
-              return part;
-            }
-          })
+          // .flatMap(part => {
+          //   if (typeof(part) === "string") {
+          //     const newElements = [];
+          //     part.split("\n").forEach(elem => {
+          //       newElements.push(elem);
+          //       newElements.push(document.createElement("br"));
+          //     });
+          //     newElements.pop();
+          //     return newElements;
+          //   } else {
+          //     return part;
+          //   }
+          // })
           .map(part => this.#createElement(part))
           .forEach(elem => this.#editbox.appendChild(elem));
       }
@@ -144,7 +147,7 @@ await createComponent("descriptionEditing", "description-editor", template =>
       element.systemManager = this.#systemManager;
       element.descriptionPart = descriptionInfo;
       element.onEdit = (isEditing) => {
-        this.#editbox.setAttribute("contenteditable", isEditing ? "false" : "plaintext-only");
+        this.#editbox.toggleAttribute("contenteditable", !isEditing);
         this.#cancelButton.toggleAttribute("disabled", isEditing);
         this.#confirmButton.toggleAttribute("disabled", isEditing);
         this.#conventionButton.toggleAttribute("disabled", isEditing);
