@@ -159,7 +159,6 @@ await createComponent("bid-popup", template =>
     }
 
     #updateInfobox(bidInfo) {
-      console.log(bidInfo);
       this.#clubCard.description = bidInfo.cards?.[Suit.nameOf(Suit.CLUB)];
       this.#diamondCard.description = bidInfo.cards?.[Suit.nameOf(Suit.DIAMOND)];
       this.#heartCard.description = bidInfo.cards?.[Suit.nameOf(Suit.HEART)];

@@ -65,19 +65,6 @@ await createComponent("descriptionEditing", "description-editor", template =>
 
       if (description) {
         description
-          // .flatMap(part => {
-          //   if (typeof(part) === "string") {
-          //     const newElements = [];
-          //     part.split("\n").forEach(elem => {
-          //       newElements.push(elem);
-          //       newElements.push(document.createElement("br"));
-          //     });
-          //     newElements.pop();
-          //     return newElements;
-          //   } else {
-          //     return part;
-          //   }
-          // })
           .map(part => this.#createElement(part))
           .forEach(elem => this.#editbox.appendChild(elem));
       }
@@ -116,8 +103,6 @@ await createComponent("descriptionEditing", "description-editor", template =>
             newDescription.push(lastString);
           }
         }
-
-        console.log(newDescription);
 
         callback(newDescription.length === 0 ? undefined : newDescription);
       };
