@@ -33,7 +33,18 @@ await createComponent("bid-app", template =>
         this.#bidHistoryTable.selectSide(side);
       }
       this.#settingsBar.onSave = () => {
-        console.log("Save system");
+        const json = JSON.stringify(this.#systemManager.editedJSON, null, 2);
+        const blob = new Blob([json], { type: "text/json" });
+
+        const a = document.createElement("a");
+        a.download = "fmi.json"; // TODO: dynamic name
+        a.href = URL.createObjectURL(blob);
+        a.dataset.downloadurl = `${blob.type}:${a.download}:${a.href}`;
+        a.style.display = "none";
+
+        dom.appendChild(a);
+        a.click();
+        dom.removeChild(a);
       };
 
       this.#bidBoard.systemManager = this.#systemManager;
@@ -53,6 +64,9 @@ await createComponent("bid-app", template =>
       this.#bidPopup.systemManager = this.#systemManager;
       this.#bidPopup.onCancel = () => {
         this.#bidPopup.toggleAttribute("disabled", true);
+      };
+      this.#bidPopup.onSave = () => {
+        this.#bidBoard.updateTiles();
       };
     }
 

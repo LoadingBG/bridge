@@ -27,6 +27,8 @@ await createComponent("bid-popup", template =>
     #revertButton;
     #saveButton;
     #descriptionEditor;
+
+    #onSave;
   
     constructor() {
       super();
@@ -101,6 +103,7 @@ await createComponent("bid-popup", template =>
         this.revertToDefault();
         this.#bidInfo = this.#editedBidInfo.clone();
         this.#systemManager.saveEdit(this.#editedBidInfo);
+        this.#onSave?.();
       };
 
       this.#descriptionEditor.onCancel = () => {
@@ -141,6 +144,10 @@ await createComponent("bid-popup", template =>
 
     set onConfirm(callback) {
       this.#confirmButton.onclick = callback;
+    }
+
+    set onSave(callback) {
+      this.#onSave = callback;
     }
 
     set systemManager(systemManager) {

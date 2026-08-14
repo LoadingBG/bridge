@@ -64,7 +64,7 @@ await createComponent("bid-board", template =>
 
     set systemManager(systemManager) {
       this.#systemManager = systemManager;
-      this.#updateTiles();
+      this.updateTiles();
     }
 
     #createPopupOnclick(tileInfo, onConfirm) {
@@ -78,12 +78,12 @@ await createComponent("bid-board", template =>
           if ((this.#currentBid.bidder === null && this.#passesInARow === 4) || (this.#currentBid.bidder !== null && this.#passesInARow >= 3)) {
             this.onBiddingEnd();
           }
-          this.#updateTiles();
+          this.updateTiles();
         });
       };
     }
 
-    #updateTiles() {
+    updateTiles() {
       for (let tile of this.#tiles) {
         tile.makeSystemic(this.#isBidSystemic(tile.info));
 

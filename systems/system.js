@@ -56,6 +56,20 @@ export class BidInfo {
           : TileInfo.numberSuit(this.number, this.suit);
   }
 
+  get bid() {
+    return {
+      number: this.number ?? undefined,
+      suit: Suit.nameOf(this.suit),
+      double: this.isDoubled || undefined,
+      redouble: this.isRedoubled || undefined,
+      pass: this.isPass || undefined,
+      isAlert: this.isAlert,
+      hcp: this.hcp,
+      description: this.description,
+      cards: this.cards,
+    };
+  }
+
   clone() {
     return new BidInfo(
       this.systemic,
@@ -75,20 +89,28 @@ export class BidInfo {
 
 
 export class System {
-  constructor() {
+  #path;
+
+  constructor(json) {
     this.currentChooser = Side.NORTH;
+    this.editedJSON = structuredClone(json);
+    this.#path = [];
   }
 
   static fromJSON(json) {
-    return Object.assign(new System(), json);
+    return Object.assign(new System(json), structuredClone(json));
+  }
+
+  #areEquivalent(tileInfo, bid) {
+    return (tileInfo.isDouble && bid.double)
+      || (tileInfo.isRedouble && bid.redouble)
+      || (tileInfo.isNumberSuit && tileInfo.number === bid.number && tileInfo.suit === Suit[bid.suit])
+      || (tileInfo.isPass && bid.pass);
   }
 
   bidInfo(tileInfo) {
     for (const bid of this.availableBids) {
-      if ((tileInfo.isDouble && bid.double)
-        || (tileInfo.isRedouble && bid.redouble)
-        || (tileInfo.isNumberSuit && tileInfo.number === bid.number && tileInfo.suit === Suit[bid.suit])
-        || (tileInfo.isPass && bid.pass)) {
+      if (this.#areEquivalent(tileInfo, bid)) {
         return BidInfo.systemic(bid);
       }
     }
@@ -103,18 +125,60 @@ export class System {
 
   update(tileInfo) {
     for (const bid of this.availableBids) {
-      if ((tileInfo.isDouble && bid.double)
-        || (tileInfo.isRedouble && bid.redouble)
-        || (tileInfo.isNumberSuit && tileInfo.number === bid.number && tileInfo.suit === Suit[bid.suit])
-        || (tileInfo.isPass && bid.pass)) {
+      if (this.#areEquivalent(tileInfo, bid)) {
+        this.#path.push(tileInfo);
         this.availableBids = bid.continuations ?? [];
         return;
       }
     }
+    this.#path = undefined;
     this.availableBids = [];
   }
 
   saveEdit(bidInfo) {
-    console.log("Save edit", bidInfo);
+    if (this.#path === undefined) {
+      alert("Предишното обявяване е извънсистемно.");
+      throw new Error("Cannot save bid outside of tree");
+    }
+
+    const existingBidIdx = this.availableBids.findIndex(bid => this.#areEquivalent(bidInfo.tileInfo, bid));
+    if (existingBidIdx !== -1) {
+      this.availableBids.splice(existingBidIdx, 1);
+    }
+    this.availableBids.push(bidInfo.bid);
+
+    let parent = this.editedJSON;
+    for (const path of this.#path) {
+      const children = parent.availableBids ?? parent.continuations;
+      let nextParent = undefined;
+      for (const child of children) {
+        if (this.#areEquivalent(path, child)) {
+          nextParent = child;
+          break;
+        }
+      }
+      if (nextParent === undefined) {
+        alert("Лошо.");
+        throw new Error("Didn't find subtree");
+      }
+
+      parent = nextParent;
+    }
+
+    // Check if subbid already exists
+    let children = parent.availableBids ?? parent.continuations;
+    if (children === undefined) {
+      parent.continuations = [];
+      children = parent.continuations;
+    }
+    const existingChildIdx = children.findIndex(child => this.#areEquivalent(bidInfo.tileInfo, child));
+    console.log(existingChildIdx);
+    if (existingChildIdx !== -1) {
+      children.splice(existingChildIdx, 1);
+    }
+    console.log(children.length);
+    console.log(parent.availableBids);
+
+    children.push(bidInfo.bid);
   }
 }
