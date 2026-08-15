@@ -181,17 +181,26 @@ await createComponent("descriptionEditing", "number-operation-edit-part", templa
           if (this.#ltButton.checked) {
             this.#descriptionPart.operation = "lessThan";
             this.#descriptionPart.number = parseInt(this.#numberField.value);
+            this.#descriptionPart.lowerBound = undefined;
+            this.#descriptionPart.upperBound = undefined;
           } else if (this.#leButton.checked) {
             this.#descriptionPart.operation = "lessThanOrEqual";
             this.#descriptionPart.number = parseInt(this.#numberField.value);
+            this.#descriptionPart.lowerBound = undefined;
+            this.#descriptionPart.upperBound = undefined;
           } else if (this.#gtButton.checked) {
             this.#descriptionPart.operation = "moreThan";
             this.#descriptionPart.number = parseInt(this.#numberField.value);
+            this.#descriptionPart.lowerBound = undefined;
+            this.#descriptionPart.upperBound = undefined;
           } else if (this.#geButton.checked) {
             this.#descriptionPart.operation = "moreThanOrEqual";
             this.#descriptionPart.number = parseInt(this.#numberField.value);
+            this.#descriptionPart.lowerBound = undefined;
+            this.#descriptionPart.upperBound = undefined;
           } else if (this.#betweenButton.checked) {
             this.#descriptionPart.operation = "between";
+            this.#descriptionPart.number = undefined;
             this.#descriptionPart.lowerBound = parseInt(this.#lowerBoundField.value);
             this.#descriptionPart.upperBound = parseInt(this.#upperBoundField.value);
           } else {

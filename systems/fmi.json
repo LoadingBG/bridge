@@ -1,6 +1,5 @@
 {
   "name": "ФМИ",
-
   "conventions": {
     "highCardPoints": {
       "title": "Точки от оньори",
@@ -45,7 +44,6 @@
       ]
     }
   },
-
   "availableBids": [
     {
       "pass": true,
@@ -1083,93 +1081,6 @@
     },
     {
       "number": 2,
-      "suit": "DIAMOND",
-      "isAlert": true,
-      "description": [
-        {
-          "type": "convention",
-          "text": "Бараж",
-          "convention": "barrage"
-        },
-        " на кари с поне шесторна боя."
-      ],
-      "hcp": [
-        {
-          "type": "numberOperation",
-          "operation": "lessThanOrEqual",
-          "number": 10
-        }
-      ],
-      "cards": {
-        "DIAMOND": [
-          {
-            "type": "numberOperation",
-            "operation": "moreThanOrEqual",
-            "number": 6
-          }
-        ]
-      }
-    },
-    {
-      "number": 2,
-      "suit": "HEART",
-      "isAlert": true,
-      "description": [
-        {
-          "type": "convention",
-          "text": "Бараж",
-          "convention": "barrage"
-        },
-        " на купи с поне шесторна боя."
-      ],
-      "hcp": [
-        {
-          "type": "numberOperation",
-          "operation": "lessThanOrEqual",
-          "number": 10
-        }
-      ],
-      "cards": {
-        "HEART": [
-          {
-            "type": "numberOperation",
-            "operation": "moreThanOrEqual",
-            "number": 6
-          }
-        ]
-      }
-    },
-    {
-      "number": 2,
-      "suit": "SPADE",
-      "isAlert": true,
-      "description": [
-        {
-          "type": "convention",
-          "text": "Бараж",
-          "convention": "barrage"
-        },
-        " на пики с поне шесторна боя."
-      ],
-      "hcp": [
-        {
-          "type": "numberOperation",
-          "operation": "lessThanOrEqual",
-          "number": 10
-        }
-      ],
-      "cards": {
-        "SPADE": [
-          {
-            "type": "numberOperation",
-            "operation": "moreThanOrEqual",
-            "number": 6
-          }
-        ]
-      }
-    },
-    {
-      "number": 2,
       "suit": "NO_TRUMP",
       "isAlert": false,
       "description": [
@@ -1215,9 +1126,107 @@
       }
     },
     {
+      "number": 2,
+      "suit": "DIAMOND",
+      "isAlert": true,
+      "hcp": [
+        {
+          "type": "numberOperation",
+          "operation": "between",
+          "lowerBound": 6,
+          "upperBound": 10
+        }
+      ],
+      "description": [
+        {
+          "type": "convention",
+          "text": "Бараж",
+          "convention": "barrage"
+        },
+        " на кари с поне шесторна боя."
+      ],
+      "cards": {
+        "DIAMOND": [
+          {
+            "type": "numberOperation",
+            "operation": "moreThanOrEqual",
+            "number": 6
+          }
+        ]
+      }
+    },
+    {
+      "number": 2,
+      "suit": "HEART",
+      "isAlert": true,
+      "hcp": [
+        {
+          "type": "numberOperation",
+          "operation": "between",
+          "lowerBound": 6,
+          "upperBound": 10
+        }
+      ],
+      "description": [
+        {
+          "type": "convention",
+          "text": "Бараж",
+          "convention": "barrage"
+        },
+        " на купи с поне шесторна боя."
+      ],
+      "cards": {
+        "HEART": [
+          {
+            "type": "numberOperation",
+            "operation": "moreThanOrEqual",
+            "number": 6
+          }
+        ]
+      }
+    },
+    {
+      "number": 2,
+      "suit": "SPADE",
+      "isAlert": true,
+      "hcp": [
+        {
+          "type": "numberOperation",
+          "operation": "between",
+          "lowerBound": 6,
+          "upperBound": 10
+        }
+      ],
+      "description": [
+        {
+          "type": "convention",
+          "text": "Бараж",
+          "convention": "barrage"
+        },
+        " на пики с поне шесторна боя."
+      ],
+      "cards": {
+        "SPADE": [
+          {
+            "type": "numberOperation",
+            "operation": "moreThanOrEqual",
+            "number": 6
+          }
+        ]
+      }
+    },
+    {
       "number": 3,
       "suit": "CLUB",
       "isAlert": true,
+      "hcp": [
+        {
+          "type": "numberOperation",
+          "operation": "between",
+          "lowerBound": 6,
+          "upperBound": 10
+        }
+      ],
       "description": [
         {
           "type": "convention",
@@ -1225,13 +1234,6 @@
           "convention": "barrage"
         },
         " на спатии с поне седморна боя."
-      ],
-      "hcp": [
-        {
-          "type": "numberOperation",
-          "operation": "lessThanOrEqual",
-          "number": 10
-        }
       ],
       "cards": {
         "CLUB": [
@@ -1247,6 +1249,14 @@
       "number": 3,
       "suit": "DIAMOND",
       "isAlert": true,
+      "hcp": [
+        {
+          "type": "numberOperation",
+          "operation": "between",
+          "lowerBound": 6,
+          "upperBound": 10
+        }
+      ],
       "description": [
         {
           "type": "convention",
@@ -1254,13 +1264,6 @@
           "convention": "barrage"
         },
         " на кари с поне седморна боя."
-      ],
-      "hcp": [
-        {
-          "type": "numberOperation",
-          "operation": "lessThanOrEqual",
-          "number": 10
-        }
       ],
       "cards": {
         "DIAMOND": [
@@ -1276,6 +1279,14 @@
       "number": 3,
       "suit": "HEART",
       "isAlert": true,
+      "hcp": [
+        {
+          "type": "numberOperation",
+          "operation": "between",
+          "lowerBound": 6,
+          "upperBound": 10
+        }
+      ],
       "description": [
         {
           "type": "convention",
@@ -1283,13 +1294,6 @@
           "convention": "barrage"
         },
         " на купи с поне седморна боя."
-      ],
-      "hcp": [
-        {
-          "type": "numberOperation",
-          "operation": "lessThanOrEqual",
-          "number": 10
-        }
       ],
       "cards": {
         "HEART": [
@@ -1305,6 +1309,14 @@
       "number": 3,
       "suit": "SPADE",
       "isAlert": true,
+      "hcp": [
+        {
+          "type": "numberOperation",
+          "operation": "between",
+          "lowerBound": 6,
+          "upperBound": 10
+        }
+      ],
       "description": [
         {
           "type": "convention",
@@ -1312,13 +1324,6 @@
           "convention": "barrage"
         },
         " на пики с поне седморна боя."
-      ],
-      "hcp": [
-        {
-          "type": "numberOperation",
-          "operation": "lessThanOrEqual",
-          "number": 10
-        }
       ],
       "cards": {
         "SPADE": [
