@@ -100,10 +100,11 @@ await createComponent("bid-popup", template =>
       };
 
       this.#saveButton.onclick = () => {
-        this.revertToDefault();
-        this.#bidInfo = this.#editedBidInfo.clone();
-        this.#systemManager.saveEdit(this.#editedBidInfo);
-        this.#onSave?.();
+        if (this.#systemManager.saveEdit(this.#editedBidInfo)) {
+          this.revertToDefault();
+          this.#bidInfo = this.#editedBidInfo.clone();
+          this.#onSave?.();
+        }
       };
 
       this.#descriptionEditor.onCancel = () => {

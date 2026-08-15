@@ -136,16 +136,27 @@ export class System {
   }
 
   saveEdit(bidInfo) {
+    const isUndefining =
+      bidInfo.hcp === undefined
+      && bidInfo.description === undefined
+      && (bidInfo.cards === undefined || Suit.values.every(suit => bidInfo.cards[suit] === undefined));
+
     if (this.#path === undefined) {
-      alert("Предишното обявяване е извънсистемно.");
-      throw new Error("Cannot save bid outside of tree");
+      alert("Предишно обявяване е извънсистемно.");
+      return false;
     }
 
     const existingBidIdx = this.availableBids.findIndex(bid => this.#areEquivalent(bidInfo.tileInfo, bid));
     if (existingBidIdx !== -1) {
+      if (isUndefining && this.availableBids[existingBidIdx].continuations?.length > 0) {
+        alert("Ще бъдат загубени последващи обявявания.");
+        return false;
+      }
       this.availableBids.splice(existingBidIdx, 1);
     }
-    this.availableBids.push(bidInfo.bid);
+    if (!isUndefining) {
+      this.availableBids.push(bidInfo.bid);
+    }
 
     let parent = this.editedJSON;
     for (const path of this.#path) {
@@ -159,7 +170,7 @@ export class System {
       }
       if (nextParent === undefined) {
         alert("Лошо.");
-        throw new Error("Didn't find subtree");
+        return false;
       }
 
       parent = nextParent;
@@ -172,13 +183,14 @@ export class System {
       children = parent.continuations;
     }
     const existingChildIdx = children.findIndex(child => this.#areEquivalent(bidInfo.tileInfo, child));
-    console.log(existingChildIdx);
     if (existingChildIdx !== -1) {
       children.splice(existingChildIdx, 1);
     }
-    console.log(children.length);
-    console.log(parent.availableBids);
 
-    children.push(bidInfo.bid);
+    if (!isUndefining) {
+      children.push(bidInfo.bid);
+    }
+
+    return true;
   }
 }
