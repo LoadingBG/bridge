@@ -47,13 +47,14 @@ await createComponent("descriptions", "convention-description", template =>
         this.#text.toggleAttribute("error", false);
         this.#helperTitle.textContent = conventionDescription.title;
         this.#description.childNodes.forEach(child => this.#description.removeChild(child));
-        descriptionToHTML(conventionDescription.description)
+        descriptionToHTML(conventionDescription.description, this.#systemManager)
           .forEach(child => this.#description.appendChild(child));
 
         this.#helperBox.toggleAttribute("hidden", true);
         if (this.#enableOnclick) {
           let hidden = true;
-          this.onclick = () => {
+          this.onclick = (event) => {
+            event.stopPropagation();
             hidden = !hidden;
             this.#helperBox.toggleAttribute("hidden", hidden);
           };

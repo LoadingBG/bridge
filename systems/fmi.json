@@ -7,6 +7,12 @@
         "Използват се за оценка на ръката. Точки се приписват на следните карти:\nА - 4\tK - 3\tQ - 2\tJ - 1\nВсички останали карти не носят точки. Накрая всичките точки се събират."
       ]
     },
+    "fit": {
+      "title": "Фит",
+      "description": [
+        "Фит се нарича притежанието на поне 8 карти от една боя от един отбор.\nНаговарянето се стреми към намирането на фитове, тъй като ако единият отбор има поне 8 коза, то противникът има най-много 5, което прави играта по-лесна."
+      ]
+    },
     "barrage": {
       "title": "Бараж",
       "description": [
@@ -41,6 +47,18 @@
       "title": "Трансфер Якоби",
       "description": [
         "Показва дължина в следващата по поредност боя. Обявяване на пика е трансфер за спатии.\nБез коз е силна обява. По тази причина безкозовата ръка е хубаво да се държи скрита. Затова се обявява предишната боя - така играчът със силната ръка може да обяви игралната боя и да задържи ръката си скрита."
+      ]
+    },
+    "oneOverOne": {
+      "title": "1 върху 1",
+      "description": [
+        "Показва подкрепяща ръка и поне четворна боя. Запитване за ",
+        {
+          "type": "convention",
+          "convention": "fit",
+          "text": "фит"
+        },
+        "."
       ]
     }
   },
@@ -330,6 +348,92 @@
                       ]
                     }
                   ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "number": 1,
+          "suit": "DIAMOND",
+          "isAlert": false,
+          "description": [
+            "Отваряща ръка без петорни купа и пика, в която карите са по-добри от спатиите. Също се обявява при 4 спатии и 4 кари."
+          ],
+          "hcp": [
+            {
+              "type": "numberOperation",
+              "operation": "moreThanOrEqual",
+              "number": 11
+            }
+          ],
+          "cards": {
+            "DIAMOND": [
+              {
+                "type": "numberOperation",
+                "operation": "moreThanOrEqual",
+                "number": 3
+              }
+            ],
+            "HEART": [
+              {
+                "type": "numberOperation",
+                "operation": "lessThan",
+                "number": 5
+              }
+            ],
+            "SPADE": [
+              {
+                "type": "numberOperation",
+                "operation": "lessThan",
+                "number": 5
+              }
+            ]
+          },
+          "continuations": [
+            {
+              "pass": true,
+              "isAlert": false,
+              "description": [
+                "Ръка с недостатъчно точки за обявяване."
+              ],
+              "hcp": [
+                {
+                  "type": "numberOperation",
+                  "operation": "lessThan",
+                  "number": 11
+                }
+              ],
+              "continuations": [
+                {
+                  "number": 1,
+                  "suit": "HEART",
+                  "isAlert": false,
+                  "description": [
+                    {
+                      "type": "convention",
+                      "convention": "oneOverOne",
+                      "text": "1 върху 1"
+                    },
+                    " на купи."
+                  ],
+                  "hcp": [
+                    {
+                      "type": "numberOperation",
+                      "operation": "between",
+                      "lowerBound": 6,
+                      "upperBound": 10
+                    }
+                  ],
+                  "cards": {
+                    "HEART": [
+                      {
+                        "type": "numberOperation",
+                        "operation": "moreThanOrEqual",
+                        "number": 4
+                      }
+                    ]
+                  }
                 }
               ]
             }

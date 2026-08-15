@@ -1,5 +1,4 @@
 import createComponent from "../../createComponent.js";
-import descriptionToHTML from "../../descriptionCreator.js";
 import "./convention-edit-part.js";
 import "./number-operation-edit-part.js";
 import "./tile-edit-part.js";
