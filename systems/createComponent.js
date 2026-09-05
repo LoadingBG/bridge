@@ -1,20 +1,30 @@
 const PARSER = new DOMParser();
 
-Object.defineProperty(HTMLElement.prototype, "onmousehold", {
+Object.defineProperty(HTMLElement.prototype, "oneditgesture", {
   set(callback) {
-    if (callback === null) {
-      this.onmousedown = null;
-      this.onmouseup = null;
-      return;
+    this.ondblclick = callback;
+    if (callback) {
+      this.ontouchstart = (touchEvent) => {
+        if (touchEvent.targetTouches.length >= 2) {
+          callback();
+        }
+      };
+    } else {
+      this.ontouchstart = null;
     }
+    // if (callback === null) {
+    //   this.onmousedown = null;
+    //   this.onmouseup = null;
+    //   return;
+    // }
 
-    let timeoutId;
-    this.onmousedown = () => {
-      timeoutId = setTimeout(callback, 500);
-    };
-    this.onmouseup = () => {
-      clearTimeout(timeoutId);
-    };
+    // let timeoutId;
+    // this.onmousedown = () => {
+    //   timeoutId = setTimeout(callback, 500);
+    // };
+    // this.onmouseup = () => {
+    //   clearTimeout(timeoutId);
+    // };
   }
 });
 

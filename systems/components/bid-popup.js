@@ -64,11 +64,11 @@ await createComponent("bid-popup", template =>
         this.#cancelButton.toggleAttribute("disabled", true);
         this.#confirmButton.toggleAttribute("disabled", true);
 
-        this.#bidTile.alertPart.onmousehold = () => {
+        this.#bidTile.alertPart.oneditgesture = () => {
           this.#editedBidInfo.isAlert = !this.#bidTile.alertPart.toggleAttribute("disabled");
         };
 
-        this.#hcpBox.onmousehold = () => {
+        this.#hcpBox.oneditgesture = () => {
           this.#descriptionEditor.description = this.#editedBidInfo.hcp;
           this.#descriptionEditor.onConfirm = (description) => {
             this.#editedBidInfo.hcp = description;
@@ -78,7 +78,7 @@ await createComponent("bid-popup", template =>
           this.#descriptionEditor.toggleAttribute("hidden", false);
         };
 
-        this.#descriptionBox.onmousehold = () => {
+        this.#descriptionBox.oneditgesture = () => {
           this.#descriptionEditor.description = this.#editedBidInfo.description;
           this.#descriptionEditor.onConfirm = (description) => {
             this.#editedBidInfo.description = description;
@@ -90,7 +90,7 @@ await createComponent("bid-popup", template =>
 
         [[this.#clubCard, Suit.CLUB], [this.#diamondCard, Suit.DIAMOND], [this.#heartCard, Suit.HEART], [this.#spadeCard, Suit.SPADE]]
           .forEach(([card, suit]) => {
-            card.onmousehold = () => {
+            card.oneditgesture = () => {
               this.#descriptionEditor.description = this.#editedBidInfo.cards?.[Suit.nameOf(suit)];
               this.#descriptionEditor.onConfirm = (description) => {
                 this.#editedBidInfo.cards ??= {};
@@ -141,17 +141,17 @@ await createComponent("bid-popup", template =>
       const isAlertDisabled = this.#bidTile.alertPart.hasAttribute("disabled");
       this.#bidTile.alertPart.toggleAttribute("disabled", false);
       this.#bidTile.isAlert = !isAlertDisabled;
-      this.#bidTile.alertPart.onmousehold = null;
+      this.#bidTile.alertPart.oneditgesture = null;
 
       this.#cancelButton.toggleAttribute("disabled", false);
       this.#confirmButton.toggleAttribute("disabled", false);
 
-      this.#hcpBox.onmousehold = null;
-      this.#descriptionBox.onmousehold = null;
-      this.#clubCard.onmousehold = null;
-      this.#diamondCard.onmousehold = null;
-      this.#heartCard.onmousehold = null;
-      this.#spadeCard.onmousehold = null;
+      this.#hcpBox.oneditgesture = null;
+      this.#descriptionBox.oneditgesture = null;
+      this.#clubCard.oneditgesture = null;
+      this.#diamondCard.oneditgesture = null;
+      this.#heartCard.oneditgesture = null;
+      this.#spadeCard.oneditgesture = null;
     }
 
     set onCancel(callback) {
