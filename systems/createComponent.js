@@ -1,5 +1,23 @@
 const PARSER = new DOMParser();
 
+Object.defineProperty(HTMLElement.prototype, "onmousehold", {
+  set(callback) {
+    if (callback === null) {
+      this.onmousedown = null;
+      this.onmouseup = null;
+      return;
+    }
+
+    let timeoutId;
+    this.onmousedown = () => {
+      timeoutId = setTimeout(callback, 500);
+    };
+    this.onmouseup = () => {
+      clearTimeout(timeoutId);
+    };
+  }
+});
+
 export default async function createComponent() {
   let name;
   let fileLocation;

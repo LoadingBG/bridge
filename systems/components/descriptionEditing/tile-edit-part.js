@@ -65,7 +65,7 @@ await createComponent("descriptionEditing", "tile-edit-part", template =>
 
       let hidden = true;
       this.#helperBox.toggleAttribute("hidden", true);
-      this.#displayTile.ondblclick = () => {
+      this.#displayTile.onmousehold = () => {
         if (this.#onEdit) {
           this.#onEdit(hidden);
         }

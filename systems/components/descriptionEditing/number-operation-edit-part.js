@@ -170,7 +170,7 @@ await createComponent("descriptionEditing", "number-operation-edit-part", templa
 
       let hidden = true;
       this.#helperBox.toggleAttribute("hidden", true);
-      this.#text.ondblclick = () => {
+      this.#text.onmousehold = () => {
         if (this.#onEdit) {
           this.#onEdit(hidden);
         }

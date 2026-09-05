@@ -64,13 +64,11 @@ await createComponent("bid-popup", template =>
         this.#cancelButton.toggleAttribute("disabled", true);
         this.#confirmButton.toggleAttribute("disabled", true);
 
-        this.#enableDescriptionsOnclicks(false);
-
-        this.#bidTile.alertPart.onclick = () => {
+        this.#bidTile.alertPart.onmousehold = () => {
           this.#editedBidInfo.isAlert = !this.#bidTile.alertPart.toggleAttribute("disabled");
         };
 
-        this.#hcpBox.onclick = () => {
+        this.#hcpBox.onmousehold = () => {
           this.#descriptionEditor.description = this.#editedBidInfo.hcp;
           this.#descriptionEditor.onConfirm = (description) => {
             this.#editedBidInfo.hcp = description;
@@ -80,7 +78,7 @@ await createComponent("bid-popup", template =>
           this.#descriptionEditor.toggleAttribute("hidden", false);
         };
 
-        this.#descriptionBox.onclick = () => {
+        this.#descriptionBox.onmousehold = () => {
           this.#descriptionEditor.description = this.#editedBidInfo.description;
           this.#descriptionEditor.onConfirm = (description) => {
             this.#editedBidInfo.description = description;
@@ -92,7 +90,7 @@ await createComponent("bid-popup", template =>
 
         [[this.#clubCard, Suit.CLUB], [this.#diamondCard, Suit.DIAMOND], [this.#heartCard, Suit.HEART], [this.#spadeCard, Suit.SPADE]]
           .forEach(([card, suit]) => {
-            card.onclick = () => {
+            card.onmousehold = () => {
               this.#descriptionEditor.description = this.#editedBidInfo.cards?.[Suit.nameOf(suit)];
               this.#descriptionEditor.onConfirm = (description) => {
                 this.#editedBidInfo.cards ??= {};
@@ -109,7 +107,6 @@ await createComponent("bid-popup", template =>
         this.revertToDefault();
         this.#editedBidInfo = this.#bidInfo.clone();
         this.#updateInfobox(this.#bidInfo);
-        this.#enableDescriptionsOnclicks(true);
       };
 
       this.#saveButton.onclick = () => {
@@ -118,7 +115,6 @@ await createComponent("bid-popup", template =>
           this.#bidInfo = this.#editedBidInfo.clone();
           this.#onSave?.();
         }
-        this.#enableDescriptionsOnclicks(true);
       };
 
       this.#descriptionEditor.onCancel = () => {
@@ -136,18 +132,6 @@ await createComponent("bid-popup", template =>
       this.#spadeCard.suit = Suit.SPADE;
     }
 
-    #enableDescriptionsOnclicks(enable) {
-      [...this.#hcpBox.childNodes]
-        // .filter(node => node.tagName === "CONVENTION-DESCRIPTION")
-        .filter(node => "enableOnclick" in node)
-        .forEach(node => node.enableOnclick(enable));
-      [...this.#descriptionBox.childNodes]
-        // .filter(node => node.tagName === "CONVENTION-DESCRIPTION")
-        .filter(node => "enableOnclick" in node)
-        .forEach(node => node.enableOnclick(enable));
-      // TODO: change card onclicks
-    }
-
     revertToDefault() {
       this.#editButton.toggleAttribute("hidden", false);
       this.#revertButton.toggleAttribute("hidden", true);
@@ -157,16 +141,17 @@ await createComponent("bid-popup", template =>
       const isAlertDisabled = this.#bidTile.alertPart.hasAttribute("disabled");
       this.#bidTile.alertPart.toggleAttribute("disabled", false);
       this.#bidTile.isAlert = !isAlertDisabled;
+      this.#bidTile.alertPart.onmousehold = null;
 
       this.#cancelButton.toggleAttribute("disabled", false);
       this.#confirmButton.toggleAttribute("disabled", false);
 
-      this.#hcpBox.onclick = null;
-      this.#descriptionBox.onclick = null;
-      this.#clubCard.onclick = null;
-      this.#diamondCard.onclick = null;
-      this.#heartCard.onclick = null;
-      this.#spadeCard.onclick = null;
+      this.#hcpBox.onmousehold = null;
+      this.#descriptionBox.onmousehold = null;
+      this.#clubCard.onmousehold = null;
+      this.#diamondCard.onmousehold = null;
+      this.#heartCard.onmousehold = null;
+      this.#spadeCard.onmousehold = null;
     }
 
     set onCancel(callback) {
