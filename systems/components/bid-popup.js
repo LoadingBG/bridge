@@ -11,6 +11,7 @@ await createComponent("bid-popup", template =>
     #bidInfo;
     #editedBidInfo;
 
+    #bidTile;
     #container;
     #infobox;
     #hcpBox;
@@ -36,6 +37,7 @@ await createComponent("bid-popup", template =>
       const dom = this.attachShadow({ mode: "open" });
       dom.appendChild(document.importNode(template, true));
 
+      this.#bidTile = dom.querySelector("bid-tile");
       this.#container = dom.querySelector(".container");
       this.#infobox = dom.querySelector(".infobox");
       this.#hcpBox = dom.querySelector("#hcp-box");
@@ -51,6 +53,10 @@ await createComponent("bid-popup", template =>
       this.#editButton.onclick = () => {
         this.#updateInfobox(this.#editedBidInfo);
 
+        // TODO: there must be a better way...
+        this.#bidTile.isAlert = true;
+        this.#bidTile.alertPart.toggleAttribute("disabled", !this.#editedBidInfo.isAlert);
+
         this.#editButton.toggleAttribute("hidden", true);
         this.#revertButton.toggleAttribute("hidden", false);
         this.#saveButton.toggleAttribute("hidden", false);
@@ -58,7 +64,13 @@ await createComponent("bid-popup", template =>
         this.#cancelButton.toggleAttribute("disabled", true);
         this.#confirmButton.toggleAttribute("disabled", true);
 
-        this.#hcpBox.ondblclick = () => {
+        this.#enableDescriptionsOnclicks(false);
+
+        this.#bidTile.alertPart.onclick = () => {
+          this.#editedBidInfo.isAlert = !this.#bidTile.alertPart.toggleAttribute("disabled");
+        };
+
+        this.#hcpBox.onclick = () => {
           this.#descriptionEditor.description = this.#editedBidInfo.hcp;
           this.#descriptionEditor.onConfirm = (description) => {
             this.#editedBidInfo.hcp = description;
@@ -68,7 +80,7 @@ await createComponent("bid-popup", template =>
           this.#descriptionEditor.toggleAttribute("hidden", false);
         };
 
-        this.#descriptionBox.ondblclick = () => {
+        this.#descriptionBox.onclick = () => {
           this.#descriptionEditor.description = this.#editedBidInfo.description;
           this.#descriptionEditor.onConfirm = (description) => {
             this.#editedBidInfo.description = description;
@@ -80,7 +92,7 @@ await createComponent("bid-popup", template =>
 
         [[this.#clubCard, Suit.CLUB], [this.#diamondCard, Suit.DIAMOND], [this.#heartCard, Suit.HEART], [this.#spadeCard, Suit.SPADE]]
           .forEach(([card, suit]) => {
-            card.ondblclick = () => {
+            card.onclick = () => {
               this.#descriptionEditor.description = this.#editedBidInfo.cards?.[Suit.nameOf(suit)];
               this.#descriptionEditor.onConfirm = (description) => {
                 this.#editedBidInfo.cards ??= {};
@@ -97,6 +109,7 @@ await createComponent("bid-popup", template =>
         this.revertToDefault();
         this.#editedBidInfo = this.#bidInfo.clone();
         this.#updateInfobox(this.#bidInfo);
+        this.#enableDescriptionsOnclicks(true);
       };
 
       this.#saveButton.onclick = () => {
@@ -105,6 +118,7 @@ await createComponent("bid-popup", template =>
           this.#bidInfo = this.#editedBidInfo.clone();
           this.#onSave?.();
         }
+        this.#enableDescriptionsOnclicks(true);
       };
 
       this.#descriptionEditor.onCancel = () => {
@@ -122,21 +136,37 @@ await createComponent("bid-popup", template =>
       this.#spadeCard.suit = Suit.SPADE;
     }
 
+    #enableDescriptionsOnclicks(enable) {
+      [...this.#hcpBox.childNodes]
+        // .filter(node => node.tagName === "CONVENTION-DESCRIPTION")
+        .filter(node => "enableOnclick" in node)
+        .forEach(node => node.enableOnclick(enable));
+      [...this.#descriptionBox.childNodes]
+        // .filter(node => node.tagName === "CONVENTION-DESCRIPTION")
+        .filter(node => "enableOnclick" in node)
+        .forEach(node => node.enableOnclick(enable));
+      // TODO: change card onclicks
+    }
+
     revertToDefault() {
       this.#editButton.toggleAttribute("hidden", false);
       this.#revertButton.toggleAttribute("hidden", true);
       this.#saveButton.toggleAttribute("hidden", true);
       this.#descriptionEditor.toggleAttribute("hidden", true);
 
+      const isAlertDisabled = this.#bidTile.alertPart.hasAttribute("disabled");
+      this.#bidTile.alertPart.toggleAttribute("disabled", false);
+      this.#bidTile.isAlert = !isAlertDisabled;
+
       this.#cancelButton.toggleAttribute("disabled", false);
       this.#confirmButton.toggleAttribute("disabled", false);
 
-      this.#hcpBox.ondblclick = null;
-      this.#descriptionBox.ondblclick = null;
-      this.#clubCard.ondblclick = null;
-      this.#diamondCard.ondblclick = null;
-      this.#heartCard.ondblclick = null;
-      this.#spadeCard.ondblclick = null;
+      this.#hcpBox.onclick = null;
+      this.#descriptionBox.onclick = null;
+      this.#clubCard.onclick = null;
+      this.#diamondCard.onclick = null;
+      this.#heartCard.onclick = null;
+      this.#spadeCard.onclick = null;
     }
 
     set onCancel(callback) {
@@ -179,13 +209,10 @@ await createComponent("bid-popup", template =>
     #setTile(tileInfo, isAlert) {
       isAlert = isAlert ?? false;
 
-      const tile = document.createElement("bid-tile");
-      tile.info = tileInfo;
-      tile.isAlert = isAlert;
-      tile.makeSystemic(false);
-      tile.makeAvailable(true);
-      this.#infobox.removeChild(this.#infobox.firstElementChild);
-      this.#infobox.prepend(tile);
+      this.#bidTile.info = tileInfo;
+      this.#bidTile.isAlert = isAlert;
+      this.#bidTile.makeSystemic(false);
+      this.#bidTile.makeAvailable(true);
     }
 
     #setHCPBox(hcp) {

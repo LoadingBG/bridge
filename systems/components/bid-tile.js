@@ -73,7 +73,11 @@ await createComponent("bid-tile", template =>
     }
 
     set isAlert(isAlert) {
-      this.#alertPart.style.display = isAlert ? "inline" : "none";
+      this.#alertPart.toggleAttribute("hidden", !isAlert);
+    }
+
+    get alertPart() {
+      return this.#alertPart;
     }
 
     copy() {

@@ -51,14 +51,15 @@ await createComponent("descriptions", "convention-description", template =>
           .forEach(child => this.#description.appendChild(child));
 
         this.#helperBox.toggleAttribute("hidden", true);
-        if (this.#enableOnclick) {
-          let hidden = true;
-          this.onclick = (event) => {
-            event.stopPropagation();
-            hidden = !hidden;
-            this.#helperBox.toggleAttribute("hidden", hidden);
-          };
-        }
+        let hidden = true;
+        this.onclick = (event) => {
+          if (!this.#enableOnclick) {
+            return;
+          }
+          event.stopPropagation();
+          hidden = !hidden;
+          this.#helperBox.toggleAttribute("hidden", hidden);
+        };
       }
     }
   }

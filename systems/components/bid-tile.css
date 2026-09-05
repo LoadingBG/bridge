@@ -31,7 +31,7 @@
 
 .border[systemic] {
   display: block;
-}     
+}
 
 .alert-box {
   margin: 0;
@@ -44,11 +44,24 @@
   height: 30%;
 }
 
+.alert-box[hidden] {
+  display: none;
+}
+
+.alert-box[disabled] {
+  background: #0f253f;
+}
+
+.alert-box[disabled] svg {
+  stroke: #4c5c71;
+  fill: #4c5c71;
+}
+
 .alert-box svg {
   fill: #fff;
 }
 
-span[disabled] {
+.tile-holder[disabled] {
   display: none;
 }
 
