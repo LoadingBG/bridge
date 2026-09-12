@@ -1,4 +1,9 @@
 const OPERATIONS_LABELS = {
+  "equal": {
+    "word": (part) => `точно ${part.number}`,
+    "capitalWord": (part) => `Точно ${part.number}`,
+    "symbol": (part) => `= ${part.number}`,
+  },
   "lessThan": {
     "word": (part) => `под ${part.number}`,
     "capitalWord": (part) => `Под ${part.number}`,

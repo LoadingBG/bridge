@@ -73,9 +73,7 @@ await createComponent("descriptionEditing", "tile-edit-part", template =>
         hidden = !hidden;
         this.#helperBox.toggleAttribute("hidden", hidden);
         if (hidden) {
-          console.log(this.#displayTile.info);
           const tileInfo = this.#displayTile.info;
-          console.log(tileInfo);
           this.#descriptionPart.number = tileInfo.number ?? undefined;
           this.#descriptionPart.suit = Suit.nameOf(tileInfo.suit) ?? undefined;
           this.#descriptionPart.double = tileInfo.isDouble || undefined;

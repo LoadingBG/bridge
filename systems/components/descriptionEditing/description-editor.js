@@ -48,7 +48,7 @@ await createComponent("descriptionEditing", "description-editor", template =>
       this.#numberOperationButton.onclick = () => {
         this.#editbox.appendChild(this.#createElement({
           type: "numberOperation",
-          operation: "lessThan",
+          operation: "equal",
           number: 0,
         }));
         this.#editbox.appendChild(document.createTextNode(" "));

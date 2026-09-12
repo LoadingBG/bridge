@@ -10,6 +10,7 @@ await createComponent("descriptionEditing", "number-operation-edit-part", templa
 
     #text;
     #helperBox;
+    #eqButton;
     #ltButton;
     #leButton;
     #gtButton;
@@ -31,6 +32,7 @@ await createComponent("descriptionEditing", "number-operation-edit-part", templa
 
       this.#text = dom.querySelector(".text");
       this.#helperBox = dom.querySelector(".helper-box");
+      this.#eqButton = dom.getElementById("eq-button");
       this.#ltButton = dom.getElementById("lt-button");
       this.#leButton = dom.getElementById("le-button");
       this.#gtButton = dom.getElementById("gt-button");
@@ -44,6 +46,12 @@ await createComponent("descriptionEditing", "number-operation-edit-part", templa
       this.#upperBoundLabel = dom.getElementById("upper-bound-label");
       this.#upperBoundField = dom.getElementById("upper-bound-field");
 
+      this.#eqButton.onchange = () => {
+        if (this.#eqButton.checked) {
+          this.#updateFields();
+          this.#updateText();
+        }
+      };
       this.#ltButton.onchange = () => {
         if (this.#ltButton.checked) {
           this.#updateFields();
@@ -101,7 +109,12 @@ await createComponent("descriptionEditing", "number-operation-edit-part", templa
     #updateText() {
       let operation;
       let part;
-      if (this.#ltButton.checked) {
+      if (this.#eqButton.checked) {
+        operation = "equal";
+        part = {
+          number: this.#numberField.value || "_",
+        };
+      } else if (this.#ltButton.checked) {
         operation = "lessThan";
         part = {
           number: this.#numberField.value || "_",
@@ -135,7 +148,7 @@ await createComponent("descriptionEditing", "number-operation-edit-part", templa
     }
 
     #updateFields(descriptionPart) {
-      if (this.#ltButton.checked || this.#leButton.checked || this.#gtButton.checked || this.#geButton.checked) {
+      if (this.#eqButton.checked || this.#ltButton.checked || this.#leButton.checked || this.#gtButton.checked || this.#geButton.checked) {
         this.#numberLabel.toggleAttribute("hidden", false);
         this.#numberField.toggleAttribute("hidden", false);
         this.#lowerBoundLabel.toggleAttribute("hidden", true);
@@ -159,6 +172,7 @@ await createComponent("descriptionEditing", "number-operation-edit-part", templa
     set descriptionPart(descriptionPart) {
       this.#descriptionPart = structuredClone(descriptionPart);
 
+      this.#eqButton.toggleAttribute("checked", descriptionPart.operation === "equal");
       this.#ltButton.toggleAttribute("checked", descriptionPart.operation === "lessThan");
       this.#leButton.toggleAttribute("checked", descriptionPart.operation === "lessThanOrEqual");
       this.#gtButton.toggleAttribute("checked", descriptionPart.operation === "moreThan");
@@ -178,7 +192,12 @@ await createComponent("descriptionEditing", "number-operation-edit-part", templa
         hidden = !hidden;
         this.#helperBox.toggleAttribute("hidden", hidden);
         if (hidden) {
-          if (this.#ltButton.checked) {
+          if (this.#eqButton.checked) {
+            this.#descriptionPart.operation = "equal";
+            this.#descriptionPart.number = parseInt(this.#numberField.value);
+            this.#descriptionPart.lowerBound = undefined;
+            this.#descriptionPart.upperBound = undefined;
+          } else if (this.#ltButton.checked) {
             this.#descriptionPart.operation = "lessThan";
             this.#descriptionPart.number = parseInt(this.#numberField.value);
             this.#descriptionPart.lowerBound = undefined;

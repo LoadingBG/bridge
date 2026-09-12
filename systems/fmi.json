@@ -60,6 +60,18 @@
         },
         "."
       ]
+    },
+    "reverse": {
+      "title": "Ривърс (Reverse)",
+      "description": [
+        "Ривърс е обявяване, при което се вдига и числото, и боята на предишното обявяване от същия играч. Показва силна и небалансирана ръка, в която първата обявена боя (поне петорна) е по-дълга от втората (поне четворна).\nОбикновено се обявява след ",
+        {
+          "type": "convention",
+          "convention": "oneOverOne",
+          "text": "1 върху 1"
+        },
+        " при липса на подкрепа в боята на съотборника."
+      ]
     }
   },
   "availableBids": [
@@ -799,7 +811,435 @@
                 "number": 5
               }
             ]
-          }
+          },
+          "continuations": [
+            {
+              "number": 1,
+              "suit": "DIAMOND",
+              "hcp": [
+                {
+                  "type": "numberOperation",
+                  "operation": "between",
+                  "lowerBound": 6,
+                  "upperBound": 10
+                }
+              ],
+              "description": [
+                {
+                  "type": "convention",
+                  "convention": "oneOverOne",
+                  "text": "1 върху 1"
+                },
+                " на кари."
+              ],
+              "cards": {
+                "DIAMOND": [
+                  {
+                    "type": "numberOperation",
+                    "operation": "moreThanOrEqual",
+                    "number": 4
+                  }
+                ]
+              },
+              "continuations": [
+                {
+                  "pass": true,
+                  "hcp": [
+                    {
+                      "type": "numberOperation",
+                      "operation": "lessThan",
+                      "number": 15
+                    }
+                  ],
+                  "description": [
+                    "Ръка без нищо за обявяване."
+                  ],
+                  "continuations": [
+                    {
+                      "number": 1,
+                      "suit": "SPADE",
+                      "hcp": [
+                        {
+                          "type": "numberOperation",
+                          "operation": "moreThanOrEqual",
+                          "number": 11
+                        }
+                      ],
+                      "description": [
+                        "Обяваване на четвърта купа, с която не е било възможно да се отвори.\nОтрича четвърта купа поради пропускане на обявяването ",
+                        {
+                          "type": "tile",
+                          "number": 1,
+                          "suit": "HEART"
+                        },
+                        "."
+                      ],
+                      "cards": {
+                        "HEART": [
+                          {
+                            "type": "numberOperation",
+                            "operation": "lessThan",
+                            "number": 4
+                          }
+                        ],
+                        "CLUB": [
+                          {
+                            "type": "numberOperation",
+                            "operation": "moreThanOrEqual",
+                            "number": 3
+                          }
+                        ],
+                        "SPADE": [
+                          {
+                            "type": "numberOperation",
+                            "operation": "equal",
+                            "number": 4
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "number": 1,
+                      "suit": "HEART",
+                      "hcp": [
+                        {
+                          "type": "numberOperation",
+                          "operation": "moreThanOrEqual",
+                          "number": 11
+                        }
+                      ],
+                      "description": [
+                        "Обяваване на четвърта купа, с която не е било възможно да се отвори.\nНе отрича четвърта пика."
+                      ],
+                      "cards": {
+                        "HEART": [
+                          {
+                            "type": "numberOperation",
+                            "operation": "equal",
+                            "number": 4
+                          }
+                        ],
+                        "CLUB": [
+                          {
+                            "type": "numberOperation",
+                            "operation": "moreThanOrEqual",
+                            "number": 3
+                          }
+                        ],
+                        "SPADE": [
+                          {
+                            "type": "numberOperation",
+                            "operation": "lessThan",
+                            "number": 5
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "number": 1,
+                      "suit": "NO_TRUMP",
+                      "hcp": [
+                        {
+                          "type": "numberOperation",
+                          "operation": "moreThanOrEqual",
+                          "number": 11
+                        }
+                      ],
+                      "description": [
+                        "Балансирана ръка без четвърти мажор."
+                      ],
+                      "cards": {
+                        "CLUB": [
+                          {
+                            "type": "numberOperation",
+                            "operation": "moreThanOrEqual",
+                            "number": 3
+                          }
+                        ],
+                        "HEART": [
+                          {
+                            "type": "numberOperation",
+                            "operation": "lessThanOrEqual",
+                            "number": 3
+                          }
+                        ],
+                        "SPADE": [
+                          {
+                            "type": "numberOperation",
+                            "operation": "lessThanOrEqual",
+                            "number": 3
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "number": 2,
+                      "suit": "CLUB",
+                      "hcp": [
+                        {
+                          "type": "numberOperation",
+                          "operation": "moreThanOrEqual",
+                          "number": 11
+                        }
+                      ],
+                      "description": [
+                        "Повторно обявяване на силна спатия. Липсва четвърти мажор, тъй като са пропуснати обявяванията ",
+                        {
+                          "type": "tile",
+                          "number": 1,
+                          "suit": "HEART"
+                        },
+                        " и ",
+                        {
+                          "type": "tile",
+                          "number": 1,
+                          "suit": "SPADE"
+                        },
+                        ".\nВъзможно е обявяване на петорна, но плътна (поне асо, поп и вале) боя."
+                      ],
+                      "cards": {
+                        "CLUB": [
+                          {
+                            "type": "numberOperation",
+                            "operation": "moreThanOrEqual",
+                            "number": 6
+                          },
+                          " (или плътни 5)"
+                        ],
+                        "HEART": [
+                          {
+                            "type": "numberOperation",
+                            "operation": "lessThanOrEqual",
+                            "number": 3
+                          }
+                        ],
+                        "SPADE": [
+                          {
+                            "type": "numberOperation",
+                            "operation": "lessThanOrEqual",
+                            "number": 3
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "number": 2,
+                      "suit": "DIAMOND",
+                      "hcp": [
+                        {
+                          "type": "numberOperation",
+                          "operation": "moreThanOrEqual",
+                          "number": 17
+                        }
+                      ],
+                      "description": [
+                        {
+                          "type": "convention",
+                          "convention": "reverse",
+                          "text": "Ривърс"
+                        },
+                        " на кари."
+                      ],
+                      "cards": {
+                        "CLUB": [
+                          {
+                            "type": "numberOperation",
+                            "operation": "moreThanOrEqual",
+                            "number": 5
+                          }
+                        ],
+                        "DIAMOND": [
+                          {
+                            "type": "numberOperation",
+                            "operation": "moreThanOrEqual",
+                            "number": 4
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "number": 2,
+                      "suit": "HEART",
+                      "hcp": [
+                        {
+                          "type": "numberOperation",
+                          "operation": "moreThanOrEqual",
+                          "number": 17
+                        }
+                      ],
+                      "description": [
+                        {
+                          "type": "convention",
+                          "convention": "reverse",
+                          "text": "Ривърс"
+                        },
+                        " на купи."
+                      ],
+                      "cards": {
+                        "CLUB": [
+                          {
+                            "type": "numberOperation",
+                            "operation": "moreThanOrEqual",
+                            "number": 5
+                          }
+                        ],
+                        "HEART": [
+                          {
+                            "type": "numberOperation",
+                            "operation": "moreThanOrEqual",
+                            "number": 4
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "number": 2,
+                      "suit": "SPADE",
+                      "hcp": [
+                        {
+                          "type": "numberOperation",
+                          "operation": "moreThanOrEqual",
+                          "number": 17
+                        }
+                      ],
+                      "description": [
+                        {
+                          "type": "convention",
+                          "convention": "reverse",
+                          "text": "Ривърс"
+                        },
+                        " на пики."
+                      ],
+                      "cards": {
+                        "CLUB": [
+                          {
+                            "type": "numberOperation",
+                            "operation": "moreThanOrEqual",
+                            "number": 5
+                          }
+                        ],
+                        "SPADE": [
+                          {
+                            "type": "numberOperation",
+                            "operation": "moreThanOrEqual",
+                            "number": 4
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "number": 1,
+              "suit": "HEART",
+              "hcp": [
+                {
+                  "type": "numberOperation",
+                  "operation": "between",
+                  "lowerBound": 6,
+                  "upperBound": 10
+                }
+              ],
+              "description": [
+                {
+                  "type": "convention",
+                  "convention": "oneOverOne",
+                  "text": "1 върху 1"
+                },
+                " на купи."
+              ],
+              "cards": {
+                "HEART": [
+                  {
+                    "type": "numberOperation",
+                    "operation": "moreThanOrEqual",
+                    "number": 4
+                  }
+                ]
+              }
+            },
+            {
+              "number": 1,
+              "suit": "SPADE",
+              "hcp": [
+                {
+                  "type": "numberOperation",
+                  "operation": "between",
+                  "lowerBound": 6,
+                  "upperBound": 10
+                }
+              ],
+              "description": [
+                {
+                  "type": "convention",
+                  "convention": "oneOverOne",
+                  "text": "1 върху 1"
+                },
+                " на пики."
+              ],
+              "cards": {
+                "SPADE": [
+                  {
+                    "type": "numberOperation",
+                    "operation": "moreThanOrEqual",
+                    "number": 4
+                  }
+                ]
+              }
+            },
+            {
+              "number": 1,
+              "suit": "NO_TRUMP",
+              "hcp": [
+                {
+                  "type": "numberOperation",
+                  "operation": "between",
+                  "lowerBound": 6,
+                  "upperBound": 9
+                }
+              ],
+              "description": [
+                "Подкрепяща ръка без нещо специфично за обявяване."
+              ]
+            },
+            {
+              "number": 2,
+              "suit": "CLUB",
+              "hcp": [
+                {
+                  "type": "numberOperation",
+                  "operation": "between",
+                  "lowerBound": 6,
+                  "upperBound": 10
+                }
+              ],
+              "description": [
+                {
+                  "type": "convention",
+                  "convention": "fit",
+                  "text": "Фит"
+                },
+                " на спатии. Показва поне 5 спатии, тъй като съотборникът е обещал минимум 3 с обявяването си ",
+                {
+                  "type": "tile",
+                  "number": 1,
+                  "suit": "CLUB"
+                },
+                "."
+              ],
+              "cards": {
+                "CLUB": [
+                  {
+                    "type": "numberOperation",
+                    "operation": "moreThanOrEqual",
+                    "number": 5
+                  }
+                ]
+              }
+            }
+          ]
         },
         {
           "double": true,
